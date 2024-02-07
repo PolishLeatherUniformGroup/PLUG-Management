@@ -1,5 +1,5 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from "@nestjs/cqrs";
-import { ApproveApplicantCommand } from "../impl/approve-applicant.comman";
+import { ApproveApplicantCommand } from "../impl/approve-applicant.command";
 import { ApplicantRepository } from "src/apply/repository/applicant.repository";
 
 @CommandHandler(ApproveApplicantCommand)
