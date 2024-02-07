@@ -1,4 +1,4 @@
-export class EndorseApplicantDto{
+export class RecommendationActionDto{
     id:string;
     recommenderId:string;
 }

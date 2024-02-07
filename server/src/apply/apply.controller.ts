@@ -4,20 +4,22 @@ import { ApiAcceptedResponse, ApiCreatedResponse, ApiOperation, ApiResponse, Api
 import { SendApplicationDto } from "./dtos/send-application.dto";
 import { SendApplicationCommand } from "./commands/impl/send-application.command";
 import { RequestRecommendationCommand } from "./commands/impl/request-recommendation.command";
-import { AccceptApplicationDto } from "./dtos/accept-application.dto";
+
 import { Money } from "./model/money.model";
-import { EndorseApplicantDto } from "./dtos/endorse-applicant.dto";
+import { RecommendationActionDto } from "./dtos/recommendation-action.dto";
 import { EndorseApplicantCommand } from "./commands/impl/endorse-applicant.command";
-import { OpposeApplicantDto } from "./dtos/oppose-applicant.dto";
 import { OpposeApplicantCommand } from "./commands/impl/oppose-applicant.command";
 import { DismissApplicationDto } from "./dtos/dismiss-application.dto";
 import { DismissApplicationCommand } from "./commands/impl/dismiss-application.command";
 import { RegisterFeePaymnentDto } from "./dtos/register-fee-payment.dto";
 import { RegisterFeePaymentCommand } from "./commands/impl/register-fee-payment.command";
-import { ApproveApplicantDto } from "./dtos/approve-applicant.dto";
-import { ApproveApplicantCommand } from "./commands/impl/approve-applicant.comman";
-import { RejectApplicantDto } from "./dtos/reject-applicant.dto";
+
 import { RejectApplicantCommand } from "./commands/impl/reject-applicant.command";
+import { ApplicationDecisionDto } from "./dtos/decision.dto";
+import { RejectAppealCommand } from "./commands/impl/reject-appeal.command";
+import { AccceptApplicationDto } from "./dtos/accept-application.dto";
+import { ApproveAppealCommand } from "./commands/impl/approve-appeal.command";
+import { ApproveApplicantCommand } from "./commands/impl/approve-applicant.command";
 
 @Controller("apply")
 @ApiTags("apply")
@@ -57,7 +59,7 @@ export class ApplyController{
     @Post("endorse-applicant")
     @ApiOperation({ summary: 'Accepts  Application as valid' })
     @ApiCreatedResponse({description:"Application was endorsed by recommender"})
-    async endorseApplicant(@Body() dto:EndorseApplicantDto){
+    async endorseApplicant(@Body() dto:RecommendationActionDto){
         let command:EndorseApplicantCommand = {...dto};
         return this.commandBus.execute(command);
     }
@@ -65,7 +67,7 @@ export class ApplyController{
     @Post("oppose-applicant")
     @ApiOperation({ summary: 'Accepts  Application as valid' })
     @ApiCreatedResponse({description:"Application was opposed by recommender"})
-    async opposeApplicant(@Body() dto:OpposeApplicantDto){
+    async opposeApplicant(@Body() dto:RecommendationActionDto){
         let command:OpposeApplicantCommand = {...dto};
         return this.commandBus.execute(command);
     }
@@ -83,7 +85,7 @@ export class ApplyController{
     @Post("approve-applicant")
     @ApiOperation({ summary: 'Approves  Applicant' })
     @ApiCreatedResponse({description:"Application was approved."})
-    async aproveApplicant(@Body() dto:ApproveApplicantDto){
+    async aproveApplicant(@Body() dto:ApplicationDecisionDto){
         let command:ApproveApplicantCommand = {...dto};
         return this.commandBus.execute(command);
     }
@@ -91,9 +93,32 @@ export class ApplyController{
     @Post("reject-applicant")
     @ApiOperation({ summary: 'Reject  Applicant' })
     @ApiCreatedResponse({description:"Application was rejected."})
-    async rejectApplicant(@Body() dto:RejectApplicantDto){
+    async rejectApplicant(@Body() dto:ApplicationDecisionDto){
         let command:RejectApplicantCommand = {...dto};
         return this.commandBus.execute(command);
     }
 
+    @Post("appeal-rejection")
+    @ApiOperation({ summary: 'Appeal Rejection' })
+    @ApiCreatedResponse({description:"Rejection was appealed."})
+    async appealRejection(@Body() dto:ApplicationDecisionDto){
+        let command:RejectApplicantCommand = {...dto};
+        return this.commandBus.execute(command);
+    }
+
+    @Post("approve-appeal")
+    @ApiOperation({ summary: 'Approve Appeal' })
+    @ApiCreatedResponse({description:"Appeal was approved."})
+    async approveAppeal(@Body() dto:ApplicationDecisionDto){
+        let command:ApproveAppealCommand = {...dto};
+        return this.commandBus.execute(command);
+    }
+
+    @Post("reject-appeal")
+    @ApiOperation({ summary: 'Reject Appeal' })
+    @ApiCreatedResponse({description:"Appeal was rejected."})
+    async rejectAppeal(@Body() dto:ApplicationDecisionDto){
+        let command:RejectAppealCommand = {...dto};
+        return this.commandBus.execute(command);
+    }
 }
