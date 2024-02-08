@@ -6,7 +6,7 @@ import { useTheme } from 'next-themes'
 import Image from "next/image"
 
 export default function ThemeSwitcher() {
-  
+
   const [mounted, setMounted] = useState(false)
   const { setTheme, resolvedTheme } = useTheme()
 
@@ -24,12 +24,12 @@ export default function ThemeSwitcher() {
     />
   )
 
-  if (resolvedTheme === 'plug-dark') {
-    return <SunFilledIcon onClick={() => setTheme('plug-light')} />
+  if (resolvedTheme === 'dark') {
+    return <SunFilledIcon onClick={() => setTheme('light')} />
   }
 
-  if (resolvedTheme === 'plug-light') {
-    return <MoonFilledIcon onClick={() => setTheme('plug-dark')} />
+  if (resolvedTheme === 'light') {
+    return <MoonFilledIcon onClick={() => setTheme('dark')} />
   }
 
 };

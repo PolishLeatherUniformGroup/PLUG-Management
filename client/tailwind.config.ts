@@ -21,7 +21,7 @@ const config: Config = {
   plugins: [nextui({
     prefix: "nextui", // prefix for themes variables
     addCommonColors: true, // override common colors (e.g. "blue", "green", "pink").
-    defaultTheme: "plug-light", // default theme
+    defaultTheme: "light", // default theme
     layout: {}, // common layout tokens (applied to all themes)
     themes: {
       "plug-dark": {
