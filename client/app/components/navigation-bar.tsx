@@ -14,7 +14,7 @@ import {
     NavbarMenuItem,
 } from "@nextui-org/react";
 import { ArrowRightEndOnRectangleIcon,ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
-import { getSession } from '@auth0/nextjs-auth0';
+import { useUser } from '@auth0/nextjs-auth0/client';
 import { User, Avatar, AvatarGroup, AvatarIcon } from "@nextui-org/react";
 import { link as linkStyles } from "@nextui-org/theme";
 
@@ -24,7 +24,7 @@ import clsx from "clsx";
 import { PlugLogo } from "./logo";
 
 export default async function NavigationBar() {
-    const user = await getSession();
+    const { user, error, isLoading } = useUser();
     return (
         <NextUINavbar maxWidth="xl" position="sticky" isBordered className="drop-shadow-md">
             <NavbarContent className="basis-1/5 sm:basis-full p-2" justify="start">
@@ -67,16 +67,17 @@ export default async function NavigationBar() {
                     </Button>
                 </NavbarItem>)}
                 {user && (
+                    
                     <NavbarItem>
-                            <User
-                                name={`${user?.user.name}`}
-                                description={`${user?.user.nickname}`}
+                          <User
+                                name={`${user.name}`}
+                                description={`${user.nickname}`}
                                 avatarProps={{
-                                    src: `${user?.user.picture}`,
-                                    name: `${user?.user.name}`
+                                    src: `${user.picture}`,
+                                    name: `${user.name}`
                                 }}
                                 className="p-2 m-3"
-                            />
+                            /> 
                             
                             <Button
                         as={Link}
