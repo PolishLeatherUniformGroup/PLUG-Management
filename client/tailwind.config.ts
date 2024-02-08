@@ -20,36 +20,48 @@ const config: Config = {
   darkMode: "class",
   plugins: [nextui({
     prefix: "nextui", // prefix for themes variables
-    addCommonColors: false, // override common colors (e.g. "blue", "green", "pink").
-    defaultTheme: "dark", // default theme from the themes object
-    defaultExtendTheme: "dark", // default theme to extend on custom themes
+    addCommonColors: true, // override common colors (e.g. "blue", "green", "pink").
+    defaultTheme: "plug-light", // default theme
     layout: {}, // common layout tokens (applied to all themes)
     themes: {
-      light: {
-        layout: {}, // light theme layout tokens
-        colors: {}, // light theme colors
-      },
-      dark: {
-        layout: {}, // dark theme layout tokens
-        colors: {}, // dark theme colors
-      },
       "plug-dark": {
         extends: "dark",
-        background: "#11213c",
+        foreground: "#f3f3f3",
+        background: "#11212f",
         colors: {
           primary: {
-            50: '#e7f1fe',
-            100: '#c3d4ee',
-            200: '#9db7e0',
-            300: '#769ad4',
-            400: '#517dc8',
-            500: '#3964af',
-            600: '#2c4e89',
-            700: '#1f3862',
-            800: '#11213c',
-            900: '#030b18',
-            DEFAULT: "#11213c",
-            foreground: "#ffffff",
+            50: "#c0cbde",
+            100: "#9eafcb",
+            200: "#667ea6",
+            300: "#3e5884",
+            400: "#253d66",
+            500: "#162c4f",
+            600: "#0f223f",
+            700: "#0d1d36",
+            800: "#0d1c31",
+            900: "#0f1c2f",
+            DEFAULT: "#030b18",
+            foreground: "#f3f3f3",
+          },
+        }
+      },"plug-light": {
+        extends: "light",
+        background: "#e6eaf2",
+        foreground: "#252525",
+        colors: {
+          primary: {
+            50: "#c0cbde",
+            100: "#9eafcb",
+            200: "#667ea6",
+            300: "#3e5884",
+            400: "#253d66",
+            500: "#162c4f",
+            600: "#0f223f",
+            700: "#0d1d36",
+            800: "#0d1c31",
+            900: "#0f1c2f",
+            DEFAULT: "#030b18",
+            foreground: "#f3f3f3",
           },
         }
       }

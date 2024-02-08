@@ -14,23 +14,18 @@ import {
     NavbarMenuItem,
     Navbar,
 } from "@nextui-org/react";
-import { ArrowRightEndOnRectangleIcon, ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import { useUser } from '@auth0/nextjs-auth0/client';
-import { User, Avatar, AvatarGroup, AvatarIcon } from "@nextui-org/react";
-import { link as linkStyles } from "@nextui-org/theme";
-
 import { siteConfig } from "@/config/site";
 import NextLink from "next/link";
-import clsx from "clsx";
-import Image from "next/image";
+
 import { usePathname } from "next/navigation";
+import ThemeSwitcher from "./theme-switcher";
 
 export default function NavigationBar() {
     const { user, error, isLoading } = useUser();
     const pathname = usePathname();
     return (
-        <NextUINavbar maxWidth="2xl" position="sticky" isBordered className="shadow-lg bg-primary ">
-
+        <NextUINavbar maxWidth="2xl" position="sticky" isBordered className="shadow-lg bg-primary text-white">
             <NavbarContent className="hidden sm:flex gap-4" justify="start" >
                 {siteConfig.navItems.map((item) => {
                     const selected = item.href === pathname;
@@ -38,13 +33,9 @@ export default function NavigationBar() {
                         return null;
                     } else {
                         return (
-                            <NavbarItem key={item.href}>
+                            <NavbarItem key={item.href} isActive={selected}>
                                 <NextLink
-                                    className={clsx(
-                                        linkStyles({ color: "foreground" }),
-                                        "data-[active=true]:text-primary text-base data-[active=true]:font-medium"
-                                    )}
-                                    color="foreground"
+                                    className="data-[active=true]:text-primary text-base data-[active=true]:font-medium"
                                     href={item.href}
                                 >
                                     {item.label}
@@ -55,6 +46,9 @@ export default function NavigationBar() {
                 })}
             </NavbarContent>
             <NavbarContent justify="end">
+                <NavbarItem>
+                    <ThemeSwitcher />
+                </NavbarItem>
                 {user !== undefined && (<NavbarItem>
                     <Button
                         as={Link}

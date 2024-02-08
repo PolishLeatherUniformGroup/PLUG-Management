@@ -4,7 +4,7 @@ import React from "react";
 
 export default function MembersMyDataRecommendations() {
     return (
-        <div className="mb-5"><Table className="light" radius="sm">
+        <div className="mb-5"><Table radius="sm">
             <TableHeader>
                 <TableColumn>Status</TableColumn>
                 <TableColumn>Imię</TableColumn>
