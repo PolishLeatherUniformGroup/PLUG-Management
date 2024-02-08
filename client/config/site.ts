@@ -6,40 +6,42 @@ export const siteConfig = {
             label: "Home",
             href: "/",
             isExternal: false,
+            isProtected: false,
         },
         {
             label: "Stowarzyszenie",
             href: "/association",
             isExternal: false,
+            isProtected: false,
         },
         {
             label: "Dołącz do nas",
             href: "/apply-form",
             isExternal: false,
+            isProtected: false,
         },
         {
             label: "Wydarzenia",
             href: "/events",
             isExternal: false,
+            isProtected: false,
         }, {
             label: "Partnerzy",
             href: "/partners",
             isExternal: false,
+            isProtected: false,
         },
         {
             label: "Strefa członka",
             href: "/members",
             isExternal: false,
+            isProtected: false,
         },
         {
             label: "Zarządazanie",
             href: "/admin",
             isExternal: false,
-        },
-        {
-            label: "Communities",
-            href: "/communities",
-            isExternal: false,
+            isProtected: true,
         }
 
     ],

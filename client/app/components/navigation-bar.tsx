@@ -34,30 +34,34 @@ export default function NavigationBar() {
             <NavbarContent className="hidden sm:flex gap-4" justify="start" >
                 {siteConfig.navItems.map((item) => {
                     const selected = item.href === pathname;
-                    return (
-                        <NavbarItem key={item.href}>
-                            <NextLink
-                                className={clsx(
-                                    linkStyles({ color: "foreground" }),
-                                    "data-[active=true]:text-primary text-base data-[active=true]:font-medium"
-                                )}
-                                color="foreground"
-                                href={item.href}
-                            >
-                                {item.label}
-                            </NextLink>
-                        </NavbarItem>
-                    );
+                    if (item.isProtected && user === undefined) {
+                        return null;
+                    } else {
+                        return (
+                            <NavbarItem key={item.href}>
+                                <NextLink
+                                    className={clsx(
+                                        linkStyles({ color: "foreground" }),
+                                        "data-[active=true]:text-primary text-base data-[active=true]:font-medium"
+                                    )}
+                                    color="foreground"
+                                    href={item.href}
+                                >
+                                    {item.label}
+                                </NextLink>
+                            </NavbarItem>
+                        );
+                    }
                 })}
             </NavbarContent>
             <NavbarContent justify="end">
-                {user && (<NavbarItem>
+                {user !== undefined && (<NavbarItem>
                     <Button
                         as={Link}
                         href="api/auth/logout" variant="flat" size="lg" color="primary" className="light text-primary">Wyloguj się</Button>
                 </NavbarItem>)
                 }
-                {!user && (<NavbarItem>
+                {user === undefined && (<NavbarItem>
                     <Button
                         as={Link}
                         href="api/auth/login" variant="flat" size="lg" color="primary" className="light text-primary">Login</Button>
