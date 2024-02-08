@@ -20,50 +20,66 @@ const config: Config = {
   darkMode: "class",
   plugins: [nextui({
     prefix: "nextui", // prefix for themes variables
-    addCommonColors: true, // override common colors (e.g. "blue", "green", "pink").
-    defaultTheme: "light", // default theme
+    addCommonColors: false, // override common colors (e.g. "blue", "green", "pink").
     layout: {}, // common layout tokens (applied to all themes)
     themes: {
-      "plug-dark": {
-        extends: "dark",
-        foreground: "#f3f3f3",
-        background: "#11212f",
+      light: {
         colors: {
+          background: "#dfdfdf", // or DEFAULT
+          foreground: "#091220",
+          black:"#333333",
+          white:"#f2f2f2", // or 50 to 900 DEFAULT
           primary: {
-            50: "#c0cbde",
-            100: "#9eafcb",
-            200: "#667ea6",
-            300: "#3e5884",
-            400: "#253d66",
-            500: "#162c4f",
-            600: "#0f223f",
-            700: "#0d1d36",
-            800: "#0d1c31",
-            900: "#0f1c2f",
-            DEFAULT: "#030b18",
-            foreground: "#f3f3f3",
+            //... 50 to 900
+            foreground: "#FFFFFF",
+            DEFAULT: "#4796ae",
           },
-        }
-      },"plug-light": {
-        extends: "light",
-        background: "#e6eaf2",
-        foreground: "#252525",
+          danger: {
+            DEFAULT: "#d40000",
+            foreground: "#FFFFFF"
+          }, 
+          secondary: {
+            DEFAULT: "#1f3e6f",
+            foreground: "#FFFFFF"
+          },
+          success:{
+            DEFAULT: "#2e825d",
+            foreground: "#FFFFFF"
+          },
+          warning:{
+            DEFAULT: "#e3ca36",
+            foreground: "#FFFFFF"
+          }
+        },
+      },
+      dark: {
         colors: {
+          background: "#27303e", // or DEFAULT
+          foreground: "#ECEDEE",
+          black:"#333333",
+          white:"#f2f2f2", // or 50 to 900 DEFAULT
           primary: {
-            50: "#c0cbde",
-            100: "#9eafcb",
-            200: "#667ea6",
-            300: "#3e5884",
-            400: "#253d66",
-            500: "#162c4f",
-            600: "#0f223f",
-            700: "#0d1d36",
-            800: "#0d1c31",
-            900: "#0f1c2f",
-            DEFAULT: "#030b18",
-            foreground: "#f3f3f3",
+            //... 50 to 900
+            foreground: "#FFFFFF",
+            DEFAULT: "#4796ae",
           },
-        }
+          danger: {
+            DEFAULT: "#d40000",
+            foreground: "#FFFFFF"
+          },
+          secondary: {
+            DEFAULT: "#1f3e6f",
+            foreground: "#FFFFFF"
+          },
+          success:{
+            DEFAULT: "#2e825d",
+            foreground: "#FFFFFF"
+          },
+          warning:{
+            DEFAULT: "#e3ca36",
+            foreground: "#FFFFFF"
+          }
+        },
       }
     },
   }),

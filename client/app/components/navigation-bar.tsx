@@ -25,7 +25,7 @@ export default function NavigationBar() {
     const { user, error, isLoading } = useUser();
     const pathname = usePathname();
     return (
-        <NextUINavbar maxWidth="2xl" position="sticky" isBordered className="shadow-lg bg-primary text-white">
+        <NextUINavbar maxWidth="2xl" position="sticky" className="shadow-lg">
             <NavbarContent className="hidden sm:flex gap-4" justify="start" >
                 {siteConfig.navItems.map((item) => {
                     const selected = item.href === pathname;
@@ -49,16 +49,16 @@ export default function NavigationBar() {
                 <NavbarItem>
                     <ThemeSwitcher />
                 </NavbarItem>
-                {user !== undefined && (<NavbarItem>
+                {!user  && (<NavbarItem>
                     <Button
                         as={Link}
-                        href="api/auth/logout" variant="flat" size="lg" color="primary" className="light text-primary">Wyloguj się</Button>
+                        href="api/auth/logout" variant="flat" size="lg" color="primary" >Wyloguj się</Button>
                 </NavbarItem>)
                 }
-                {user === undefined && (<NavbarItem>
+                {user  && (<NavbarItem>
                     <Button
                         as={Link}
-                        href="api/auth/login" variant="flat" size="lg" color="primary" className="light text-primary">Login</Button>
+                        href="api/auth/login" variant="flat" size="lg" color="primary">Login</Button>
                 </NavbarItem>)
                 }
             </NavbarContent>
