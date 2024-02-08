@@ -7,12 +7,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
     const router = useRouter();
 
     return (
-        <>
+        <><UserProvider>
             <NextUIProvider navigate={router.push}>
-                <UserProvider>
                     {children}
-                </UserProvider>
             </NextUIProvider>
+            </UserProvider>
         </>
     )
 }
