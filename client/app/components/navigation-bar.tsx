@@ -59,7 +59,7 @@ export default function NavigationBar() {
                     <Button
                         as={Link}
                         color="primary"
-                        href="api/auth/login"
+                        href="/api/auth/login"
                         startContent={<ArrowRightEndOnRectangleIcon className="h-6 w-6" />}
                         variant="flat"
                     >
