@@ -23,7 +23,7 @@ import NextLink from "next/link";
 import clsx from "clsx";
 import { PlugLogo } from "./logo";
 
-export default async function NavigationBar() {
+export default function NavigationBar() {
     const { user, error, isLoading } = useUser();
     return (
         <NextUINavbar maxWidth="xl" position="sticky" isBordered className="drop-shadow-md">
