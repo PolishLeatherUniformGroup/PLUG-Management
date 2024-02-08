@@ -21,8 +21,8 @@ const config: Config = {
   plugins: [nextui({
     prefix: "nextui", // prefix for themes variables
     addCommonColors: false, // override common colors (e.g. "blue", "green", "pink").
-    defaultTheme: "light", // default theme from the themes object
-    defaultExtendTheme: "light", // default theme to extend on custom themes
+    defaultTheme: "dark", // default theme from the themes object
+    defaultExtendTheme: "dark", // default theme to extend on custom themes
     layout: {}, // common layout tokens (applied to all themes)
     themes: {
       light: {
@@ -33,11 +33,10 @@ const config: Config = {
         layout: {}, // dark theme layout tokens
         colors: {}, // dark theme colors
       },
-      "plug-light": {
-        extends: "light",
+      "plug-dark": {
+        extends: "dark",
+        background: "#11213c",
         colors: {
-          background: "#f3f3f3",
-          foregrounf: "#151a30",
           primary: {
             50: '#e7f1fe',
             100: '#c3d4ee',

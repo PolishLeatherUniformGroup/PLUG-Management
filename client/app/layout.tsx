@@ -3,13 +3,12 @@ import type { Metadata } from "next";
 import { Urbanist } from "next/font/google";
 
 import "./globals.css";
-import { Providers } from "./providers";
+import { Providers } from "./components/providers";
 import NavigationBar from "./components/navigation-bar";
 import { useEffect, useState } from "react";
+import Header from "./components/header";
 
 const inter = Urbanist({ subsets: ["latin"] });
-
-
 
 export default function RootLayout({
   children,
@@ -21,9 +20,9 @@ export default function RootLayout({
 
       <body className={inter.className}>
         <Providers>
-          <div className="plug-light text-foreground bg-background text-base">
-            <NavigationBar />
-            <div className="flex min-h-screen flex-col items-center justify-between p-24">
+          <div className="plug-dark text-foreground bg-background text-base">
+            <Header />
+            <div className="flex min-h-screen w-auto flex-col items-centerjustify-between md:px-24 sm:px-4 bg-foreground text-background">
               {children}
             </div>
           </div>

@@ -1,24 +1,45 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-    name: "Next.js + NextUI",
-    description: "Make beautiful websites regardless of your design experience.",
     navItems: [
         {
-            label: "Start",
+            label: "Home",
             href: "/",
+            isExternal: false,
         },
         {
-            label: "Deklaracje członkowskie",
-            href: "/apply/applicants",
+            label: "Stowarzyszenie",
+            href: "/association",
+            isExternal: false,
         },
         {
-            label: "Członkowie",
-            href: "/membership/members",
+            label: "Dołącz do nas",
+            href: "/apply-form",
+            isExternal: false,
         },
         {
             label: "Wydarzenia",
-            href: "/eventing",
+            href: "/events",
+            isExternal: false,
+        }, {
+            label: "Partnerzy",
+            href: "/partners",
+            isExternal: false,
+        },
+        {
+            label: "Strefa członka",
+            href: "/members",
+            isExternal: false,
+        },
+        {
+            label: "Zarządazanie",
+            href: "/admin",
+            isExternal: false,
+        },
+        {
+            label: "Communities",
+            href: "/communities",
+            isExternal: false,
         }
 
     ],
