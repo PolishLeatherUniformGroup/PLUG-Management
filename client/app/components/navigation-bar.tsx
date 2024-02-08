@@ -75,13 +75,14 @@ export default async function NavigationBar() {
                                     src: `${user?.user.picture}`,
                                     name: `${user?.user.name}`
                                 }}
+                                className="p-2 m-3"
                             />
                             
                             <Button
                         as={Link}
                         color="danger"
                         href="api/auth/logout"
-                        startContent={<ArrowLeftStartOnRectangleIcon className="h-6 w-6" />}
+                        startContent={<ArrowLeftStartOnRectangleIcon className="h-10 w-10" />}
                         variant="bordered"
                     >
                         Login
