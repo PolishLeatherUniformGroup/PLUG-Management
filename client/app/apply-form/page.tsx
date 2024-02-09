@@ -1,24 +1,76 @@
 import { Input } from "@nextui-org/react";
 import { FormEvent } from "react"
 import { SubmitButton } from "../components/submit-bottom";
+import { buildUrl } from 'build-url-ts';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbsUp} from "@fortawesome/free-solid-svg-icons";
+import '@fortawesome/fontawesome-svg-core/styles.css'
+
 
 export default async function ApplyForm() {
+    let successApply:boolean = false;
     async function sendApplication(formData: FormData) {
         'use server'
 
+        const apiUrl =process.env.PLUG_API_BASE;
         const rawFormData = {
             firstName: formData.get('firstName'),
             lastName: formData.get('lastName'),
             email: formData.get('email'),
             phone: formData.get('phone'),
+            birthDate: formData.get('birthdate'),
+            address:{
+                country: formData.get('country'),
+                state: formData.get('state'),
+                city: formData.get('city'),
+                postalCode: formData.get('postalCode'),
+                street: formData.get('street')
+            },
+            recommendations:[
+                formData.get('card1'),
+                formData.get('card2')
+            ]
+        };
+        const endpoint =  buildUrl(apiUrl, {path:'apply/send-application'}) as string;
+    
+        var response = await fetch(endpoint,{
+            method: 'POST',
+            body: JSON.stringify(rawFormData)
+        });
+        if( response.status<300){
+            successApply = true;
         }
+        else{
 
-        // mutate data
-        // revalidate cache
+        }
     }
-    return (
-        <article className="background mx-24 my-8 rounded-md p-4 px-20">
-            <h2 className="foreground font-bold text-4xl text-center mt-4 mb-6">Deklaracja Członkowska</h2>
+    if(successApply){
+        <article>
+            <div className="bg-success-500">
+                <h2 className="text-success-800 text-xl font-semibold">
+                    Gratulacje!
+                </h2>
+                <p>
+                    Twoja deklaracja została pomnyślnie wysłana. Rgularnie sprawdzaj skrzynkę mailową podaną
+                    we wniosku, poniewaz, będziemy Cię informować na bieząco, o statusie twojego wniosku.
+                </p>
+            </div>
+        </article>
+    }
+    return (<article className="bg-content1 mx-auto my-8 rounded-md lg:px-20 px-8 xs:px-4">
+        <div className="bg-success-500 dark:bg-success-300  rounded-sm text-success-900 
+        dark:text-success-900 p-4 my-4 w-3/6 mx-auto drop-shadow-sm">
+                
+                <h2 className="text-2xl font-semibold my-auto align-top">
+                    <FontAwesomeIcon icon={faThumbsUp} className="text-success-700 fa-2x m-1"/>
+               Gratulacje!
+                </h2>
+                <p className="text-lg">
+                    Twoja deklaracja została pomnyślnie wysłana. Rgularnie sprawdzaj skrzynkę mailową podaną
+                    we wniosku, poniewaz, będziemy Cię informować na bieząco, o statusie twojego wniosku.
+                </p>
+            </div>
+            <h2 className="font-bold text-4xl text-center mt-4 mb-6">Deklaracja Członkowska</h2>
             <p></p>
             <form action={sendApplication}>
                 <div className="grid grid-cols-2 gap-10">
@@ -49,7 +101,7 @@ export default async function ApplyForm() {
                     <Input label="Numer Karty" name="card2" required />
                 </div>
                 <div className="p-4 m-6">
-                    <SubmitButton text={"Wyślij"} color="primary" size="lg" />
+                    <SubmitButton text={"Wyślij"} color="primary" size="lg"  />
                 </div>
             </form>
         </article>);

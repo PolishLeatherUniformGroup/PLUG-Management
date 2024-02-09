@@ -3,6 +3,7 @@ import { Urbanist } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./components/providers";
 import Header from "./components/header";
+import Footer from "./components/footer";
 
 
 const inter = Urbanist({ subsets: ["latin"] });
@@ -19,9 +20,10 @@ export default function RootLayout({
         <Providers>
           <div className="text-foreground bg-background text-base">
             <Header />
-            <div className="flex min-h-screen w-auto flex-col items-centerjustify-between px-24 md:px-12 xs:px-4">
+            <div className="flex min-h-screen w-auto flex-col items-centerjustify-between px-24 md:px-12 xs:px-4 mb-2">
               {children}
             </div>
+            <Footer/>
           </div>
         </Providers>
       </body>
