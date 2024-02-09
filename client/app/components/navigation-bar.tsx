@@ -49,18 +49,17 @@ export default function NavigationBar() {
                 <NavbarItem>
                     <ThemeSwitcher />
                 </NavbarItem>
-                {!user  && (<NavbarItem>
+                {user != undefined &&(<NavbarItem>
                     <Button
                         as={Link}
                         href="api/auth/logout" variant="flat" size="lg" color="primary" >Wyloguj się</Button>
-                </NavbarItem>)
-                }
-                {user  && (<NavbarItem>
+                </NavbarItem>)}
+                 {user == undefined&&(<NavbarItem>
                     <Button
                         as={Link}
                         href="api/auth/login" variant="flat" size="lg" color="primary">Login</Button>
-                </NavbarItem>)
-                }
+                </NavbarItem>)}
+                
             </NavbarContent>
         </NextUINavbar>
     );
