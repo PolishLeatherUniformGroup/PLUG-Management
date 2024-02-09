@@ -19,7 +19,7 @@ export default function RootLayout({
         <Providers>
           <div className="text-foreground bg-background text-base">
             <Header />
-            <div className="flex min-h-screen w-auto flex-col items-centerjustify-between md:px-24 sm:px-4">
+            <div className="flex min-h-screen w-auto flex-col items-centerjustify-between px-24 md:px-12 xs:px-4">
               {children}
             </div>
           </div>
