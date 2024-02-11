@@ -1,7 +1,7 @@
-export class ApproveApplicantCommand{
-    constructor(
-        public id:string,
-        public date:Date,
-        public reason:string,
-    ){}
+export class ApproveApplicantCommand {
+  constructor(
+    public id: string,
+    public date: Date,
+    public reason: string,
+  ) {}
 }

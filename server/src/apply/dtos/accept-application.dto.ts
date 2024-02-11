@@ -1,7 +1,6 @@
-import { MoneyDto } from "./money.dto";
-
+import { MoneyDto } from './money.dto';
 
 export class AccceptApplicationDto {
-    id: string;
-    requiredFee?: MoneyDto;
+  id: string;
+  requiredFee?: MoneyDto;
 }

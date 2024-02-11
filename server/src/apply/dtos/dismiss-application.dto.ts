@@ -1,3 +1,3 @@
-export class DismissApplicationDto{
-    id:string;
+export class DismissApplicationDto {
+  id: string;
 }

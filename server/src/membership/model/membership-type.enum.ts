@@ -1,4 +1,4 @@
-export enum MembershipType{
-    Regular = 1,
-    Honorary = 2,
+export enum MembershipType {
+  Regular = 1,
+  Honorary = 2,
 }

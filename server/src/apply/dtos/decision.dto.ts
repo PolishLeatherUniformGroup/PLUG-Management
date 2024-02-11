@@ -1,5 +1,5 @@
 export class ApplicationDecisionDto {
-    id: string;
-    date: Date;
-    reason: string;
+  id: string;
+  date: Date;
+  reason: string;
 }

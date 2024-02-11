@@ -1,14 +1,11 @@
-import { Injectable } from "@nestjs/common";
-import { Applicant } from "../model/applicant.model";
+import { Injectable } from '@nestjs/common';
+import { Applicant } from '../model/applicant.model';
 
 @Injectable()
-export class ApplicantRepository{
+export class ApplicantRepository {
+  async save(applicant: Applicant) {}
 
-    async save(applicant:Applicant){
-
-    }
-
-    async get(id:string):Promise<Applicant>{
-        throw new Error("Not implemented");
-    }
+  async get(id: string): Promise<Applicant> {
+    throw new Error('Not implemented');
+  }
 }
