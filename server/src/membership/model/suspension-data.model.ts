@@ -23,4 +23,19 @@ export class SuspensionData {
         this._reason = reason;
     }
 
+    public appeal(date: Date, reason: string) {
+        this._appealDate = date;
+        this._appealReason = reason;
+    }
+
+    public approveAppeal(date: Date, reason: string) {
+        this._appealDecisionDate = date;
+        this._appealDecision = reason;
+    }
+
+    public rejectAppeal(date: Date, reason: string) {
+        this._appealDecisionDate = date;
+        this._appealDecision = reason;
+    }
+
 }

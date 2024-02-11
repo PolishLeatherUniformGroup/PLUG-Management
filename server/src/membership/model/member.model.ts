@@ -77,27 +77,27 @@ export class Member extends AggregateRoot {
     }
 
     public appealSuspension(date: Date, reason: string) {
-
+        this._suspensionHistory.splice(-1)[0].appeal(date, reason);
     }
 
-    public unSuspendid(suspensionId: string, date: Date) {
-
+    public unSuspend(suspensionId: string, date: Date) {
+        
     }
 
-    public approveSuspensionAppeal() {
-
+    public approveSuspensionAppeal(date: Date, reason: string) {
+        this._suspensionHistory.splice(-1)[0].approveAppeal(date, reason);   
     }
 
-    public rejectSuspensionAppeal() {
-
+    public rejectSuspensionAppeal(date: Date, reason: string) {
+        this._suspensionHistory.splice(-1)[0].approveAppeal(date, reason);  
     }
 
-    public expell(date: Date, reason: string): string {
+    public expell(date: Date, reason: string, appealDeadline:Date): string {
         if (this._status !== MemberStatus.Expelled) {
 
         }
         var expellId = `${this._id}_e${this._membershipFees.length}`
-        var expell = new ExpellData(expellId, date, reason);
+        var expell = new ExpellData(expellId, date, reason,appealDeadline);
         this._expellHistory = [...this._expellHistory, expell];
         return expellId;
     }
@@ -106,23 +106,19 @@ export class Member extends AggregateRoot {
 
     }
 
-    public unExpell(suspensionId: string, date: Date) {
+    public approveExpellAppeal(date: Date, reason: string) {
 
     }
 
-    public approveExpellAppeal() {
+    public rejectExpellAppeal(date: Date, reason: string) {
 
     }
 
-    public rejectExpellAppeal() {
+    public expireMembership(date: Date) {
 
     }
 
-    public expireMembership() {
-
-    }
-
-    public cancelMembership() {
+    public cancelMembership(date:Date) {
 
     }
 
