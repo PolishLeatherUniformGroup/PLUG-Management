@@ -11,6 +11,9 @@ export default function Footer() {
 				<li className="border-r-1 border-default-400 pr-4">
 					<span>Stowarzyszenie <br />Polish Leather <br />Uniform Goup</span>
 				</li>
+                <li className="border-r-1 border-default-400 pr-4">
+					<span>ul. Jana Nowaka-Jeziorańskiego 47 lok.29 <br />Warszawa 03-982 <br />NIP: 1133082003</span>
+				</li>
 				<li>
 					<Link href="/privacy">Polityka Prywatności</Link>
 				</li>

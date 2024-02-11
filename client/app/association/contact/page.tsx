@@ -4,14 +4,15 @@ import { Image } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram, faXTwitter, faYoutube, faFacebook, faWhatsapp, faDiscord } from "@fortawesome/free-brands-svg-icons";
 import '@fortawesome/fontawesome-svg-core/styles.css'
-import { RedirectType, redirect } from "next/navigation";
 import { SubmitButton } from "@/app/components/submit-bottom";
+import { Resend } from 'resend';
 
 export default function AssociationContact() {
     const openInNewTab = (url: string) => {
         const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
         if (newWindow) newWindow.opener = null
     }
+
     return <div>
 
         <div className="w-2/3 mx-auto p-4 mb-2">
@@ -61,12 +62,15 @@ export default function AssociationContact() {
         <div className="bg-content1 rounded-lg drop-shadow-sm w-2/3  mx-auto mt-2 p-4 grid grid-cols-9">
             <div className="col-span-6">
                 <h3 className="text-2xl font-medium p-4">Napisz do nas</h3>
-                <form className="grid grid-cols-3 gap-2 px-2 pr-4">
-                    <Input type="email" name="from" label="Twój email" required  className="col-span-3"/>
-                    <Input type="text" name="subject" label="Temat" required className="col-span-3"/>
-                    <Textarea name="messsge" label="Wiadomość" required className="col-span-3" minRows={5} maxRows={12} />
-                    <SubmitButton  size="md" color="primary" text="Wyślij" />
-                </form>
+        
+                    <form className="grid grid-cols-3 gap-2 px-2 pr-4" action='/api/send' method="POST">
+                        <Input type="email" name="from" label="Twój email" required className="col-span-3" />
+                        <Input type="text" name="firstName" label="Twoje imię" className="col-span-3" />
+                        <Input type="text" name="subject" label="Temat" required className="col-span-3" />
+                        <Textarea name="messsge" label="Wiadomość" required className="col-span-3" minRows={5} maxRows={12} />
+                        <SubmitButton size="md" color="primary" text="Wyślij" />
+                    </form>
+           
             </div>
             <div className="col-span-3">
                 <Image src="/images/contact_us.jpg" className="rounded-lg" />
