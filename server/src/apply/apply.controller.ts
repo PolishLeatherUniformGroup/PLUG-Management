@@ -5,7 +5,7 @@ import { SendApplicationDto } from "./dtos/send-application.dto";
 import { SendApplicationCommand } from "./commands/impl/send-application.command";
 import { RequestRecommendationCommand } from "./commands/impl/request-recommendation.command";
 
-import { Money } from "./model/money.model";
+import { Money } from "../models/money.model";
 import { RecommendationActionDto } from "./dtos/recommendation-action.dto";
 import { EndorseApplicantCommand } from "./commands/impl/endorse-applicant.command";
 import { OpposeApplicantCommand } from "./commands/impl/oppose-applicant.command";

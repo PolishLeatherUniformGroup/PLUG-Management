@@ -1,4 +1,4 @@
-import { Money } from "src/apply/model/money.model";
+import { Money } from "src/models/money.model";
 
 export class RequestRecommendationCommand {
     constructor(

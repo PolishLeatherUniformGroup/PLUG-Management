@@ -1,11 +1,18 @@
 import { AggregateRoot } from "@nestjs/cqrs";
 import { Recommendation } from "./recommendation.model";
 import { ApplicantStatus } from "./applicant-status.model";
-import { Money } from "./money.model";
-import { Address } from "./address.model";
+import { Money } from "../../models/money.model";
+import { Address } from "../../models/address.model";
 
 export class Applicant extends AggregateRoot{
 
+    private _id:string;
+    private _firstName:string;
+    private _lastName:string;
+    private _email:string;
+    private _phone:string;
+    private _address:Address;
+    private _birthDate:Date;
     private _recommendations:Recommendation[];
     private _status:ApplicantStatus;
     private _requiredFee?:Money;
@@ -23,17 +30,24 @@ export class Applicant extends AggregateRoot{
     private _appealDecision?:string;
 
     constructor(
-        private _id:string,
-        private _firstName:string,
-        private _lastName:string,
-        private _email:string,
-        private _phone:string,
-        private _birthDate:Date,
-        private _address:Address,
+        id:string,
+        firstName:string,
+        lastName:string,
+        email:string,
+        phone:string,
+        birthDate:Date,
+        address:Address,
         recommendations:string[]
     ){
         super()
-        this._recommendations = recommendations.map((r,i)=>{return new Recommendation(`${_id}_${i}`, r)});
+        this._id = id,
+        this._firstName = firstName;
+        this._lastName = lastName;
+        this._email =email;
+        this._birthDate = birthDate;
+        this._phone =phone;
+        this._address = address;
+        this._recommendations = recommendations.map((r,i)=>{return new Recommendation(`${id}_${i}`, r)});
         this._status = ApplicantStatus.Received;
         this._applyDate = new Date(Date.now());
     }
