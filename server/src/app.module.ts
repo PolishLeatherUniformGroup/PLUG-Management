@@ -5,9 +5,10 @@ import { EventsModule } from './events/events.module';
 import { VotingModule } from './voting/voting.module';
 import { TasksModule } from './tasks/tasks.module';
 import { SettingsModule } from './settings/settings.module';
+import { AuthorizationModule } from './authorization/authorization.module';
 
 @Module({
-  imports: [ApplyModule, MembershipModule, EventsModule, VotingModule, TasksModule, SettingsModule],
+  imports: [ApplyModule, MembershipModule, EventsModule, VotingModule, TasksModule, SettingsModule, AuthorizationModule],
   controllers: [],
   providers: [],
 })

@@ -1,10 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
-  ApiAcceptedResponse,
   ApiCreatedResponse,
   ApiOperation,
-  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { SendApplicationDto } from './dtos/send-application.dto';
@@ -26,6 +24,7 @@ import { RejectAppealCommand } from './commands/impl/reject-appeal.command';
 import { AccceptApplicationDto } from './dtos/accept-application.dto';
 import { ApproveAppealCommand } from './commands/impl/approve-appeal.command';
 import { ApproveApplicantCommand } from './commands/impl/approve-applicant.command';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('apply')
 @ApiTags('apply')
@@ -43,6 +42,7 @@ export class ApplyController {
     return this.commandBus.execute(command);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('dismiss-application')
   @ApiOperation({ summary: 'Dismiss Application' })
   @ApiCreatedResponse({ description: 'Application was dismissed' })
@@ -51,6 +51,7 @@ export class ApplyController {
     return this.commandBus.execute(command);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('accept-application')
   @ApiOperation({ summary: 'Accepts  Application as valid' })
   @ApiCreatedResponse({ description: 'Application was accepted' })
@@ -65,6 +66,7 @@ export class ApplyController {
     return this.commandBus.execute(command);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('endorse-applicant')
   @ApiOperation({ summary: 'Accepts  Application as valid' })
   @ApiCreatedResponse({
@@ -75,6 +77,7 @@ export class ApplyController {
     return this.commandBus.execute(command);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('oppose-applicant')
   @ApiOperation({ summary: 'Accepts  Application as valid' })
   @ApiCreatedResponse({ description: 'Application was opposed by recommender' })
@@ -83,6 +86,7 @@ export class ApplyController {
     return this.commandBus.execute(command);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('register-fee-payment')
   @ApiOperation({ summary: 'Accepts  Fee Payment' })
   @ApiCreatedResponse({ description: 'Application fee was registered.' })
@@ -94,6 +98,7 @@ export class ApplyController {
     return this.commandBus.execute(command);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('approve-applicant')
   @ApiOperation({ summary: 'Approves  Applicant' })
   @ApiCreatedResponse({ description: 'Application was approved.' })
@@ -102,6 +107,7 @@ export class ApplyController {
     return this.commandBus.execute(command);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('reject-applicant')
   @ApiOperation({ summary: 'Reject  Applicant' })
   @ApiCreatedResponse({ description: 'Application was rejected.' })
@@ -110,6 +116,7 @@ export class ApplyController {
     return this.commandBus.execute(command);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('appeal-rejection')
   @ApiOperation({ summary: 'Appeal Rejection' })
   @ApiCreatedResponse({ description: 'Rejection was appealed.' })
@@ -118,6 +125,7 @@ export class ApplyController {
     return this.commandBus.execute(command);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('approve-appeal')
   @ApiOperation({ summary: 'Approve Appeal' })
   @ApiCreatedResponse({ description: 'Appeal was approved.' })
@@ -126,6 +134,7 @@ export class ApplyController {
     return this.commandBus.execute(command);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('reject-appeal')
   @ApiOperation({ summary: 'Reject Appeal' })
   @ApiCreatedResponse({ description: 'Appeal was rejected.' })

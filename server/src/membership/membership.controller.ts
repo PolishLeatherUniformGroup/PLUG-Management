@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AddMemberCommand } from './commands/impl/add-member.command';
@@ -23,7 +23,9 @@ import { RejectExpellAppealCommand } from './commands/impl/reject-expell-appeal.
 import { CancelMembershipCommand } from './commands/impl/cancel-membership.command';
 import { EndMembershipDto } from './dtos/end-membership.dto';
 import { ExpireMembershipCommand } from './commands/impl/expire-mmbership.command';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('membership')
 @ApiTags('membership')
 export class MembershipController {
