@@ -1,3 +1,4 @@
+import { AddressDto } from "src/apply/infrastructure/dto/address.dto";
 import { ValueObject } from "src/core/domain";
 
 interface Props {
@@ -11,6 +12,16 @@ interface Props {
 export class Address extends ValueObject<Props>{
     private constructor(props: Props) {
         super(props);
+    }
+
+    static fromDto(address:AddressDto): Address {
+        return new Address({
+            country: address.country,
+            city: address.city,
+            postalCode: address.postalCode,
+            street: address.street,
+            state: address.state
+        });
     }
 
     public static create(props: Props): Address {

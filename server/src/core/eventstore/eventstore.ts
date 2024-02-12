@@ -1,23 +1,26 @@
 import { IEvent, IEventPublisher, IMessageSource } from "@nestjs/cqrs";
 import { Subject } from "rxjs";
 import { AggregateRoot } from "../domain";
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import {Event} from "./event.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
 @Injectable()
-export class EventStore implements IEventPublisher{
+export class EventStore implements IEventPublisher, IMessageSource{
     constructor(@InjectRepository(Event) private readonly eventRepository: Repository<Event>){}
+  bridgeEventsTo<T extends IEvent>(subject: Subject<T>) {
+    throw new Error("Method not implemented.");
+  }
     private _eventHandlers: [];
 
     publish<TEvent extends IEvent>(event: TEvent, context?: unknown) {
+        console.log('publishing event', event);
         if ('id' in event === false) {
             throw new Error('Not a DomainEvent');
           }
-      
-          const message = JSON.parse(JSON.stringify(event));
-          const id = message.id;
+          const message = JSON.stringify(event);
+          const id = event.id;
           const streamName = `${id}`;
           const type = event.constructor.name;        
       

@@ -8,7 +8,6 @@ async function bootstrap() {
     .setTitle('PLUG API')
     .setDescription('The PLUG API description')
     .addTag('apply')
-    .addTag('membership')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);

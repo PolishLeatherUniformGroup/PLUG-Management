@@ -1,10 +1,8 @@
-import { DomainEvent } from "src/core/domain";
+import { ICommand } from "@nestjs/cqrs";
 import { Address } from "src/shared/address";
-import { Recommendation } from "../model/recommendation";
 
-export class ApplicationReceived implements DomainEvent {
-    public constructor(
-        public readonly id: string,
+export class SendApplicationCommand implements ICommand{
+    constructor(
         public readonly firstName: string,
         public readonly lastName: string,
         public readonly email: string,
@@ -12,6 +10,6 @@ export class ApplicationReceived implements DomainEvent {
         public readonly applyDate: Date,
         public readonly birthDate: Date,
         public readonly address: Address,
-        public readonly recommendations: Recommendation[]
-    ) { }
+        public readonly recommendersCards: string[],
+    ) {}
 }
