@@ -15,6 +15,10 @@ import { ApplicationNotRecommended } from "../events/application-not-recommended
 import { ApplicantRecommendationRefused } from "../events/applicant-recommendation-refused.event";
 import { ApplicantAccepted } from "../events/applicant-accepted.event";
 import { ApplicantRejected } from "../events/applicant-rejected.event";
+import { ApplicantRejectionAppealCancelled } from "../events/applicant-rejection-appeal-cancelled.event";
+import { ApplicantRejectionAppealReceived } from "../events/applicant-rejection-appeal-received";
+import { ApplicantRejectionAppealAccepted } from "../events/applicant-rejection-appeal-accepted.event";
+import { ApplicantRejectionAppealRejected } from "../events/applicant-rejection-appeal-rejected.event";
 
 export class Applicant extends AggregateRoot {
 
@@ -35,6 +39,10 @@ export class Applicant extends AggregateRoot {
     private _decision?: string;
     private _decisionDate?: Date;
     private _appealDeadline?: Date;
+    private _appealDate?: Date;
+    private _appealJustification?: string;
+    private _appealDecision?: string;
+    private _appealDecisionDate?: Date;
 
     public aggregateId(): string {
         return this._applicantId.value;
@@ -102,6 +110,29 @@ export class Applicant extends AggregateRoot {
         this.apply(new ApplicantRejected(this._applicantId.value, date, decision, appealDeadline));
     }
 
+    public appealApplicationRejection(date: Date, justification: string) {
+        if (this._status !== ApplicantStatus.Rejected) { }
+        if(!this._appealDeadline){}
+        if (this._appealDeadline && date > this._appealDeadline) {
+            this.apply(new ApplicantRejectionAppealCancelled(this._applicantId.value, date, justification));
+        } else {
+
+            this.apply(new ApplicantRejectionAppealReceived(this._applicantId.value, date, justification));
+        }
+    }
+
+    public acceptApplicationRejectionAppeal(date: Date, decision: string) {
+        if(this._status !== ApplicantStatus.Appealed){}
+        this.apply(new ApplicantRejectionAppealAccepted(this._applicantId.value, date, decision));
+    }
+
+    public rejectApplicationRejectionAppeal(date: Date, decision: string) {
+        if(this._status !== ApplicantStatus.Appealed){}
+        this.apply(new ApplicantRejectionAppealRejected(this._applicantId.value, date, decision));
+    }
+
+
+
     private onApplicationReceived(event: ApplicationReceived) {
         this._applicantId = ApplicantId.fromString(event.id);
         this._firstName = event.firstName;
@@ -164,6 +195,30 @@ export class Applicant extends AggregateRoot {
         this._decision = event.reason;
         this._decisionDate = event.date;
         this._appealDeadline = event.appealDeadline;
+    }
+
+    private onApplicantRejectionAppealCancelled(event: ApplicantRejectionAppealCancelled) {
+        this._status = ApplicantStatus.AppealInvalid;
+        this._appealDate = event.appealDate;
+        this._appealJustification = event.justification;
+    }
+
+    private onApplicantRejectionAppealReceived(event: ApplicantRejectionAppealReceived) {
+        this._status = ApplicantStatus.Appealed;
+        this._appealDate = event.appealDate;
+        this._appealJustification = event.justification;
+    }
+
+    private onApplicantRejectionAppealAccepted(event: ApplicantRejectionAppealAccepted) {
+        this._status = ApplicantStatus.AppealAccepted;
+        this._appealDecisionDate = event.date;
+        this._appealDecision = event.decision;
+    }
+
+    private onApplicantRejectionAppealRejected(event: ApplicantRejectionAppealRejected) {
+        this._status = ApplicantStatus.AppealRejected;
+        this._appealDecisionDate = event.date;
+        this._appealDecision = event.decision;
     }
 
 }
