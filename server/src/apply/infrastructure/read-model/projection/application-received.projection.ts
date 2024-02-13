@@ -1,6 +1,6 @@
 import { EventsHandler, IEventHandler } from "@nestjs/cqrs";
 import { InjectRepository } from "@nestjs/typeorm";
-import { ApplicationReceived } from "src/apply/domain/events/application-received-event";
+import { ApplicationReceived } from "src/apply/domain/events/application-received.event";
 import { ApplicantView } from "../model/applicant.entity";
 import { Repository } from "typeorm";
 import { RecommendationView } from "../model/recommendation.entity";

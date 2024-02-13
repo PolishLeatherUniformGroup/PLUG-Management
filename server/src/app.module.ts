@@ -2,6 +2,10 @@ import { Module } from '@nestjs/common';
 import { ApplyModule } from './apply/apply.module';
 import { EventStoreModule } from './core/eventstore/eventstore.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { MembersModule } from './members/members.module';
+import { GatheringsModule } from './gatherings/gatherings.module';
+import { TasksModule } from './tasks/tasks.module';
+import { SettingsModule } from './settings/settings.module';
 
 @Module({
   imports: [ApplyModule, EventStoreModule,TypeOrmModule.forRoot({
@@ -14,7 +18,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     synchronize: true,
     entities: [__dirname + '/**/*.entity.{js,ts}'],
     logging: false,
-  })],
+  }), MembersModule, GatheringsModule, TasksModule, SettingsModule],
   controllers: [],
   providers: [
   ],
