@@ -1,6 +1,6 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { ApplyRequestDto } from "../dto/apply-request.dto";
-import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiOperation, ApiResponse, ApiTags, ApiParam } from "@nestjs/swagger";
 import { CommandBus } from "@nestjs/cqrs";
 import { SendApplicationCommand } from "src/apply/application/command/send-application.command";
 import { Address } from "src/shared/address";
@@ -20,6 +20,14 @@ import { AcceptApplicationRequestDto } from "../dto/accept-application-request.d
 import { AcceptApplicationCommand } from "src/apply/application/command/accept-application.command";
 import { RejectApplicationRequestDto } from "../dto/reject-application-request.dto";
 import { RejectApplicationCommand } from "src/apply/application/command/reject-application.command";
+import { AppealApplicationRejectionRequestDto } from "../dto/appeal-application-rejection-request.dto";
+import { AppealApplicationRejectionCommand } from "src/apply/application/command/appeal-application-rejection.command";
+import { AcceptApplicationRejectionAppealCommand } from "src/apply/application/command/accept-application-rejection-appeal.command";
+import { RejectApplicationRejectionAppealCommand } from "src/apply/application/command/reject-application-rejection-appeal.command";
+import { AcceptApplicationRejectionAppealRequestDto } from "../dto/accept-application-rejection-appeal-request.dto";
+import { RejectApplicationRejectionAppealRequestDto } from "../dto/reject-application-rejection-appeal-request.dto";
+import { ApplicantView } from "../read-model/model/applicant.entity";
+import { RecommendationView } from "../read-model/model/recommendation.entity";
 
 @Controller('apply')
 @ApiTags('apply')
@@ -152,5 +160,64 @@ export class ApplyController {
         }
     }
     
+    @Post('commands/appeal-rejection')
+    @ApiOperation({ summary: 'Appeal application rejection.' })
+    @ApiResponse({ status: 204, description: 'Application rejection appealed.' })
+    async appealApplicationRejection(@Body() payload: AppealApplicationRejectionRequestDto) {
+        try {
+            const command: AppealApplicationRejectionCommand = new AppealApplicationRejectionCommand(
+                ApplicantId.fromString(payload.id),
+                payload.justification, 
+                payload.appealDate);
+            await this.commandBus.execute(command);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
+    @Post('commands/accept-rejection-appeal')
+    @ApiOperation({ summary: 'Accept application rejection appeal.' })
+    @ApiResponse({ status: 204, description: 'Application  rejection appeal accepted' })
+    async acceptApplicationRejectionAppeal(@Body() payload: AcceptApplicationRejectionAppealRequestDto) {
+        try {
+            const command: AcceptApplicationRejectionAppealCommand = new AcceptApplicationRejectionAppealCommand(
+                ApplicantId.fromString(payload.id),
+                payload.decision, 
+                payload.decisionDate);
+            await this.commandBus.execute(command);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    @Post('commands/reject-rejection-appeal')
+    @ApiOperation({ summary: 'Reject application rejection appeal.' })
+    @ApiResponse({ status: 204, description: 'Application rejection appeal rejected' })
+    async rejectApplicationRejectionAppeal(@Body() payload: RejectApplicationRejectionAppealRequestDto) {
+        try {
+            const command: RejectApplicationRejectionAppealCommand = new RejectApplicationRejectionAppealCommand(
+                ApplicantId.fromString(payload.id),
+                payload.decision, 
+                payload.decisionDate);
+            await this.commandBus.execute(command);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    @Get('applicants/:id')
+    @ApiOperation({ summary: 'Get Applicant by Id.' })
+    @ApiResponse({ status: 200, description: 'Applicant', type: ApplicantView})
+    @ApiParam({ name: 'id', required: true, description: 'Applicant Id', type: 'string'})
+    async getApplication(@Param() id:string):Promise<ApplicantView | null> {
+        return null;
+    }
+
+    @Get('applicants/:id/recommendations')
+    @ApiOperation({ summary: 'Get Applicant Recommendations  by  applicants Id.' })
+    @ApiResponse({ status: 200, description: 'Recommendations', type: RecommendationView})
+    @ApiParam({ name: 'id', required: true, description: 'Applicant Id', type: 'string'})
+    async getApplicationRecommendations(@Param() id:string):Promise<RecommendationView[]> {
+        return [];
+    }
 }

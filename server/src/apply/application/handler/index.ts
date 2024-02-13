@@ -6,6 +6,7 @@ import { ConfirmRecommendationHandler } from './confirm-recommendation.handler';
 import { RefuseRecommendationHandler } from './refuse-recommendation.handler';
 import { AcceptApplicationHandler } from './accept-application.handler';
 import { RejectApplicationHandler } from './reject-application.handler';
+import { AppealApplicationRejectionHandler } from './appeal-application-rejection.handler';
 
 
 
@@ -17,6 +18,7 @@ export * from './confirm-recommendation.handler';
 export * from './refuse-recommendation.handler';
 export * from './accept-application.handler';
 export * from './reject-application.handler';
+export * from './appeal-application-rejection.handler';
 
 export const CommandHandlers = [
     SendApplicationHandler,
@@ -26,5 +28,6 @@ export const CommandHandlers = [
     ConfirmRecommendationHandler,
     RefuseRecommendationHandler,
     AcceptApplicationHandler,
-    RejectApplicationHandler
+    RejectApplicationHandler,
+    AppealApplicationRejectionHandler
 ];
