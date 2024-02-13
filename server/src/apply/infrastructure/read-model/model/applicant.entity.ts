@@ -27,6 +27,16 @@ export class ApplicantView {
     public addressPostalCode: string;
     @Column()
     public addressState?: string;
+    @Column({type: 'int'})
+    public status:number
+    @Column({type: 'money', nullable: true})
+    public requiredFeeAmount?: number;
+    @Column({type: 'varchar', length: 3, nullable: true})
+    public feeCurrency?: string;
+    @Column({type: 'money', nullable: true})
+    public paidFeeAmount?: number;
+    @Column()
+    public feePaidDate?:Date;
     @ManyToOne(() => RecommendationView, recommendation => recommendation.applicant)
     recommendations: RecommendationView[];
 }

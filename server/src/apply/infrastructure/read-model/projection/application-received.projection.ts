@@ -4,6 +4,7 @@ import { ApplicationReceived } from "src/apply/domain/events/application-receive
 import { ApplicantView } from "../model/applicant.entity";
 import { Repository } from "typeorm";
 import { RecommendationView } from "../model/recommendation.entity";
+import { ApplicantStatus } from "src/apply/domain/model/applicant-status";
 
 @EventsHandler(ApplicationReceived)
 export class ApplicationReceivedProjection implements IEventHandler<ApplicationReceived>{
@@ -26,6 +27,7 @@ export class ApplicationReceivedProjection implements IEventHandler<ApplicationR
         entity.addressStreet = event.address.street;
         entity.addressPostalCode = event.address.postalCode;
         entity.addressState = event.address.state;
+        entity.status = ApplicantStatus.Received;
         entity.recommendations = event.recommendations.map(r=>{
             const recommendation = new RecommendationView();
             recommendation.id = r.id;
