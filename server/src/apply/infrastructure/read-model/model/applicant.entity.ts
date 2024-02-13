@@ -37,6 +37,20 @@ export class ApplicantView {
     public paidFeeAmount?: number;
     @Column()
     public feePaidDate?:Date;
+    @Column()
+    public decision?:string;
+    @Column()
+    public decisionDate?:Date;
+    @Column()
+    public appealDeadline?:Date;
+    @Column()
+    public appealDate?:Date;
+    @Column()
+    public appealJustification?:string;
+    @Column()
+    public appealDecision?:string;
+    @Column()
+    public appealDecisionDate?:Date;
     @ManyToOne(() => RecommendationView, recommendation => recommendation.applicant)
     recommendations: RecommendationView[];
 }

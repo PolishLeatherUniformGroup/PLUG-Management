@@ -16,7 +16,7 @@ import { ApplicantRecommendationRefused } from "../events/applicant-recommendati
 import { ApplicantAccepted } from "../events/applicant-accepted.event";
 import { ApplicantRejected } from "../events/applicant-rejected.event";
 import { ApplicantRejectionAppealCancelled } from "../events/applicant-rejection-appeal-cancelled.event";
-import { ApplicantRejectionAppealReceived } from "../events/applicant-rejection-appeal-received";
+import { ApplicantRejectionAppealReceived } from "../events/applicant-rejection-appeal-received.event";
 import { ApplicantRejectionAppealAccepted } from "../events/applicant-rejection-appeal-accepted.event";
 import { ApplicantRejectionAppealRejected } from "../events/applicant-rejection-appeal-rejected.event";
 
