@@ -14,6 +14,7 @@ import { ApplicationRecommended } from "../events/application-recommended.event"
 import { ApplicationNotRecommended } from "../events/application-not-recommended.event";
 import { ApplicantRecommendationRefused } from "../events/applicant-recommendation-refused.event";
 import { ApplicantAccepted } from "../events/applicant-accepted.event";
+import { ApplicantRejected } from "../events/applicant-rejected.event";
 
 export class Applicant extends AggregateRoot {
 
@@ -31,6 +32,9 @@ export class Applicant extends AggregateRoot {
     private _requiredFee?: Money;
     private _paidFee?: Money;
     private _paidDate?: Date;
+    private _decision?: string;
+    private _decisionDate?: Date;
+    private _appealDeadline?: Date;
 
     public aggregateId(): string {
         return this._applicantId.value;
@@ -91,6 +95,12 @@ export class Applicant extends AggregateRoot {
         this.apply(new ApplicantAccepted(this._applicantId.value, date, decision));
     }
 
+    public rejectApplication(date:Date, decision:string, appealDeadline:Date) {
+        if(this._status !== ApplicantStatus.AwaitsDecision) {}
+        if(this._paidFee !== this._requiredFee) {}
+        this.apply(new ApplicantRejected(this._applicantId.value, date, decision, appealDeadline));
+    }
+
     private onApplicationReceived(event: ApplicationReceived) {
         this._applicantId = ApplicantId.fromString(event.id);
         this._firstName = event.firstName;
@@ -141,4 +151,18 @@ export class Applicant extends AggregateRoot {
             recommendation.refuseRecommendation();
         }
     }
+
+    private onApplicantAccepted(event: ApplicantAccepted) {
+        this._status = ApplicantStatus.Accepted;
+        this._decision = event.decision;
+        this._decisionDate = event.date;
+    }
+
+    private onApplicantRejected(event: ApplicantRejected) {
+        this._status = ApplicantStatus.Rejected;
+        this._decision = event.reason;
+        this._decisionDate = event.date;
+        this._appealDeadline = event.appealDeadline;
+    }
+
 }
