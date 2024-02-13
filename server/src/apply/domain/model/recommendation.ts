@@ -8,6 +8,7 @@ export class Recommendation {
     private _cardNumber: CardNumber;
     private _requestDate?: Date;
     private _status?: boolean;
+  
 
     constructor() {
 

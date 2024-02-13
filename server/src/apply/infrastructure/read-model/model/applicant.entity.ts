@@ -29,11 +29,11 @@ export class ApplicantView {
     public addressState?: string;
     @Column({type: 'int'})
     public status:number
-    @Column({type: 'money', nullable: true})
+    @Column({type: 'decimal', precision: 5, scale:2, nullable: true})
     public requiredFeeAmount?: number;
     @Column({type: 'varchar', length: 3, nullable: true})
     public feeCurrency?: string;
-    @Column({type: 'money', nullable: true})
+    @Column({type: 'decimal', precision: 5, scale:2, nullable: true})
     public paidFeeAmount?: number;
     @Column()
     public feePaidDate?:Date;

@@ -10,7 +10,7 @@ import { Money } from "src/shared/money";
 import { ApplicantRecommendationsRequested } from "../events/applicant-recommendations-requested.event";
 import { ApplicantPaidFee } from "../events/applicant-paid-fee.event";
 import { ApplicantRecommendationConfirmed } from "../events/applicant-recommendation-confirmed.event";
-import { ApplicationRecommended } from "../events/application-recommended.event";
+import { ApplicantRecommended } from "../events/applicant-recommended.event";
 import { ApplicationNotRecommended } from "../events/application-not-recommended.event";
 import { ApplicantRecommendationRefused } from "../events/applicant-recommendation-refused.event";
 import { ApplicantAccepted } from "../events/applicant-accepted.event";
@@ -53,15 +53,15 @@ export class Applicant extends AggregateRoot {
         phoneNumber: string,
         applyDate: Date,
         birthDate: Date,
-        address:Address,
-        recommenders:string[]=[]): Applicant {
+        address: Address,
+        recommenders: string[] = []): Applicant {
         const applicant = new Applicant();
-        const recommendations = recommenders.map((r,i) => {
-            return Recommendation.create(`${applicantId.value}-rec-${applicant._recommendations.length+i}`, CardNumber.fromString(r));
+        const recommendations = recommenders.map((r, i) => {
+            return Recommendation.create(`${applicantId.value}-rec-${applicant._recommendations.length + i}`, CardNumber.fromString(r));
         });
 
         applicant.apply(
-            new ApplicationReceived(applicantId.value, firstName, lastName, email, phoneNumber, applyDate,birthDate, address,recommendations)
+            new ApplicationReceived(applicantId.value, firstName, lastName, email, phoneNumber, applyDate, birthDate, address, recommendations)
         );
         return applicant;
     }
@@ -70,34 +70,35 @@ export class Applicant extends AggregateRoot {
         this.apply(new ApplicationCancelled(this._applicantId.value));
     }
 
-    public requestRecommendations(requestDate:Date, requiredFee:Money) {
-       this.apply(new ApplicantRecommendationsRequested(this._applicantId.value, requestDate, requiredFee));
+    public requestRecommendations(requestDate: Date, requiredFee: Money) {
+        this.apply(new ApplicantRecommendationsRequested(this._applicantId.value, requestDate, requiredFee));
     }
 
-    public registerFeePayment(paidFee:Money, paidDate:Date) {
+    public registerFeePayment(paidFee: Money, paidDate: Date) {
         this.apply(new ApplicantPaidFee(this._applicantId.value, paidDate, paidFee));
     }
 
-    public confirmRecommendation(recommendationId:string) {
+    public confirmRecommendation(recommendationId: string) {
         this.apply(new ApplicantRecommendationConfirmed(this._applicantId.value, recommendationId));
-        //when all confirmed, apply new event
-        this.apply(new ApplicationRecommended(this._applicantId.value));
+        if (this._recommendations.every(r => r.status === true)) {
+            this.apply(new ApplicantRecommended(this._applicantId.value));
+        }
     }
 
-    public refuseRecommendation(recommendationId:string) {
+    public refuseRecommendation(recommendationId: string) {
         this.apply(new ApplicantRecommendationRefused(this._applicantId.value, recommendationId));
         this.apply(new ApplicationNotRecommended(this._applicantId.value));
     }
 
-    public acceptApplication(date:Date, decision:string) {
-        if(this._status !== ApplicantStatus.AwaitsDecision) {}
-        if(this._paidFee !== this._requiredFee) {}
+    public acceptApplication(date: Date, decision: string) {
+        if (this._status !== ApplicantStatus.AwaitsDecision) { }
+        if (this._paidFee !== this._requiredFee) { }
         this.apply(new ApplicantAccepted(this._applicantId.value, date, decision));
     }
 
-    public rejectApplication(date:Date, decision:string, appealDeadline:Date) {
-        if(this._status !== ApplicantStatus.AwaitsDecision) {}
-        if(this._paidFee !== this._requiredFee) {}
+    public rejectApplication(date: Date, decision: string, appealDeadline: Date) {
+        if (this._status !== ApplicantStatus.AwaitsDecision) { }
+        if (this._paidFee !== this._requiredFee) { }
         this.apply(new ApplicantRejected(this._applicantId.value, date, decision, appealDeadline));
     }
 
@@ -131,12 +132,12 @@ export class Applicant extends AggregateRoot {
 
     private onApplicantRecommendationConfirmed(event: ApplicantRecommendationConfirmed) {
         const recommendation = this._recommendations.find(r => r.id === event.recommendationId);
-        if(recommendation) {
+        if (recommendation) {
             recommendation.confirmRecommendation();
         }
     }
 
-    private onApplicationRecommended(event: ApplicationRecommended) {
+    private onApplicantRecommended(event: ApplicantRecommended) {
         this._status = ApplicantStatus.AwaitsDecision;
     }
 
@@ -147,7 +148,7 @@ export class Applicant extends AggregateRoot {
 
     private onApplicantRecommendationRefused(event: ApplicantRecommendationRefused) {
         const recommendation = this._recommendations.find(r => r.id === event.recommendationId);
-        if(recommendation) {
+        if (recommendation) {
             recommendation.refuseRecommendation();
         }
     }
