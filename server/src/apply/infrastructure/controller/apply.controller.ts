@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { ApplyRequestDto } from "../dto/apply-request.dto";
 import { ApiOperation, ApiResponse, ApiTags, ApiParam } from "@nestjs/swagger";
-import { CommandBus } from "@nestjs/cqrs";
+import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { SendApplicationCommand } from "src/apply/application/command/send-application.command";
 import { Address } from "src/shared/address";
 import { RequestRecommendations as RequestRecommendationsCommand } from "src/apply/application/command/request-recommendations.command";
@@ -28,12 +28,14 @@ import { AcceptApplicationRejectionAppealRequestDto } from "../dto/accept-applic
 import { RejectApplicationRejectionAppealRequestDto } from "../dto/reject-application-rejection-appeal-request.dto";
 import { ApplicantView } from "../read-model/model/applicant.entity";
 import { RecommendationView } from "../read-model/model/recommendation.entity";
+import { ApplicantDto } from "../dto/applicant.dto";
+import { GetApplicantQuery } from "../query/get-applicant.query";
 
 @Controller('apply')
 @ApiTags('apply')
 export class ApplyController {
 
-    constructor(private readonly commandBus: CommandBus) { }
+    constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) { }
 
     @Post('commands/send-application')
     @ApiOperation({ summary: 'Send application' })
@@ -207,10 +209,13 @@ export class ApplyController {
 
     @Get('applicants/:id')
     @ApiOperation({ summary: 'Get Applicant by Id.' })
-    @ApiResponse({ status: 200, description: 'Applicant', type: ApplicantView})
+    @ApiResponse({ status: 200, description: 'Applicant', type: ApplicantDto})
     @ApiParam({ name: 'id', required: true, description: 'Applicant Id', type: 'string'})
-    async getApplication(@Param() id:string):Promise<ApplicantView | null> {
-        return null;
+    async getApplication(@Param() id:string):Promise<ApplicantDto | null> {
+        const query = new GetApplicantQuery(id);
+        console.log('Async GetApplicantQuery...',query);
+        const applicant = await this.queryBus.execute(query);
+        return applicant;
     }
 
     @Get('applicants/:id/recommendations')

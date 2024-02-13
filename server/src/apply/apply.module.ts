@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApplicantView } from './infrastructure/read-model/model/applicant.entity';
 import { RecommendationView } from './infrastructure/read-model/model/recommendation.entity';
 import { NotificationHandlers } from './infrastructure/notification';
+import { QueryHandlers } from './infrastructure/query/handler';
 
 @Module({
     imports: [CqrsModule,TypeOrmModule.forFeature([ApplicantView, RecommendationView]), EventStoreModule],
@@ -17,7 +18,8 @@ import { NotificationHandlers } from './infrastructure/notification';
         ...CommandHandlers,
         ...Projections,
         ...ApplyProviders,
-        ...NotificationHandlers
+        ...NotificationHandlers,
+        ...QueryHandlers
     ],
 })
 export class ApplyModule {}
