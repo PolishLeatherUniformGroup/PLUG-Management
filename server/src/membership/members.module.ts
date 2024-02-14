@@ -13,6 +13,7 @@ import { MembersProviders } from './infrastructure/members.providers';
 import { CommandController } from './infrastructure/controller/command.controller';
 import { MemberCardNumber } from './infrastructure/read-model/model/member-card.entity';
 import { MemberSuspensionView } from './infrastructure/read-model/model/member-suspension.entity';
+import { MemberExpulsionView } from './infrastructure/read-model/model/member-expulsion.entity';
 
 
 @Module({
@@ -20,7 +21,8 @@ import { MemberSuspensionView } from './infrastructure/read-model/model/member-s
         MemberView,
         MembershipFeeView,
         MemberCardNumber,
-        MemberSuspensionView]), EventStoreModule],
+        MemberSuspensionView,
+        MemberExpulsionView]), EventStoreModule],
     controllers: [CommandController],
     providers: [
         ...CommandHandlers,

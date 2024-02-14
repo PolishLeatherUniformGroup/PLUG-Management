@@ -14,9 +14,13 @@ import { MemberSuspended } from './member-suspended.event';
 import { MembershipSuspensionAppealed } from './membership-suspension-appealed.event';
 import { MembershipSuspensionAppealCancelled } from './membership-suspension-appeal-cancelled.event';
 import { MembershipSuspensionAppealAccepted } from './membership-suspension-appeal-accepted.event';
-import { from } from 'rxjs';
 import { MembershipSuspensionAppealRejected } from './membership-suspension-appeal-rejected.event';
 import { MemberSuspensionEnded } from './member-suspension-ended.event';
+import { MemberExpelled } from './member-expelled.event';
+import { MemberExpulsionAppealed } from './member-expulsion-appealed.event';
+import { MemberExpulsionAppealCancelled } from './member-expulsion-appeal-cancelled.event';
+import { MemberExpulsionAppealAccepted } from './member-expulsion-appeal-accepted.event';
+import { MemberExpulsionAppealRejected } from './member-expulsion-appeal-rejected.event';
 
 export * from './member-created.event';
 export * from './member-card-assigned.event';
@@ -30,6 +34,12 @@ export * from './membership-suspension-appealed.event';
 export * from './membership-suspension-appeal-cancelled.event';
 export * from './membership-suspension-appeal-accepted.event';
 export * from './membership-suspension-appeal-rejected.event';
+export * from './member-suspension-ended.event';
+export * from './member-expelled.event';
+export * from './member-expulsion-appealed.event';
+export * from './member-expulsion-appeal-cancelled.event';
+export * from './member-expulsion-appeal-accepted.event';
+export * from './member-expulsion-appeal-rejected.event';
 
 export {
     MemberCreated,
@@ -44,7 +54,13 @@ export {
     MembershipSuspensionAppealCancelled,
     MembershipSuspensionAppealAccepted,
     MembershipSuspensionAppealRejected,
-    MemberSuspensionEnded
+    MemberSuspensionEnded,
+    MemberExpelled,
+    MemberExpulsionAppealed,
+    MemberExpulsionAppealCancelled,
+    MemberExpulsionAppealAccepted,
+    MemberExpulsionAppealRejected
+    
 };
 export const MembersEvents = {
     MemberCreated: (id: string, firstName: string, lastName: string, email: string, phoneNumber: string, joinDate: Date, birthDate: Date, address: Address, initialFee: MembershipFee) => new MemberCreated(id, firstName, lastName, email, phoneNumber, joinDate, birthDate, address, initialFee),
@@ -59,5 +75,10 @@ export const MembersEvents = {
     MembershipSuspensionAppealCancelled: (id: string, suspensionId: string) => new MembershipSuspensionAppealCancelled(id, suspensionId),
     MembershipSuspensionAppealAccepted: (id: string, suspensionId: string, date: Date, reason: string) => new MembershipSuspensionAppealAccepted(id, suspensionId, date, reason),
     MembershipSuspensionAppealRejected: (id: string, suspensionId: string, date: Date, reason: string) => new MembershipSuspensionAppealRejected(id, suspensionId, date, reason),
-    MemberSuspsensionEnded: (id: string) => new MemberSuspensionEnded(id)
+    MemberSuspsensionEnded: (id: string) => new MemberSuspensionEnded(id),
+    MemberExpelled: (id: string, expulsionId: string, date: Date, reason: string, appealDeadline: Date) => new MemberExpelled(id, expulsionId, date, reason, appealDeadline),
+    MemberExpulsionAppealed: (id: string, expulsionId: string, date: Date, justification: string) => new MemberExpulsionAppealed(id, expulsionId, date, justification),
+    MemberExpulsionAppealCancelled: (id: string, expulsionId: string) => new MemberExpulsionAppealCancelled(id, expulsionId),
+    MemberExpulsionAppealAccepted: (id: string, expulsionId: string, date: Date, reason: string) => new MemberExpulsionAppealAccepted(id, expulsionId, date, reason),
+    MemberExpulsionAppealRejected: (id: string, expulsionId: string, date: Date, reason: string) => new MemberExpulsionAppealRejected(id, expulsionId, date, reason)
 }

@@ -12,6 +12,11 @@ import { MembershipSuspensionAppealAcceptedProjection } from './membership-suspe
 import { Member } from 'src/membership/domain/model/member';
 import { MembershipSuspensionAppealRejected } from 'src/membership/domain/events';
 import { MemberSuspensionAppealRejectedProjection } from './membership-suspension-appeal-rejected.projection';
+import { MemberExpelledProjection } from './member-expelled.projection';
+import { MemberExpulsionAppealedProjection } from './member-expulsion-appealed.projection';
+import { MemberExpulsionAppealAcceptedProjection } from './member-expulsion-appeal-accepted.projection';
+import { MemberExpulsionAppealRejectedProjection } from './member-expulsion-appeal-rejected.projection';
+import { MemberExpulsionAppealCancelledProjection } from './member-expulsion-appeal-cancelled.projection';
 
 export * from './member-created.projection'
 export * from './member-card-assigned.projection'
@@ -24,6 +29,12 @@ export * from './member-suspended.projection'
 export * from './member-suspension-appealed.projection'
 export * from './membership-suspension-appeal-cancelled.projection'
 export * from './membership-suspension-appeal-accepted.projection'
+export * from './membership-suspension-appeal-rejected.projection'
+export * from './member-expelled.projection'
+export * from './member-expulsion-appealed.projection'
+export * from './member-expulsion-appeal-accepted.projection'
+export * from './member-expulsion-appeal-rejected.projection'
+export * from './member-expulsion-appeal-cancelled.projection'
 
 
 export const Projections = [
@@ -38,5 +49,10 @@ export const Projections = [
     MemberSuspensionAppealedProjection,
     MembershipSuspensionAppealCancelledProjection,
     MembershipSuspensionAppealAcceptedProjection,
-    MemberSuspensionAppealRejectedProjection
+    MemberSuspensionAppealRejectedProjection,
+    MemberExpelledProjection,
+    MemberExpulsionAppealedProjection,
+    MemberExpulsionAppealAcceptedProjection,
+    MemberExpulsionAppealRejectedProjection,
+    MemberExpulsionAppealCancelledProjection
 ];

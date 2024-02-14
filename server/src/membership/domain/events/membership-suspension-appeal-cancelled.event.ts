@@ -4,3 +4,4 @@ export class MembershipSuspensionAppealCancelled  implements DomainEvent{
     constructor(public id: string, public suspensionId: string) {
     }
 }
+

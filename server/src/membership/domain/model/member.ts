@@ -7,7 +7,7 @@ import { MemberCreated } from "../events/member-created.event";
 import { MemberCard } from "./member-card";
 import { MemberCardAssigned } from "../events/member-card-assigned.event";
 import { Money } from "src/shared/money";
-import { MembershipSuspensionAppealCancelled, MembershipSuspensionAppealed, MembershipFeeRequested, MembershipSuspensionAppealRejected } from "../events";
+import { MembershipSuspensionAppealCancelled, MembershipSuspensionAppealed, MembershipFeeRequested, MembershipSuspensionAppealRejected, MemberExpelled, MemberExpulsionAppealCancelled, MemberExpulsionAppealAccepted, MemberExpulsionAppealRejected } from "../events";
 import { MembershipFeePaid } from "../events/membership-fee-paid.event";
 import { MemberType } from "./member-type";
 import { MemberTypeChanged } from "../events/member-type-changed.event";
@@ -18,6 +18,7 @@ import { MembershipCancelled } from "../events/membership-cancelled.event";
 import { MemberSuspended } from "../events/member-suspended.event";
 import { MembershipSuspensionAppealAccepted } from "../events/membership-suspension-appeal-accepted.event";
 import { MemberSuspensionEnded } from "../events/member-suspension-ended.event";
+import { MemberExpulsionAppealed } from "../events/member-expulsion-appealed.event";
 
 export class Member extends AggregateRoot {
 
@@ -113,6 +114,26 @@ export class Member extends AggregateRoot {
         this.apply(new MemberSuspensionEnded(this._memberId.value));
     }
 
+    public expelMember(date: Date, reason: string, appealDeadline: Date) {
+        const expulsionId = `${this._memberId.value}-exp-${this._memberExpulsions.length}`;
+        this.apply(new MemberExpelled(this._memberId.value, expulsionId, date, reason, appealDeadline));
+    }
+
+    public appealExpulsion(expulsionId: string, appealDate: Date, justification: string) {
+        this.apply(new MemberExpulsionAppealed(this._memberId.value, expulsionId, appealDate, justification));
+        if (!this._memberExpulsions.find(expulsion => expulsion.id !== expulsionId)?.canBeAppealed(appealDate)) {
+            this.apply(new MemberExpulsionAppealCancelled(this._memberId.value, expulsionId));
+        }
+    }
+
+    public acceptExpulsionAppeal(expulsionId: string, decisionDate: Date, reason: string) {
+        this.apply(new MemberExpulsionAppealAccepted(this._memberId.value, expulsionId, decisionDate, reason));
+    }
+
+    public rejectExpulsionAppeal(expulsionId: string, decisionDate: Date, reason: string) {
+        this.apply(new MemberExpulsionAppealRejected(this._memberId.value, expulsionId, decisionDate, reason));
+    }
+
     private onMemberCreated(event: MemberCreated) {
         this._memberId = MemberId.fromString(event.id);
         this._firstName = event.firstName;
@@ -193,6 +214,42 @@ export class Member extends AggregateRoot {
 
     private onMemberSuspensionEnded(event: MemberSuspensionEnded) {
         this._status = MemberStatus.Active;
+    }
+
+    private onMemberExpelled(event: MemberExpelled) {
+        const expulsion = MemberExpulsion.create(event.expulsionId, event.date, event.reason, event.appealDeadline);
+        this._memberExpulsions.push(expulsion);
+        this._status = MemberStatus.Expelled;
+    }
+
+    private onMemberExpulsionAppealed(event: MemberExpulsionAppealed) {
+        const expulsion = this._memberExpulsions.find(expulsion => expulsion.id === event.expulsionId);
+        if (expulsion) {
+            expulsion.appeal(event.date, event.justification);
+        }
+    }
+
+    private onMemberExpulsionAppealCancelled(event: MemberExpulsionAppealCancelled) {
+        const expulsion = this._memberExpulsions.find(expulsion => expulsion.id === event.expulsionId);
+        if (expulsion) {
+            expulsion.cancelAppeal();
+            this._status = MemberStatus.Deleted;
+        }
+    }
+
+    private onMemberExpulsionAppealAccepted(event: MemberExpulsionAppealAccepted) {
+        const expulsion = this._memberExpulsions.find(expulsion => expulsion.id === event.expulsionId);
+        if (expulsion) {
+            expulsion.acceptAppeal(event.date, event.decision);
+            this._status = MemberStatus.Active;
+        }
+    }
+
+    private onMemberExpulsionAppealRejected(event: MemberExpulsionAppealRejected) {
+        const expulsion = this._memberExpulsions.find(expulsion => expulsion.id === event.expulsionId);
+        if (expulsion) {
+            expulsion.rejectAppeal(event.date, event.decision);
+        }
     }
 
 }
