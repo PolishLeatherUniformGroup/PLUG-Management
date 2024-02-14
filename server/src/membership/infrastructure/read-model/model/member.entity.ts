@@ -32,5 +32,9 @@ export class MemberView{
     public cardNumber: string;
     @Column()
     public memberType:number;
+    @Column()
+    public expireDate?: Date;
+    @Column()
+    cancelDate?: Date;
  
 }

@@ -5,7 +5,7 @@ import { MembershipFee } from "./membership-fee";
 import { MemberStatus } from "./member-status";
 import { MemberCreated } from "../events/member-created.event";
 import { MemberCard } from "./member-card";
-import { MemberCardAssigned } from "../events/member-card-assigned";
+import { MemberCardAssigned } from "../events/member-card-assigned.event";
 import { Money } from "src/shared/money";
 import { MembershipFeeRequested } from "../events";
 import { MembershipFeePaid } from "../events/membership-fee-paid.event";
@@ -13,6 +13,8 @@ import { MemberType } from "./member-type";
 import { MemberTypeChanged } from "../events/member-type-changed.event";
 import { MemberSuspension } from "./member-suspension";
 import { MemberExpulsion } from "./member-expulsion";
+import { MembershipExpired } from "../events/membership-expired.event";
+import { MembershipCancelled } from "../events/membership-cancelled.event";
 
 export class Member extends AggregateRoot{
     
@@ -30,6 +32,8 @@ export class Member extends AggregateRoot{
     private _memberType: MemberType;
     private _memberSuspensions: MemberSuspension[]=[];
     private _memberExpulsions: MemberExpulsion[]=[];
+    private _expireDate?: Date;
+    private _cancelDate?: Date;
 
     constructor(){
         super();
@@ -74,6 +78,14 @@ export class Member extends AggregateRoot{
         this.apply(new MemberTypeChanged(this._memberId.value, MemberType.Honorary));
     }
 
+    public expireMembership(date:Date){
+        this.apply(new MembershipExpired(this._memberId.value, date));
+    }
+
+    public cancelMembership(date:Date){
+        this.apply(new MembershipCancelled(this._memberId.value, date));
+    }
+
     private onMemberCreated(event: MemberCreated){
         this._memberId = MemberId.fromString(event.id);
         this._firstName = event.firstName;
@@ -106,6 +118,16 @@ export class Member extends AggregateRoot{
 
     private onMemberTypeChanged(event: MemberTypeChanged){
         this._memberType = event.type;
+    }
+
+    private onMembershipExpired(event: MembershipExpired){
+        this._expireDate = event.date;
+        this._status = MemberStatus.Expired;
+    }
+
+    private onMembershipCancelled(event: MembershipCancelled){
+        this._status = MemberStatus.Cancelled;
+        this._cancelDate = event.date;
     }
 
 }

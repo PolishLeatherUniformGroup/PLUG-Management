@@ -1,10 +1,11 @@
-import { IEventHandler } from "@nestjs/cqrs";
+import { EventsHandler, IEventHandler } from "@nestjs/cqrs";
 import { InjectRepository } from "@nestjs/typeorm";
 import { MembershipFeeRequested } from "src/membership/domain/events";
 import { MembershipFeeView } from "../model/membership-fee.entity";
 import { MemberView } from "../model/member.entity";
 import { Repository } from "typeorm";
 
+@EventsHandler(MembershipFeeRequested)  
 export class MembershipFeeRequestedProjection implements IEventHandler<MembershipFeeRequested>{
     constructor(
         @InjectRepository(MemberView) private readonly memberRepository: Repository<MemberView>,

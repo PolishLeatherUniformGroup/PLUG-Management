@@ -13,5 +13,7 @@ export enum HistoryEnum{
     ExpulsionAppealSuccessful = 9,
     ExpulsionAppealFailed = 10,
     Expired = 11,
-    Cancelled = 12
+    Cancelled = 12,
+    BecomeHonorary = 13,
+    BecomeRegular = 14
 }

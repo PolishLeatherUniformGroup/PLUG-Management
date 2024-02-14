@@ -1,9 +1,10 @@
-import { IEventHandler } from "@nestjs/cqrs";
+import { EventsHandler, IEventHandler } from "@nestjs/cqrs";
 import { InjectRepository } from "@nestjs/typeorm";
-import { MemberCardAssigned } from "src/membership/domain/events/member-card-assigned";
+import { MemberCardAssigned } from "src/membership/domain/events/member-card-assigned.event";
 import { MemberView } from "../model/member.entity";
 import { Repository } from "typeorm";
 
+@EventsHandler(MemberCardAssigned)
 export class MemberCardAssignedProjection  implements IEventHandler<MemberCardAssigned>{
     constructor(
         @InjectRepository(MemberView) private readonly memberRepository: Repository<MemberView>
