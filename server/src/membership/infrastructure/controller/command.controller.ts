@@ -186,7 +186,7 @@ export class CommandController {
     @ApiResponse({ status: 204, description: 'Member expelled.' })
     async expelMember(@Body() payload: ExpelMemberRequestDto){
         try{
-            const command = new ExpelMemberCommand(MemberId.fromString(payload.memberId), payload.date, payload.reason, payload.suspendedUntil);
+            const command = new ExpelMemberCommand(MemberId.fromString(payload.memberId), payload.date, payload.reason);
             await this.commandBus.execute(command);
         }catch(error){
             console.error(error);
@@ -198,7 +198,7 @@ export class CommandController {
     @ApiResponse({ status: 204, description: 'Expulsion appeal sent.' })
     async appealExpulsion(@Body() payload: AppealExpulsionRequestDto){
         try{
-            const command = new AppealMemberExpulsionCommand(MemberId.fromString(payload.memberId),payload.suspensionId, payload.date, payload.justification);
+            const command = new AppealMemberExpulsionCommand(MemberId.fromString(payload.memberId),payload.expulsionId, payload.date, payload.justification);
             await this.commandBus.execute(command);
         }catch(error){
             console.error(error);
@@ -210,7 +210,7 @@ export class CommandController {
     @ApiResponse({ status: 204, description: 'Suspension appeal accepted.' })
     async acceptExpulsionAppeal(@Body() payload: AppealExpulsionRequestDto){
         try{
-            const command = new AcceptMemberExpulsionAppealCommand(MemberId.fromString(payload.memberId),payload.suspensionId, payload.date, payload.decision);
+            const command = new AcceptMemberExpulsionAppealCommand(MemberId.fromString(payload.memberId),payload.expulsionId, payload.date, payload.justification);
             await this.commandBus.execute(command);
         }catch(error){
             console.error(error);
@@ -222,7 +222,7 @@ export class CommandController {
     @ApiResponse({ status: 204, description: 'Suspension appeal rejected.' })
     async rejestExpulsionAppeal(@Body() payload: RejectExpulsionAppealRequestDto){
         try{
-            const command = new RejectMemberExpulsionAppealCommand(MemberId.fromString(payload.memberId),payload.suspensionId, payload.date, payload.decision);
+            const command = new RejectMemberExpulsionAppealCommand(MemberId.fromString(payload.memberId),payload.expulsionId, payload.date, payload.decision);
             await this.commandBus.execute(command);
         }catch(error){
             console.error(error);
