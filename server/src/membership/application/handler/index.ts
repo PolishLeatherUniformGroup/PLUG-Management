@@ -1,3 +1,4 @@
+import { AppealMembershipSuspensionHandler } from "./appeal-membership-suspension.handler";
 import { AssignCardNumberHandler } from "./assign-card-number.handler";
 import { CancelMembershipHandler } from "./cancel-membership.handler";
 import { CreateMemberHandler } from "./create-member.handler";
@@ -17,6 +18,7 @@ export * from "./make-member-honorary.handler";
 export * from "./expire-membership.handler";
 export * from "./cancel-membership.handler";
 export * from "./suspend-member.handler";
+export * from "./appeal-membership-suspension.handler";
 
 export const CommandHandlers = [
     CreateMemberHandler,
@@ -27,5 +29,6 @@ export const CommandHandlers = [
     MakeMemberHonoraryHandler,
     ExpireMembershipHandler,
     CancelMembershipHandler,
-    SuspendMemberHandler
+    SuspendMemberHandler,
+    AppealMembershipSuspensionHandler
 ];

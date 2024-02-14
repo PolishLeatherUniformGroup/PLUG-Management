@@ -7,7 +7,7 @@ import { MemberCreated } from "../events/member-created.event";
 import { MemberCard } from "./member-card";
 import { MemberCardAssigned } from "../events/member-card-assigned.event";
 import { Money } from "src/shared/money";
-import { MembershipFeeRequested } from "../events";
+import { MemberSuspensionAppealCancelled, MemberSuspensionAppealed, MembershipFeeRequested } from "../events";
 import { MembershipFeePaid } from "../events/membership-fee-paid.event";
 import { MemberType } from "./member-type";
 import { MemberTypeChanged } from "../events/member-type-changed.event";
@@ -16,9 +16,10 @@ import { MemberExpulsion } from "./member-expulsion";
 import { MembershipExpired } from "../events/membership-expired.event";
 import { MembershipCancelled } from "../events/membership-cancelled.event";
 import { MemberSuspended } from "../events/member-suspended.event";
+import { MembershipSuspensionAppealAccepted } from "../events/membership-suspension-appeal-accepted.event";
 
-export class Member extends AggregateRoot{
-    
+export class Member extends AggregateRoot {
+
     private _memberId: MemberId;
     private _firstName: string;
     private _lastName: string;
@@ -28,18 +29,18 @@ export class Member extends AggregateRoot{
     private _birthDate: Date;
     private _address: Address;
     private _membershipFees: MembershipFee[];
-    private _status:MemberStatus;
+    private _status: MemberStatus;
     private _memberCard?: MemberCard;
     private _memberType: MemberType;
-    private _memberSuspensions: MemberSuspension[]=[];
-    private _memberExpulsions: MemberExpulsion[]=[];
+    private _memberSuspensions: MemberSuspension[] = [];
+    private _memberExpulsions: MemberExpulsion[] = [];
     private _expireDate?: Date;
     private _cancelDate?: Date;
 
-    constructor(){
+    constructor() {
         super();
     }
-    
+
     public aggregateId(): string {
         return this._memberId.value;
     }
@@ -52,47 +53,58 @@ export class Member extends AggregateRoot{
         joinDate: Date,
         birthDate: Date,
         address: Address,
-        initialFee:MembershipFee ): Member {
+        initialFee: MembershipFee): Member {
         const member = new Member();
         member.apply(new MemberCreated(memberId.value, firstName, lastName, email, phoneNumber, joinDate, birthDate, address, initialFee));
         return member;
     }
 
-    public assignCardNumber(cardNumber: MemberCard){
-       this.apply(new MemberCardAssigned(this._memberId.value, cardNumber));
+    public assignCardNumber(cardNumber: MemberCard) {
+        this.apply(new MemberCardAssigned(this._memberId.value, cardNumber));
     }
 
-    public requestMembershipFeePayment(year:number, amount:Money, dueDate:Date){ 
+    public requestMembershipFeePayment(year: number, amount: Money, dueDate: Date) {
         this.apply(new MembershipFeeRequested(this._memberId.value, year, amount, dueDate));
-        
+
     }
 
-    public registerPaymentForMembershipFee(feeId:string, amount:Money, paidDate:Date){
+    public registerPaymentForMembershipFee(feeId: string, amount: Money, paidDate: Date) {
         this.apply(new MembershipFeePaid(this._memberId.value, feeId, amount, paidDate))
     }
 
-    public makeRegularMember(){
+    public makeRegularMember() {
         this.apply(new MemberTypeChanged(this._memberId.value, MemberType.Regular));
     }
 
-    public makeHonoraryMember(){
+    public makeHonoraryMember() {
         this.apply(new MemberTypeChanged(this._memberId.value, MemberType.Honorary));
     }
 
-    public expireMembership(date:Date){
+    public expireMembership(date: Date) {
         this.apply(new MembershipExpired(this._memberId.value, date));
     }
 
-    public cancelMembership(date:Date){
+    public cancelMembership(date: Date) {
         this.apply(new MembershipCancelled(this._memberId.value, date));
     }
 
-    public suspendMember(date:Date, reason:string, until:Date, appealDeadline:Date){
+    public suspendMember(date: Date, reason: string, until: Date, appealDeadline: Date) {
         const suspensionId = `${this._memberId.value}-sus-${this._memberSuspensions.length}`;
-        this.apply(new MemberSuspended(this._memberId.value, suspensionId, date, reason, until,appealDeadline ));
+        this.apply(new MemberSuspended(this._memberId.value, suspensionId, date, reason, until, appealDeadline));
     }
 
-    private onMemberCreated(event: MemberCreated){
+    public appealSuspension(suspensionId: string, appealDate: Date, justification: string) {
+        this.apply(new MemberSuspensionAppealed(this._memberId.value, suspensionId, appealDate, justification));
+        if (!this._memberSuspensions.find(suspension => suspension.id !== suspensionId)?.canBeAppealed(appealDate)) {
+            this.apply(new MemberSuspensionAppealCancelled(this._memberId.value, suspensionId));
+        }
+    }
+
+    public acceptSuspensionAppeal(suspensionId: string, decisionDate: Date, reason: string) {
+        this.apply(new MembershipSuspensionAppealAccepted(this._memberId.value, suspensionId, decisionDate, reason));
+    }
+
+    private onMemberCreated(event: MemberCreated) {
         this._memberId = MemberId.fromString(event.id);
         this._firstName = event.firstName;
         this._lastName = event.lastName;
@@ -106,39 +118,61 @@ export class Member extends AggregateRoot{
         this._memberType = MemberType.Regular;
     }
 
-    private onMemberCardAssigned(event: MemberCardAssigned){
+    private onMemberCardAssigned(event: MemberCardAssigned) {
         this._memberCard = event.cardNumber;
     }
 
-    private onMembershipFeeRequested(event: MembershipFeeRequested){
+    private onMembershipFeeRequested(event: MembershipFeeRequested) {
         const membershipFee = MembershipFee.create(this._memberId, event.year, event.amount, event.dueDate);
         this._membershipFees.push(membershipFee);
     }
 
-    private onMembershipFeePaid(event: MembershipFeePaid){
+    private onMembershipFeePaid(event: MembershipFeePaid) {
         const fee = this._membershipFees.find(fee => fee.id === event.feeId);
-        if(fee){
+        if (fee) {
             fee.pay(event.amount, event.paidDate);
         }
     }
 
-    private onMemberTypeChanged(event: MemberTypeChanged){
+    private onMemberTypeChanged(event: MemberTypeChanged) {
         this._memberType = event.type;
     }
 
-    private onMembershipExpired(event: MembershipExpired){
+    private onMembershipExpired(event: MembershipExpired) {
         this._expireDate = event.date;
         this._status = MemberStatus.Expired;
     }
 
-    private onMembershipCancelled(event: MembershipCancelled){
+    private onMembershipCancelled(event: MembershipCancelled) {
         this._status = MemberStatus.Cancelled;
         this._cancelDate = event.date;
     }
 
-    private onMemberSuspended(event: MemberSuspended){
-        const suspension = MemberSuspension.create(event.suspensionId, event.date, event.reason, event.suspensionEndDate,event.appealDeadline);
+    private onMemberSuspended(event: MemberSuspended) {
+        const suspension = MemberSuspension.create(event.suspensionId, event.date, event.reason, event.suspensionEndDate, event.appealDeadline);
         this._memberSuspensions.push(suspension);
+    }
+
+    private onMemberSuspensionAppealed(event: MemberSuspensionAppealed) {
+        const suspension = this._memberSuspensions.find(suspension => suspension.id === event.suspensionId);
+        if (suspension) {
+            suspension.appeal(event.date, event.justification);
+        }
+    }
+
+    private onMemberSuspensionAppealCancelled(event: MemberSuspensionAppealCancelled) {
+        const suspension = this._memberSuspensions.find(suspension => suspension.id === event.suspensionId);
+        if (suspension) {
+            suspension.cancelAppeal();
+        }
+    }
+
+    private onMembershipSuspensionAppealAccepted(event: MembershipSuspensionAppealAccepted) {
+        const suspension = this._memberSuspensions.find(suspension => suspension.id === event.suspensionId);
+        if (suspension) {
+            suspension.acceptAppeal(event.date, event.reason);
+        }
+        this._status = MemberStatus.Active;
     }
 
 }
