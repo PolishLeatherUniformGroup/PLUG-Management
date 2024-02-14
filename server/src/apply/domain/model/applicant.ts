@@ -112,7 +112,7 @@ export class Applicant extends AggregateRoot {
 
     public appealApplicationRejection(date: Date, justification: string) {
         if (this._status !== ApplicantStatus.Rejected) { }
-        if(!this._appealDeadline){}
+        if (!this._appealDeadline) { }
         if (this._appealDeadline && date > this._appealDeadline) {
             this.apply(new ApplicantRejectionAppealCancelled(this._applicantId.value, date, justification));
         } else {
@@ -122,12 +122,12 @@ export class Applicant extends AggregateRoot {
     }
 
     public acceptApplicationRejectionAppeal(date: Date, decision: string) {
-        if(this._status !== ApplicantStatus.Appealed){}
+        if (this._status !== ApplicantStatus.Appealed) { }
         this.apply(new ApplicantRejectionAppealAccepted(this._applicantId.value, date, decision));
     }
 
     public rejectApplicationRejectionAppeal(date: Date, decision: string) {
-        if(this._status !== ApplicantStatus.Appealed){}
+        if (this._status !== ApplicantStatus.Appealed) { }
         this.apply(new ApplicantRejectionAppealRejected(this._applicantId.value, date, decision));
     }
 
@@ -153,7 +153,11 @@ export class Applicant extends AggregateRoot {
     private onApplicantRecommendationsRequested(event: ApplicantRecommendationsRequested) {
         this._requiredFee = event.requiredFee;
         this._status = ApplicantStatus.InRecommendation;
-        this._recommendations.forEach(r => r.requestRecommendation(event.requestDate));
+        this._recommendations.forEach(r =>{ 
+            const recommendation = new Recommendation(JSON.stringify(r));
+            recommendation.requestRecommendation(event.requestDate);
+            r=recommendation;
+        });
     }
 
     private onApplicantPaidFee(event: ApplicantPaidFee) {

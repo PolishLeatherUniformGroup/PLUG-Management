@@ -18,7 +18,7 @@ export class ApplicantRecommendationConfirmedProjection implements IEventHandler
         try {
             const applicant = await this.applicantRepository.findOne({ where: { id: event.id }, loadEagerRelations: true });
             if (!applicant) throw ApplicantIdNotFound.withApplicantId(ApplicantId.fromString(event.id));
-            const recommendation = applicant.recommendations.find(r => r.id === event.recommendationId);
+            const recommendation = await this.recommendationRepository.findOne({ where: { id: event.recommendationId } });
             if(!recommendation) throw RecommendationIdNotFound.withApplicantIdAndRecommendationId(ApplicantId.fromString(event.id), event.recommendationId);
             recommendation.status = true;
             this.recommendationRepository.save(recommendation);

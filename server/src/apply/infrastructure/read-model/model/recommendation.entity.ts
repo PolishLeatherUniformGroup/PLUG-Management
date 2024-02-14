@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryColumn, JoinTable } from "typeorm";
 import { ApplicantView } from "./applicant.entity";
 
 @Entity('recommendation')
@@ -9,8 +9,8 @@ export class RecommendationView {
     cardNumber: string;
     @Column()
     requestDate?: Date;
-    @Column()
+    @Column({nullable:true, default:false})
     status?:boolean;
-    @ManyToOne(()=>ApplicantView,applicant=>applicant.recommendations)
+    @ManyToOne(()=>ApplicantView, applicant=>applicant.id)
     applicant:ApplicantView;
 }

@@ -17,12 +17,14 @@ export class ApplicantRecommendationsRequestedProjection implements IEventHandle
 
     async handle(event: ApplicantRecommendationsRequested) {
         try {   
-            const applicant = await this.applicantRepository.findOne({ where:{id: event.id}, loadEagerRelations: true  });
+            const applicant = await this.applicantRepository.findOne({ where:{id: event.id}});
             if (!applicant) throw ApplicantIdNotFound.withApplicantId(ApplicantId.fromString(event.id));
             applicant.status = ApplicantStatus.InRecommendation;
             applicant.requiredFeeAmount = event.requiredFee.amount;
             applicant.feeCurrency = event.requiredFee.currency;
-            applicant.recommendations.forEach(async r => {
+            console.log('Applicant:', applicant);
+            const recommendations = await this.recommendationRepository.find({ where: {applicant: {id: event.id}}});
+            recommendations.forEach( r => {
                 r.requestDate = event.requestDate;
                 this.recommendationRepository.save(r);
             });

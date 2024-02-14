@@ -1,27 +1,25 @@
 import { CardNumber } from "src/shared/card-number";
 
 export class Recommendation {
-   
-    
     
     private _id: string;
     private _cardNumber: CardNumber;
     private _requestDate?: Date;
     private _status?: boolean;
-  
 
-    constructor() {
-
+    constructor(json:any) {
+        this._id = json._id;
+        this._cardNumber = json._cardNumber;
+        this._requestDate = json._requestDate;
+        this._status = json._status;
     }
 
     public static create(id: string, cardNumber: CardNumber): Recommendation {
-        const recommendation = new Recommendation();
-        recommendation._id = id;
-        recommendation._cardNumber = cardNumber;
+        const recommendation = new Recommendation({ _id: id, _cardNumber: cardNumber});
         return recommendation;
     }
 
-    requestRecommendation(requestDate: Date): void {
+    public requestRecommendation(requestDate: Date) {
         this._requestDate = requestDate;
     }
 

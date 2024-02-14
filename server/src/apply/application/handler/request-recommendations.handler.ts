@@ -3,6 +3,7 @@ import { RequestRecommendations } from "../command/request-recommendations.comma
 import { APPLICANTS, Applicants } from "src/apply/domain/repository";
 import { Inject } from "@nestjs/common";
 import { ApplicantIdNotFound } from "src/apply/domain/exception/applicant-id-not-found.error";
+import { Applicant } from "src/apply/domain/model";
 
 @CommandHandler(RequestRecommendations)
 export class RequestRecommendationsHandler implements ICommandHandler<RequestRecommendations> {
@@ -12,9 +13,10 @@ export class RequestRecommendationsHandler implements ICommandHandler<RequestRec
 
     async execute(command: RequestRecommendations): Promise<any> {
         try{
-            var applicant = await this.applicants.get(command.applicantId);
+            const applicant:Applicant|null = await this.applicants.get(command.applicantId);
             if(!applicant) throw  ApplicantIdNotFound.withApplicantId(command.applicantId);
-            applicant.requestRecommendations(command.requestDate, command.requiredFee);
+           
+            (applicant as Applicant).requestRecommendations(command.requestDate, command.requiredFee);
             this.applicants.save(applicant);
         }catch(error){
             throw new Error(error.message);

@@ -7,7 +7,7 @@ import { ApplicantRecommendationsRequested } from "src/apply/domain/events/appli
 @EventsHandler(ApplicantRecommendationsRequested)
 export class AppNotification  implements IEventHandler<ApplicantRecommendationsRequested>{
     handle(event: ApplicantRecommendationsRequested) {
-        throw new Error("Method not implemented.");
+       console.log('Recommendations requested:', event);
     }
     
 }

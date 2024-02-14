@@ -9,7 +9,7 @@ export class Event{
     streamId: string;
     @Column()
     eventType: string;
-    @Column()
+    @Column({type:'text'})
     data:string;
     @Column()
     timestamp:Date;

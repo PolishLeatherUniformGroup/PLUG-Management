@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryColumn, JoinTable } from 'typeorm';
 import { RecommendationView } from './recommendation.entity';
 
 @Entity('applicant')
@@ -51,6 +51,6 @@ export class ApplicantView {
     public appealDecision?:string;
     @Column()
     public appealDecisionDate?:Date;
-    @ManyToOne(() => RecommendationView, recommendation => recommendation.applicant)
-    recommendations: RecommendationView[];
+
 }
+

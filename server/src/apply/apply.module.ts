@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { EventStoreModule } from 'src/core/eventstore/eventstore.module';
 import { ApplyController } from './infrastructure/controller/apply.controller';
@@ -10,6 +10,9 @@ import { ApplicantView } from './infrastructure/read-model/model/applicant.entit
 import { RecommendationView } from './infrastructure/read-model/model/recommendation.entity';
 import { NotificationHandlers } from './infrastructure/notification';
 import { QueryHandlers } from './infrastructure/query/handler';
+import { EventStore } from 'src/core/eventstore/eventstore';
+import e from 'express';
+import { eventHandlers } from './domain/events';
 
 @Module({
     imports: [CqrsModule,TypeOrmModule.forFeature([ApplicantView, RecommendationView]), EventStoreModule],
@@ -22,4 +25,9 @@ import { QueryHandlers } from './infrastructure/query/handler';
         ...QueryHandlers
     ],
 })
-export class ApplyModule {}
+export class ApplyModule  implements OnModuleInit{
+    constructor(private readonly eventStore: EventStore) {}
+    onModuleInit() {
+       this.eventStore.addEventHandlers(eventHandlers);
+    }
+}

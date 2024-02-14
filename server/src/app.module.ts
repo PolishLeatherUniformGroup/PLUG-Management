@@ -17,7 +17,7 @@ import { SettingsModule } from './settings/settings.module';
     database: 'srv58017_plug_app',
     synchronize: true,
     entities: [__dirname + '/**/*.entity.{js,ts}'],
-    logging: false,
+    logging: true,
   }), MembersModule, GatheringsModule, TasksModule, SettingsModule],
   controllers: [],
   providers: [

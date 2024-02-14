@@ -29,16 +29,16 @@ export class EmailNotification implements IEventHandler<ApplicationReceived>,
     }
 
     async handleApplicationReceived(event: ApplicationReceived) {
-        throw new Error("Method not implemented.");
+        console.log('Application received:', event);
     }
     async handleRecommendationsRequested(event: ApplicantRecommendationsRequested) {
-        throw new Error("Method not implemented.");
+        console.log('Recommendations requested:', event);
     }
     async handleApplicationCancelled(event: ApplicationCancelled) {
-        throw new Error("Method not implemented.");
+        console.log('Application cancelled:', event);
     }
     async handleApplicationRecommendationRefused(event: ApplicantRecommendationRefused) {
-        throw new Error("Method not implemented.");
+        console.log('Recommendation refused:', event);
     }
 
 }
