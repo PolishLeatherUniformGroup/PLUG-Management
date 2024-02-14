@@ -10,6 +10,24 @@ import { Address } from "src/shared/address";
 import { MembershipFee } from "src/membership/domain/model/membership-fee";
 import { MoneyDto } from "src/shared/dto/money.dto";
 import { Money } from "src/shared/money";
+import { MakeMemberRegularRequestDto } from "../dto/make-member-regular-request.dto";
+import { MakeMemberRegularCommand } from "src/membership/application/command/make-member-regular.command";
+import { MakeMemberHonoraryRequestDto } from "../dto/make-member-honorary-request.dto";
+import { MakeMemberHonoraryCommand } from "src/membership/application/command/make-member-honorary.command";
+import { CancelMembershipRequestDto } from "../dto/cancel-membership-request.dto";
+import { CancelMembershipCommand } from "src/membership/application/command/cancel-membership.command";
+import { ExpireMembershipRequestDto } from "../dto/expire-membership-request.dto";
+import { ExpireMembershipCommand } from "src/membership/application/command/expire-membership.command";
+import { SuspendMemberRequestDto } from "../dto/suspend-member-request.dto";
+import { SuspendMemberCommand } from "src/membership/application/command/suspend-member.command";
+import { AppealSuspensionRequestDto } from "../dto/appeal-suspension-request.dto";
+import { AppealMembershipSuspensionCommand } from "src/membership/application/command/appeal-membership-suspension.command";
+import { AcceptSuspensionAppealRequestDto } from "../dto/accept-suspension-appeal-request.dto";
+import { AcceptMemberSuspensionAppealCommand } from "src/membership/application/command/accept-member-suspension-appeal.command";
+import { RejectSuspensionAppealRequestDto } from "../dto/reject-suspension-appeal-request.dto";
+import { RejectMemberSuspensionAppealCommand } from "src/membership/application/command/reject-member-suspension-appeal.command";
+import { EndSuspensionRequestDto } from "../dto/end-suspension-request.dto";
+import { EndMemberSuspensionCommand } from "src/membership/application/command/end-member-suspension.command";
 
 @Controller('membership/commands')
 @ApiTags('membership')
@@ -46,5 +64,113 @@ export class CommandController {
             console.error(error);
         }
 
+    }
+
+    @Post('make-member-regular')
+    @ApiOperation({ summary: 'Make member regular' })
+    @ApiResponse({ status: 204, description: 'Member type changed.' })
+    async makeMemberRegular(@Body() payload: MakeMemberRegularRequestDto){
+        try{
+            const command = new MakeMemberRegularCommand(MemberId.fromString(payload.memberId));
+            await this.commandBus.execute(command);
+        }catch(error){
+            console.error(error);
+        }
+    }
+
+    @Post('make-member-honorary')
+    @ApiOperation({ summary: 'Make member honorary' })
+    @ApiResponse({ status: 204, description: 'Member type changed.' })
+    async makeMemberHonorary(@Body() payload: MakeMemberHonoraryRequestDto){
+        try{
+            const command = new MakeMemberHonoraryCommand(MemberId.fromString(payload.memberId));
+            await this.commandBus.execute(command);
+        }catch(error){
+            console.error(error);
+        }
+    }
+
+    @Post('cancel-membership')
+    @ApiOperation({ summary: 'Cancel membership' })
+    @ApiResponse({ status: 204, description: 'Membership cancelled.' })
+    async cancelMembership(@Body() payload: CancelMembershipRequestDto){
+        try{
+            const command = new CancelMembershipCommand(MemberId.fromString(payload.memberId), payload.date);
+            await this.commandBus.execute(command);
+        }catch(error){
+            console.error(error);
+        }
+    }
+
+    @Post('expire-membership')
+    @ApiOperation({ summary: 'Expire membership' })
+    @ApiResponse({ status: 204, description: 'Membership expired.' })
+    async expireMembership(@Body() payload: ExpireMembershipRequestDto){
+        try{
+            const command = new ExpireMembershipCommand(MemberId.fromString(payload.memberId), payload.date);
+            await this.commandBus.execute(command);
+        }catch(error){
+            console.error(error);
+        }
+    }
+
+    @Post('suspend-member')
+    @ApiOperation({ summary: 'suspend member' })
+    @ApiResponse({ status: 204, description: 'Member suspended.' })
+    async suspendMember(@Body() payload: SuspendMemberRequestDto){
+        try{
+            const command = new SuspendMemberCommand(MemberId.fromString(payload.memberId), payload.date, payload.reason, payload.suspendedUntil);
+            await this.commandBus.execute(command);
+        }catch(error){
+            console.error(error);
+        }
+    }
+
+    @Post('appeal-suspension')
+    @ApiOperation({ summary: 'Appeal suspension' })
+    @ApiResponse({ status: 204, description: 'Suspension appeal sent.' })
+    async appealSuspension(@Body() payload: AppealSuspensionRequestDto){
+        try{
+            const command = new AppealMembershipSuspensionCommand(MemberId.fromString(payload.memberId),payload.suspensionId, payload.date, payload.justification);
+            await this.commandBus.execute(command);
+        }catch(error){
+            console.error(error);
+        }
+    }
+
+    @Post('accept-suspension-appel')
+    @ApiOperation({ summary: 'Accept suspension appeal' })
+    @ApiResponse({ status: 204, description: 'Suspension appeal accepted.' })
+    async acceptSuspensionAppeal(@Body() payload: AcceptSuspensionAppealRequestDto){
+        try{
+            const command = new AcceptMemberSuspensionAppealCommand(MemberId.fromString(payload.memberId),payload.suspensionId, payload.date, payload.decision);
+            await this.commandBus.execute(command);
+        }catch(error){
+            console.error(error);
+        }
+    }
+
+    @Post('reject-suspension-appel')
+    @ApiOperation({ summary: 'Reject suspension appeal' })
+    @ApiResponse({ status: 204, description: 'Suspension appeal rejected.' })
+    async rejestSuspensionAppeal(@Body() payload: RejectSuspensionAppealRequestDto){
+        try{
+            const command = new RejectMemberSuspensionAppealCommand(MemberId.fromString(payload.memberId),payload.suspensionId, payload.date, payload.decision);
+            await this.commandBus.execute(command);
+        }catch(error){
+            console.error(error);
+        }
+    }
+
+    @Post('end-suspension')
+    @ApiOperation({ summary: 'end suspension' })
+    @ApiResponse({ status: 204, description: 'Suspension ended.' })
+    async endSuspension(@Body() payload: EndSuspensionRequestDto){
+        try{
+            const command = new EndMemberSuspensionCommand(MemberId.fromString(payload.memberId));
+            await this.commandBus.execute(command);
+        }catch(error){
+            console.error(error);
+        }
     }
 }
