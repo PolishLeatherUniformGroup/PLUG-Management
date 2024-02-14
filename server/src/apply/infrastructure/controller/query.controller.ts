@@ -2,6 +2,9 @@ import { Body, Controller, Get, Param } from "@nestjs/common";
 import { ApplyRequestDto } from "../dto/apply-request.dto";
 import { ApiOperation, ApiResponse, ApiTags, ApiParam } from "@nestjs/swagger";
 import {QueryBus } from "@nestjs/cqrs";
+import { ApplicantDto } from "../dto/applicant.dto";
+import { GetApplicantQuery } from "../query/get-applicant.query";
+
 
 @Controller('query')
 @ApiTags('apply')
