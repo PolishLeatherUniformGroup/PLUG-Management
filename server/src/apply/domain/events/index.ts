@@ -32,7 +32,7 @@ export * from "./applicant-rejection-appeal-rejected.event";
 export * from "./applicant-recommended.event";
 
 export { ApplicationReceived, ApplicantAccepted, ApplicantPaidFee, ApplicantRecommendationConfirmed, ApplicantRecommendationRefused, ApplicantRecommendationsRequested, ApplicantRecommended, ApplicantRejected, ApplicantRejectionAppealAccepted, ApplicantRejectionAppealCancelled, ApplicantRejectionAppealRejected, ApplicationCancelled, ApplicationNotRecommended };
-export const eventHandlers = {
+export const ApplyEvents = {
     ApplicationReceived: (id: string, firstName: string, lastName: string, email: string, phoneNumber: string, applyDate: Date, birthDate: Date, address: Address,        recommendations: Recommendation[]) => new ApplicationReceived(id, firstName, lastName, email, phoneNumber, applyDate, birthDate, address, recommendations),
     ApplicantRecommendationsRequested: (id: string, requestedDate: Date, requiredFee: Money) => new ApplicantRecommendationsRequested(id, requestedDate, requiredFee),
     ApplicationCancelled: (id: string) => new ApplicationCancelled(id),

@@ -4,6 +4,8 @@ import { MemberId } from "./member-id";
 import { MembershipFee } from "./membership-fee";
 import { MemberStatus } from "./member-status";
 import { MemberCreated } from "../events/member-created.event";
+import { MemberCard } from "./member-card";
+import { MemberCardAssigned } from "../events/member-card-assigned";
 
 export class Member extends AggregateRoot{
     private _memberId: MemberId;
@@ -16,6 +18,7 @@ export class Member extends AggregateRoot{
     private _address: Address;
     private _membershipFees: MembershipFee[];
     private _status:MemberStatus;
+    private _memberCard?: MemberCard;
 
     constructor(){
         super();
@@ -39,6 +42,10 @@ export class Member extends AggregateRoot{
         return member;
     }
 
+    public assignCardNumber(cardNumber: MemberCard){
+       this.apply(new MemberCardAssigned(this._memberId.value, cardNumber));
+    }
+
     private onMemberCreated(event: MemberCreated){
         this._memberId = MemberId.fromString(event.id);
         this._firstName = event.firstName;
@@ -50,6 +57,10 @@ export class Member extends AggregateRoot{
         this._address = event.address;
         this._membershipFees = [event.initialFee];
         this._status = MemberStatus.Active;
+    }
+
+    private onMemberCardAssigned(event: MemberCardAssigned){
+        this._memberCard = event.cardNumber;
     }
 
 }

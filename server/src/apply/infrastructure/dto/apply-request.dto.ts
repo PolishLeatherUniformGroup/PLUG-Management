@@ -1,4 +1,4 @@
-import { AddressDto } from "./address.dto";
+import { AddressDto } from "../../../shared/dto/address.dto";
 
 export class ApplyRequestDto {
   firstName: string;

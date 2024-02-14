@@ -11,7 +11,7 @@ import { RecommendationView } from './infrastructure/read-model/model/recommenda
 import { NotificationHandlers } from './infrastructure/notification';
 import { QueryHandlers } from './infrastructure/query/handler';
 import { EventStore } from 'src/core/eventstore/eventstore';
-import { eventHandlers } from './domain/events';
+import { ApplyEvents } from './domain/events';
 import { CommandController } from './infrastructure/controller/command.controller';
 import { QueryController } from './infrastructure/controller/query.controller';
 
@@ -29,6 +29,6 @@ import { QueryController } from './infrastructure/controller/query.controller';
 export class ApplyModule  implements OnModuleInit{
     constructor(private readonly eventStore: EventStore) {}
     onModuleInit() {
-       this.eventStore.addEventHandlers(eventHandlers);
+       this.eventStore.addEventHandlers(ApplyEvents);
     }
 }

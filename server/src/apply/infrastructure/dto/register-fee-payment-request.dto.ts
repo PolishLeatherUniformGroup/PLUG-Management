@@ -1,4 +1,4 @@
-import { MoneyDto } from "./money.dto";
+import { MoneyDto } from "../../../shared/dto/money.dto";
 
 export class RegisterFeePaymentRequestDto{
     public id: string;

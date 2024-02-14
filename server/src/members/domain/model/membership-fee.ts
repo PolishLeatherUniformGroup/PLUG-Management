@@ -19,4 +19,29 @@ export class MembershipFee {
         fee._paidDate = paidDate;
         return fee;
     }
+
+
+    public get id(): string {
+        return this._id;
+    }
+
+    public get year(): number {
+        return this._year;
+    }
+
+    public get dueAmount(): Money {
+        return this._dueAmount;
+    }
+
+    public get dueDate(): Date {
+        return this._dueDate;
+    }
+
+    public get paidAmount(): Money | undefined{
+        return this._paidAmount;
+    }
+
+    public get paidDate(): Date | undefined {
+        return this._paidDate;
+    }
 }

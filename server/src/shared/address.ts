@@ -1,4 +1,4 @@
-import { AddressDto } from "src/apply/infrastructure/dto/address.dto";
+import { AddressDto } from "src/shared/dto/address.dto";
 import { ValueObject } from "src/core/domain";
 
 interface Props {
