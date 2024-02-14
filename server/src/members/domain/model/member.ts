@@ -6,8 +6,11 @@ import { MemberStatus } from "./member-status";
 import { MemberCreated } from "../events/member-created.event";
 import { MemberCard } from "./member-card";
 import { MemberCardAssigned } from "../events/member-card-assigned";
+import { Money } from "src/shared/money";
+import { MembershipFeeRequested } from "../events";
 
 export class Member extends AggregateRoot{
+    
     private _memberId: MemberId;
     private _firstName: string;
     private _lastName: string;
@@ -46,6 +49,11 @@ export class Member extends AggregateRoot{
        this.apply(new MemberCardAssigned(this._memberId.value, cardNumber));
     }
 
+    public requestMembershipFeePayment(year:number, amount:Money, dueDate:Date){ 
+        this.apply(new MembershipFeeRequested(this._memberId.value, year, amount, dueDate));
+        
+    }
+
     private onMemberCreated(event: MemberCreated){
         this._memberId = MemberId.fromString(event.id);
         this._firstName = event.firstName;
@@ -61,6 +69,11 @@ export class Member extends AggregateRoot{
 
     private onMemberCardAssigned(event: MemberCardAssigned){
         this._memberCard = event.cardNumber;
+    }
+
+    private onMembershipFeeRequested(event: MembershipFeeRequested){
+        const membershipFee = MembershipFee.create(this._memberId, event.year, event.amount, event.dueDate);
+        this._membershipFees.push(membershipFee);
     }
 
 }

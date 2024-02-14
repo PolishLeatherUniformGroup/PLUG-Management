@@ -20,6 +20,15 @@ export class MembershipFee {
         return fee;
     }
 
+    public static create(memberId:MemberId, year:number, dueAmount:Money, dueDate:Date): MembershipFee {
+        const fee = new MembershipFee();
+        fee._id = `${memberId.value}-${year}`;
+        fee._year = year;
+        fee._dueAmount = dueAmount;
+        fee._dueDate = dueDate;
+        return fee;
+    }
+
 
     public get id(): string {
         return this._id;
