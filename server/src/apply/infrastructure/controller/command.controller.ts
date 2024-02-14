@@ -27,7 +27,7 @@ import { RejectApplicationRejectionAppealRequestDto } from "../dto/reject-applic
 
 @Controller('command')
 @ApiTags('apply')
-export class ApplyController {
+export class CommandController {
 
     constructor(private readonly commandBus: CommandBus) { }
 
