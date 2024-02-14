@@ -11,12 +11,13 @@ import { RecommendationView } from './infrastructure/read-model/model/recommenda
 import { NotificationHandlers } from './infrastructure/notification';
 import { QueryHandlers } from './infrastructure/query/handler';
 import { EventStore } from 'src/core/eventstore/eventstore';
-import e from 'express';
 import { eventHandlers } from './domain/events';
+import { CommandController } from './infrastructure/controller/command.controller';
+import { QueryController } from './infrastructure/controller/query.controller';
 
 @Module({
     imports: [CqrsModule,TypeOrmModule.forFeature([ApplicantView, RecommendationView]), EventStoreModule],
-    controllers: [ApplyController, QueryConroller, CommandController],
+    controllers: [ApplyController, QueryController, CommandController],
     providers: [
         ...CommandHandlers,
         ...Projections,

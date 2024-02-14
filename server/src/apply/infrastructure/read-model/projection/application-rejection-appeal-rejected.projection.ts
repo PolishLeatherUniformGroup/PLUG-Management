@@ -4,7 +4,6 @@ import { ApplicantView } from "../model/applicant.entity";
 import { Repository } from "typeorm";
 import { ApplicantIdNotFound } from "src/apply/domain/exception/applicant-id-not-found.error";
 import { ApplicantId, ApplicantStatus } from "src/apply/domain/model";
-import { ApplicantRejectionAppealAccepted } from "src/apply/domain/events/applicant-rejection-appeal-accepted.event";
 import { ApplicantRejectionAppealRejected } from "src/apply/domain/events/applicant-rejection-appeal-rejected.event";
 
 @EventsHandler(ApplicantRejectionAppealRejected)

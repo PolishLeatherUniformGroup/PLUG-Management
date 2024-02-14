@@ -22,7 +22,7 @@ export class ApplicantRecommendationsRequestedProjection implements IEventHandle
             applicant.status = ApplicantStatus.InRecommendation;
             applicant.requiredFeeAmount = event.requiredFee.amount;
             applicant.feeCurrency = event.requiredFee.currency;
-            console.log('Applicant:', applicant);
+           
             const recommendations = await this.recommendationRepository.find({ where: {applicant: {id: event.id}}});
             recommendations.forEach( r => {
                 r.requestDate = event.requestDate;

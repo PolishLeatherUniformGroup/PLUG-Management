@@ -14,6 +14,7 @@ import { ApplicationNotRecommended } from "./application-not-recommended.event";
 import { ApplicationReceived } from "./application-received.event";
 import { Recommendation } from "../model/recommendation";
 import { Money } from "src/shared/money";
+import { ApplicantRejectionAppealReceived } from "./applicant-rejection-appeal-received.event";
 
 export * from "./applicant-recommendations-requested.event";
 export * from "./applicant-recommendation-refused.event";
@@ -32,14 +33,18 @@ export * from "./applicant-recommended.event";
 
 export { ApplicationReceived, ApplicantAccepted, ApplicantPaidFee, ApplicantRecommendationConfirmed, ApplicantRecommendationRefused, ApplicantRecommendationsRequested, ApplicantRecommended, ApplicantRejected, ApplicantRejectionAppealAccepted, ApplicantRejectionAppealCancelled, ApplicantRejectionAppealRejected, ApplicationCancelled, ApplicationNotRecommended };
 export const eventHandlers = {
-    ApplicationReceived: (id: string,
-        firstName: string,
-        lastName: string,
-        email: string,
-        phoneNumber: string,
-        applyDate: Date,
-        birthDate: Date,
-        address: Address,
-        recommendations: Recommendation[]) => new ApplicationReceived(id, firstName, lastName, email, phoneNumber, applyDate, birthDate, address, recommendations),
+    ApplicationReceived: (id: string, firstName: string, lastName: string, email: string, phoneNumber: string, applyDate: Date, birthDate: Date, address: Address,        recommendations: Recommendation[]) => new ApplicationReceived(id, firstName, lastName, email, phoneNumber, applyDate, birthDate, address, recommendations),
     ApplicantRecommendationsRequested: (id: string, requestedDate: Date, requiredFee: Money) => new ApplicantRecommendationsRequested(id, requestedDate, requiredFee),
+    ApplicationCancelled: (id: string) => new ApplicationCancelled(id),
+    ApplicantPaidFee: (id: string, paymentDate: Date, fee: Money) => new ApplicantPaidFee(id, paymentDate, fee),
+    ApplicantRecommendationConfirmed: (id: string, recommendationId: string) => new ApplicantRecommendationConfirmed(id, recommendationId),
+    ApplicantRecommendationRefused: (id: string, recommendationId: string) => new ApplicantRecommendationRefused(id, recommendationId),
+    ApplicantAccepted: (id: string, date: Date, decision: string) => new ApplicantAccepted(id, date, decision),
+    ApplicantRejected: (id: string, date: Date, decision: string, appealDeadline: Date) => new ApplicantRejected(id, date, decision, appealDeadline),
+    ApplicationNotRecommended: (id: string) => new ApplicationNotRecommended(id),
+    ApplicantRecommended: (id: string) => new ApplicantRecommended(id),
+    ApplicantRejectionAppealReceived: (id: string, appelaDate: Date, justification: string) => new ApplicantRejectionAppealReceived(id, appelaDate, justification),
+    ApplicantRejectionAppealCancelled: (id: string, appelaDate: Date, justification: string) => new ApplicantRejectionAppealCancelled(id, appelaDate, justification),
+    ApplicantRejectionAppealAccepted: (id: string, decisionDate: Date, decision: string) => new ApplicantRejectionAppealAccepted(id, decisionDate, decision),
+    ApplicantRejectionAppealRejected: (id: string, decisionDate: Date, decision: string) => new ApplicantRejectionAppealRejected(id, decisionDate, decision)
 };

@@ -1,4 +1,5 @@
 import { EventsHandler, IEvent, IEventHandler } from "@nestjs/cqrs";
+import { ApplicantAccepted, ApplicantRejected, ApplicantRejectionAppealAccepted, ApplicantRejectionAppealCancelled, ApplicantRejectionAppealReceived, ApplicantRejectionAppealRejected } from "src/apply/domain/events";
 import { ApplicantRecommendationRefused } from "src/apply/domain/events/applicant-recommendation-refused.event";
 import { ApplicantRecommendationsRequested } from "src/apply/domain/events/applicant-recommendations-requested.event";
 import { ApplicationCancelled } from "src/apply/domain/events/application-cancelled.event";
@@ -7,11 +8,27 @@ import { ApplicationReceived } from "src/apply/domain/events/application-receive
 /**
  * Sends email notifications.
  */
-@EventsHandler(ApplicationReceived, ApplicantRecommendationsRequested, ApplicationCancelled, ApplicantRecommendationRefused)
-export class EmailNotification implements IEventHandler<ApplicationReceived>,
+@EventsHandler(ApplicationReceived,
+    ApplicantRecommendationsRequested,
+    ApplicationCancelled,
+    ApplicantRecommendationRefused,
+    ApplicantAccepted, ApplicantRejected,
+    ApplicantRejectionAppealReceived,
+    ApplicantRejectionAppealCancelled,
+    ApplicantRejectionAppealAccepted,
+    ApplicantRejectionAppealRejected)
+export class EmailNotification implements
+    IEventHandler<ApplicationReceived>,
     IEventHandler<ApplicantRecommendationsRequested>,
     IEventHandler<ApplicationCancelled>,
-    IEventHandler<ApplicantRecommendationRefused> {
+    IEventHandler<ApplicantRecommendationRefused>,
+    IEventHandler<ApplicantAccepted>,
+    IEventHandler<ApplicantRejected>,
+    IEventHandler<ApplicantRejectionAppealReceived>,
+    IEventHandler<ApplicantRejectionAppealCancelled>,
+    IEventHandler<ApplicantRejectionAppealAccepted>,
+    IEventHandler<ApplicantRejectionAppealRejected>
+{
 
     async handle(event: IEvent) {
         if (event instanceof ApplicationReceived) {
@@ -26,6 +43,24 @@ export class EmailNotification implements IEventHandler<ApplicationReceived>,
         if (event instanceof ApplicantRecommendationRefused) {
             this.handleApplicationRecommendationRefused(event);
         }
+        if (event instanceof ApplicantAccepted) {
+            this.handleApplicantAccepted(event);
+        }
+        if (event instanceof ApplicantRejected) {
+            this.handleApplicantRejected(event);
+        }
+        if (event instanceof ApplicantRejectionAppealReceived) {
+            this.handleApplicantRejectionAppealReceived(event);
+        }
+        if (event instanceof ApplicantRejectionAppealCancelled) {
+            this.handleApplicantRejectionAppealCancelled(event);
+        }
+        if (event instanceof ApplicantRejectionAppealAccepted) {
+            this.handleApplicantRejectionAppealAccepted(event);
+        }
+        if (event instanceof ApplicantRejectionAppealRejected) {
+            this.handleApplicantRejectionAppealRejected(event);
+        }
     }
 
     async handleApplicationReceived(event: ApplicationReceived) {
@@ -39,6 +74,24 @@ export class EmailNotification implements IEventHandler<ApplicationReceived>,
     }
     async handleApplicationRecommendationRefused(event: ApplicantRecommendationRefused) {
         console.log('Recommendation refused:', event);
+    }
+    async handleApplicantAccepted(event: ApplicantAccepted) {
+        console.log('Application accepted:', event);
+    }
+    async handleApplicantRejected(event: ApplicantRejected) {
+        console.log('Application rejected:', event);
+    }
+    async handleApplicantRejectionAppealReceived(event: ApplicantRejectionAppealReceived) {
+        console.log('Appeal received:', event);
+    }
+    async handleApplicantRejectionAppealCancelled(event: ApplicantRejectionAppealCancelled) {
+        console.log('Appeal cancelled:', event);
+    }
+    async handleApplicantRejectionAppealAccepted(event: ApplicantRejectionAppealAccepted) {
+        console.log('Appeal accepted:', event);
+    }
+    async handleApplicantRejectionAppealRejected(event: ApplicantRejectionAppealRejected) {
+        console.log('Appeal rejected:', event);
     }
 
 }

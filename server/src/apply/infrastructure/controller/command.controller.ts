@@ -1,7 +1,6 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
-import { ApiOperation, ApiResponse, ApiTags, ApiParam } from "@nestjs/swagger";
-import { Commanders } from "@nestjs/cqrs";
-import { Address } from "src/shared/address";
+import { Body, Controller, Post } from "@nestjs/common";
+import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { CommandBus } from "@nestjs/cqrs";
 import { RequestRecommendations as RequestRecommendationsCommand } from "src/apply/application/command/request-recommendations.command";
 import { ApplicantId } from "src/apply/domain/model";
 import { Money } from "src/shared/money";
@@ -25,7 +24,7 @@ import { RejectApplicationRejectionAppealCommand } from "src/apply/application/c
 import { AcceptApplicationRejectionAppealRequestDto } from "../dto/accept-application-rejection-appeal-request.dto";
 import { RejectApplicationRejectionAppealRequestDto } from "../dto/reject-application-rejection-appeal-request.dto";
 
-@Controller('command')
+@Controller('apply')
 @ApiTags('apply')
 export class CommandController {
 

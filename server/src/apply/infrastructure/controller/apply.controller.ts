@@ -3,6 +3,7 @@ import { ApplyRequestDto } from "../dto/apply-request.dto";
 import { ApiOperation, ApiResponse, ApiTags, ApiParam } from "@nestjs/swagger";
 import { CommandBus } from "@nestjs/cqrs";
 import { SendApplicationCommand } from "src/apply/application/command/send-application.command";
+import { Address } from "src/shared/address";
 
 @Controller('apply')
 @ApiTags('apply')
