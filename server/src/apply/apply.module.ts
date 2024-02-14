@@ -16,7 +16,7 @@ import { eventHandlers } from './domain/events';
 
 @Module({
     imports: [CqrsModule,TypeOrmModule.forFeature([ApplicantView, RecommendationView]), EventStoreModule],
-    controllers: [ApplyController],
+    controllers: [ApplyController, QueryConroller, CommandController],
     providers: [
         ...CommandHandlers,
         ...Projections,
