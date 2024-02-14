@@ -11,10 +11,11 @@ import { Projections } from './infrastructure/read-model/projection';
 import { Notifications as NotificationHandlers } from './infrastructure/notifications';
 import { MembersProviders } from './infrastructure/members.providers';
 import { CommandController } from './infrastructure/controller/command.controller';
+import { MemberCardNumber } from './infrastructure/read-model/model/member-card.entity';
 
 
 @Module({
-    imports: [CqrsModule,TypeOrmModule.forFeature([MemberView, MembershipFeeView]), EventStoreModule],
+    imports: [CqrsModule,TypeOrmModule.forFeature([MemberView, MembershipFeeView, MemberCardNumber]), EventStoreModule],
     controllers: [CommandController],
     providers: [
         ...CommandHandlers,

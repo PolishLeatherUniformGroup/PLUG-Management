@@ -1,4 +1,4 @@
-import { PrimaryColumn, Column, Entity, OneToMany } from "typeorm";
+import { PrimaryColumn, Column, Entity, OneToMany, Index, PrimaryGeneratedColumn, VirtualColumn, Generated } from "typeorm";
 
 @Entity('member')
 export class MemberView{
@@ -27,6 +27,8 @@ export class MemberView{
     @Column()
     public addressState?: string;
     @Column({type: 'int'})
-    public status:number
-    
+    public status:number;       
+    @Column({type: 'varchar', length: 10})
+    public cardNumber: string;
+ 
 }
