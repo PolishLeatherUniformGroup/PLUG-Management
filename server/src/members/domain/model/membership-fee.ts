@@ -2,6 +2,7 @@ import { Money } from "src/shared/money";
 import { MemberId } from "./member-id";
 
 export class MembershipFee {
+    
     private _id: string;
     private _year:number;
     private _dueAmount: Money;
@@ -52,5 +53,10 @@ export class MembershipFee {
 
     public get paidDate(): Date | undefined {
         return this._paidDate;
+    }
+
+    public pay(amount: Money, paidDate: Date) {
+        this._paidAmount = amount;
+        this._paidDate = paidDate;
     }
 }

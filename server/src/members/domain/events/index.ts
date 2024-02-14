@@ -3,16 +3,20 @@ import { MembershipFee } from '../model/membership-fee';
 import { MemberCreated } from './member-created.event';
 import { MemberCardAssigned } from './member-card-assigned';
 import { MemberCard } from '../model/member-card';
-import { MembershipFeeRequested } from './memebrship-fee-requested';
+import { MembershipFeeRequested } from './membership-fee-requested.event';
 import { Money } from 'src/shared/money';
+import { MembershipFeePaid } from './membership-fee-paid.event';
 
 export * from './member-created.event';
 export * from './member-card-assigned';
-export * from './memebrship-fee-requested';
+export * from './membership-fee-requested.event';
+export * from './membership-fee-paid.event';
 
-export { MemberCreated, MemberCardAssigned, MembershipFeeRequested};
+
+export { MemberCreated, MemberCardAssigned, MembershipFeeRequested, MembershipFeePaid};
 export const MembersEvents = {
     MemberCreated: (id: string, firstName: string, lastName: string, email: string, phoneNumber: string, joinDate: Date, birthDate: Date, address: Address, initialFee: MembershipFee) => new MemberCreated(id, firstName, lastName, email, phoneNumber, joinDate, birthDate, address, initialFee),
     MemberCardAssigned: (id: string, cardNumber: MemberCard) => new MemberCardAssigned(id, cardNumber),
-    MembershipFeeRequested: (id: string, year: number, amount: Money, dueDate: Date) => new MembershipFeeRequested(id, year, amount, dueDate)
+    MembershipFeeRequested: (id: string, year: number, amount: Money, dueDate: Date) => new MembershipFeeRequested(id, year, amount, dueDate),
+    MembershipFeePaid: (id: string, feeId: string, amount: Money, paidDate: Date) => new MembershipFeePaid(id, feeId, amount, paidDate)
 }

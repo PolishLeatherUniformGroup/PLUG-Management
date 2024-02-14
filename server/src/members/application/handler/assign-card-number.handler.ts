@@ -1,8 +1,9 @@
 import { Inject } from "@nestjs/common";
-import { ICommandHandler } from "@nestjs/cqrs";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { MEMBERS, Members } from "src/members/domain/repository/members";
 import { AssignCardNumberCommand } from "../command/assign-card-number.command";
 
+@CommandHandler(AssignCardNumberCommand)
 export class AssignCardNumberHandler implements ICommandHandler<AssignCardNumberCommand> {
     constructor(
         @Inject(MEMBERS) private readonly members: Members

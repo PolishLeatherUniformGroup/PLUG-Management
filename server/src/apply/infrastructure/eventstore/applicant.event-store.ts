@@ -1,6 +1,5 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { EventPublisher } from "@nestjs/cqrs";
-import e from "express";
 import { ApplicantId, Applicant } from "src/apply/domain/model";
 import { Applicants } from "src/apply/domain/repository";
 import { EventStore } from "src/core/eventstore/eventstore";

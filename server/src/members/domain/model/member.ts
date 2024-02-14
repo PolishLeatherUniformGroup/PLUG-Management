@@ -8,6 +8,8 @@ import { MemberCard } from "./member-card";
 import { MemberCardAssigned } from "../events/member-card-assigned";
 import { Money } from "src/shared/money";
 import { MembershipFeeRequested } from "../events";
+import { MembershipFeePaid } from "../events/membership-fee-paid.event";
+import { MemberType } from "./member-type";
 
 export class Member extends AggregateRoot{
     
@@ -22,6 +24,7 @@ export class Member extends AggregateRoot{
     private _membershipFees: MembershipFee[];
     private _status:MemberStatus;
     private _memberCard?: MemberCard;
+    private _memberType: MemberType;
 
     constructor(){
         super();
@@ -54,6 +57,10 @@ export class Member extends AggregateRoot{
         
     }
 
+    public registerPaymentForMembershipFee(feeId:string, amount:Money, paidDate:Date){
+        this.apply(new MembershipFeePaid(this._memberId.value, feeId, amount, paidDate))
+    }
+
     private onMemberCreated(event: MemberCreated){
         this._memberId = MemberId.fromString(event.id);
         this._firstName = event.firstName;
@@ -74,6 +81,13 @@ export class Member extends AggregateRoot{
     private onMembershipFeeRequested(event: MembershipFeeRequested){
         const membershipFee = MembershipFee.create(this._memberId, event.year, event.amount, event.dueDate);
         this._membershipFees.push(membershipFee);
+    }
+
+    private onMembershipFeePaid(event: MembershipFeePaid){
+        const fee = this._membershipFees.find(fee => fee.id === event.feeId);
+        if(fee){
+            fee.pay(event.amount, event.paidDate);
+        }
     }
 
 }
