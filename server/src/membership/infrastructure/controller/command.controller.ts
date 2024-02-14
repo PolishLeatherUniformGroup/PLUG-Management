@@ -35,6 +35,10 @@ import { AppealMemberExpulsionCommand } from "src/membership/application/command
 import { AcceptMemberExpulsionAppealCommand } from "src/membership/application/command/accept-member-expulsion-appeal.command";
 import { RejectExpulsionAppealRequestDto } from "../dto/reject-expulsion-appeal-request.dto";
 import { RejectMemberExpulsionAppealCommand } from "src/membership/application/command/reject-member-expulsion-appeal.command";
+import { RequestMembershipFeePaymentDto } from "../dto/request-membership-fee-payment-dto";
+import { RequestMembershipFeePaymentCommand } from "src/membership/application/command/request-membership-fee-payment.command";
+import { RegisterFeePaymentRequestDto } from "src/apply/infrastructure/dto/register-fee-payment-request.dto";
+import { RegisterFeePaymentCommand } from "src/apply/application/command/register-fee-payment.command";
 
 @Controller('membership/commands')
 @ApiTags('membership')
@@ -223,6 +227,30 @@ export class CommandController {
     async rejestExpulsionAppeal(@Body() payload: RejectExpulsionAppealRequestDto){
         try{
             const command = new RejectMemberExpulsionAppealCommand(MemberId.fromString(payload.memberId),payload.expulsionId, payload.date, payload.decision);
+            await this.commandBus.execute(command);
+        }catch(error){
+            console.error(error);
+        }
+    }
+
+    @Post('request-fee-payment')
+    @ApiOperation({ summary: 'Request fee payment' })
+    @ApiResponse({ status: 204, description: 'Fee Payment requested.' })
+    async requestFeePayment(@Body() payload: RequestMembershipFeePaymentDto){
+        try{
+            const command = new RequestMembershipFeePaymentCommand( payload.year,Money.create(payload.amount.amount,payload.amount.currency), payload.dueDate);
+            await this.commandBus.execute(command);
+        }catch(error){
+            console.error(error);
+        }
+    }
+
+    @Post('register-fee-payment')
+    @ApiOperation({ summary: 'Register Fee Payment' })
+    @ApiResponse({ status: 204, description: 'Fee pyment registered.' })
+    async registerFeePayment(@Body() payload: RegisterFeePaymentRequestDto){
+        try{
+            const command = new RegisterFeePaymentCommand(MemberId.fromString(payload.id),payload.paymentDate, Money.create(payload.fee.amount,payload.fee.currency));
             await this.commandBus.execute(command);
         }catch(error){
             console.error(error);
