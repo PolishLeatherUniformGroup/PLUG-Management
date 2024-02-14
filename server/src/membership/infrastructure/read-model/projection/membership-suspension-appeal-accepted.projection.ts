@@ -1,5 +1,5 @@
 import { EventsHandler, IEventHandler } from "@nestjs/cqrs";
-import { MemberSuspensionAppealCancelled } from "src/membership/domain/events";
+import { MembershipSuspensionAppealCancelled } from "src/membership/domain/events";
 import { MemberSuspensionView } from "../model/member-suspension.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -8,7 +8,7 @@ import { MemberView } from "../model/member.entity";
 import { MemberStatus } from "src/membership/domain/model/member-status";
 
 @EventsHandler(MembershipSuspensionAppealAccepted)
-export class MemberSuspensionAppealAcceptedProjection implements IEventHandler<MembershipSuspensionAppealAccepted> {
+export class MembershipSuspensionAppealAcceptedProjection implements IEventHandler<MembershipSuspensionAppealAccepted> {
     constructor(
         @InjectRepository(MemberView) private readonly memberRepository: Repository<MemberView>,
         @InjectRepository(MemberSuspensionView) private readonly memberSuspensionRepository: Repository<MemberSuspensionView>

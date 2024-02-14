@@ -47,5 +47,10 @@ export class MemberSuspension {
         this._appealDecisionDate = decisionDate;
         this._appealSuccessful = true;
     }
+    public rejectAppeal(date: Date, reason: string) {
+        this._appealDecision = reason;
+        this._appealDecisionDate = date;
+        this._appealSuccessful = false;
+    }
 }
 

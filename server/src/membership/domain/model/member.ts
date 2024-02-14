@@ -7,7 +7,7 @@ import { MemberCreated } from "../events/member-created.event";
 import { MemberCard } from "./member-card";
 import { MemberCardAssigned } from "../events/member-card-assigned.event";
 import { Money } from "src/shared/money";
-import { MemberSuspensionAppealCancelled, MemberSuspensionAppealed, MembershipFeeRequested } from "../events";
+import { MembershipSuspensionAppealCancelled, MembershipSuspensionAppealed, MembershipFeeRequested, MembershipSuspensionAppealRejected } from "../events";
 import { MembershipFeePaid } from "../events/membership-fee-paid.event";
 import { MemberType } from "./member-type";
 import { MemberTypeChanged } from "../events/member-type-changed.event";
@@ -94,14 +94,18 @@ export class Member extends AggregateRoot {
     }
 
     public appealSuspension(suspensionId: string, appealDate: Date, justification: string) {
-        this.apply(new MemberSuspensionAppealed(this._memberId.value, suspensionId, appealDate, justification));
+        this.apply(new MembershipSuspensionAppealed(this._memberId.value, suspensionId, appealDate, justification));
         if (!this._memberSuspensions.find(suspension => suspension.id !== suspensionId)?.canBeAppealed(appealDate)) {
-            this.apply(new MemberSuspensionAppealCancelled(this._memberId.value, suspensionId));
+            this.apply(new MembershipSuspensionAppealCancelled(this._memberId.value, suspensionId));
         }
     }
 
     public acceptSuspensionAppeal(suspensionId: string, decisionDate: Date, reason: string) {
         this.apply(new MembershipSuspensionAppealAccepted(this._memberId.value, suspensionId, decisionDate, reason));
+    }
+
+    public rejectSuspensionAppeal(suspensionId: string, decisionDate: Date, reason: string) {
+        this.apply(new MembershipSuspensionAppealRejected(this._memberId.value, suspensionId, decisionDate, reason));
     }
 
     private onMemberCreated(event: MemberCreated) {
@@ -153,14 +157,14 @@ export class Member extends AggregateRoot {
         this._memberSuspensions.push(suspension);
     }
 
-    private onMemberSuspensionAppealed(event: MemberSuspensionAppealed) {
+    private onMemberSuspensionAppealed(event: MembershipSuspensionAppealed) {
         const suspension = this._memberSuspensions.find(suspension => suspension.id === event.suspensionId);
         if (suspension) {
             suspension.appeal(event.date, event.justification);
         }
     }
 
-    private onMemberSuspensionAppealCancelled(event: MemberSuspensionAppealCancelled) {
+    private onMemberSuspensionAppealCancelled(event: MembershipSuspensionAppealCancelled) {
         const suspension = this._memberSuspensions.find(suspension => suspension.id === event.suspensionId);
         if (suspension) {
             suspension.cancelAppeal();
@@ -173,6 +177,13 @@ export class Member extends AggregateRoot {
             suspension.acceptAppeal(event.date, event.reason);
         }
         this._status = MemberStatus.Active;
+    }
+
+    private onMembershipSuspensionAppealRejected(event: MembershipSuspensionAppealRejected) {
+        const suspension = this._memberSuspensions.find(suspension => suspension.id === event.suspensionId);
+        if (suspension) {
+            suspension.rejectAppeal(event.date, event.reason);
+        }
     }
 
 }

@@ -1,3 +1,4 @@
+import e from "express";
 import { AppealMembershipSuspensionHandler } from "./appeal-membership-suspension.handler";
 import { AssignCardNumberHandler } from "./assign-card-number.handler";
 import { CancelMembershipHandler } from "./cancel-membership.handler";
@@ -8,6 +9,8 @@ import { MakeMemberRegularHandler } from "./make-member-regular.handler";
 import { RegisterMembershipFeePaymentHandler } from "./register-membership-fee-payment.handler";
 import { RequestMembershipFeePaymentHandler } from "./request-membership-fee-payment.handler";
 import { SuspendMemberHandler } from "./suspend-member.handler";
+import { AcceptMemberSuspensionAppealHandler } from "./accept-member-suspension-appeal.handler";
+import { RejectMemberSuspensionAppealHandler } from "./reject-member-suspension-appeal.handler";
 
 export * from "./create-member.handler";
 export * from "./assign-card-number.handler";
@@ -19,6 +22,8 @@ export * from "./expire-membership.handler";
 export * from "./cancel-membership.handler";
 export * from "./suspend-member.handler";
 export * from "./appeal-membership-suspension.handler";
+export * from "./reject-member-suspension-appeal.handler";
+export * from "./accept-member-suspension-appeal.handler";
 
 export const CommandHandlers = [
     CreateMemberHandler,
@@ -30,5 +35,7 @@ export const CommandHandlers = [
     ExpireMembershipHandler,
     CancelMembershipHandler,
     SuspendMemberHandler,
-    AppealMembershipSuspensionHandler
+    AppealMembershipSuspensionHandler,
+    RejectMemberSuspensionAppealHandler,
+    AcceptMemberSuspensionAppealHandler
 ];
