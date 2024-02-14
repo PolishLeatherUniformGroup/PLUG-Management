@@ -13,8 +13,8 @@ export class GetApplicantsHandler implements IQueryHandler<GetApplicantsQuery> {
   async execute(query: GetApplicantsQuery): Promise<ApplicantDto[]> {
     const applicants = await this.repository.find();
   
-    return applicants.map((recommendation) => {
-        return {...recommendation} as ApplicantDto
+    return applicants.map((applicant) => {
+        return {...applicant} as ApplicantDto
     });
   }
 }
