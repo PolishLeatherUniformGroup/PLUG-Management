@@ -1,5 +1,5 @@
-import { RecommendationDto } from "./recommendation.dto";
+import { RecommendationDto } from './recommendation.dto';
 
-export class RecommendationsDto{
-    public data:RecommendationDto[];
+export class RecommendationsDto {
+  public data: RecommendationDto[];
 }

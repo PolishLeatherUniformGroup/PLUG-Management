@@ -1,6 +1,9 @@
-import { DomainEvent } from "src/core/domain";
-import { MemberCard } from "../model/member-card";
+import { DomainEvent } from 'src/core/domain';
+import { MemberCard } from '../model/member-card';
 
 export class MemberCardAssigned implements DomainEvent {
-    constructor(public readonly id: string, public readonly cardNumber: MemberCard) {}
+  constructor(
+    public readonly id: string,
+    public readonly cardNumber: MemberCard,
+  ) {}
 }

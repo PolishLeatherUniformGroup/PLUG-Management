@@ -1,4 +1,4 @@
-import { DomainEvent } from "src/core/domain";
+import { DomainEvent } from 'src/core/domain';
 
 export class MemberSuspended implements DomainEvent {
   constructor(
@@ -7,6 +7,6 @@ export class MemberSuspended implements DomainEvent {
     public readonly date: Date,
     public readonly reason: string,
     public readonly suspensionEndDate: Date,
-    public readonly appealDeadline: Date
+    public readonly appealDeadline: Date,
   ) {}
 }

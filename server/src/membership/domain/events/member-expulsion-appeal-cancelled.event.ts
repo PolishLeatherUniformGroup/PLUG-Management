@@ -1,9 +1,8 @@
-import { DomainEvent } from "src/core/domain";
-
+import { DomainEvent } from 'src/core/domain';
 
 export class MemberExpulsionAppealCancelled implements DomainEvent {
-    constructor(public id: string, public expulsionId: string) {
-    }
+  constructor(
+    public id: string,
+    public expulsionId: string,
+  ) {}
 }
-
-

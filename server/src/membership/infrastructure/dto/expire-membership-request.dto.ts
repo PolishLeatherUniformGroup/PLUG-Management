@@ -1,4 +1,4 @@
 export class ExpireMembershipRequestDto {
-    public memberId: string;
-    public date: Date;
+  public memberId: string;
+  public date: Date;
 }

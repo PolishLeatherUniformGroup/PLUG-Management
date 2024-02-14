@@ -1,5 +1,3 @@
-import { IQuery } from "@nestjs/cqrs";
+import { IQuery } from '@nestjs/cqrs';
 
-export class GetApplicantsQuery implements IQuery{
-    
-}
+export class GetApplicantsQuery implements IQuery {}

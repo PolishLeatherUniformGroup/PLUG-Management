@@ -1,5 +1,5 @@
 export class AppealApplicationRejectionRequestDto {
-    id: string;
-    justification: string;
-    appealDate: Date;
+  id: string;
+  justification: string;
+  appealDate: Date;
 }

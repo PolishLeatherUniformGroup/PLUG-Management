@@ -1,51 +1,49 @@
 export class ApplicantDto {
+  public id: string;
 
-    public id: string;
-  
-    public firstName: string;
-  
-    public lastName: string;
+  public firstName: string;
 
-    public email: string;
+  public lastName: string;
 
-    public phoneNumber: string;
+  public email: string;
 
-    public applyDate: Date;
-  
-    public birthDate: Date;
+  public phoneNumber: string;
 
-    public addressCountry: string;
+  public applyDate: Date;
 
-    public addressCity: string;
- 
-    public addressStreet: string;
- 
-    public addressPostalCode: string;
+  public birthDate: Date;
 
-    public addressState?: string;
+  public addressCountry: string;
 
-    public status:number
+  public addressCity: string;
 
-    public requiredFeeAmount?: number;
+  public addressStreet: string;
 
-    public feeCurrency?: string;
+  public addressPostalCode: string;
 
-    public paidFeeAmount?: number;
+  public addressState?: string;
 
-    public feePaidDate?:Date;
-  
-    public decision?:string;
-  
-    public decisionDate?:Date;
-    
-    public appealDeadline?:Date;
-   
-    public appealDate?:Date;
-    
-    public appealJustification?:string;
+  public status: number;
 
-    public appealDecision?:string;
+  public requiredFeeAmount?: number;
 
-    public appealDecisionDate?:Date;
+  public feeCurrency?: string;
 
+  public paidFeeAmount?: number;
+
+  public feePaidDate?: Date;
+
+  public decision?: string;
+
+  public decisionDate?: Date;
+
+  public appealDeadline?: Date;
+
+  public appealDate?: Date;
+
+  public appealJustification?: string;
+
+  public appealDecision?: string;
+
+  public appealDecisionDate?: Date;
 }

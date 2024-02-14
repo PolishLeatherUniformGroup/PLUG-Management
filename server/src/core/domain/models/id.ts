@@ -1,6 +1,3 @@
-import { version } from 'uuid-validate';
-
-import { InvalidIdError } from '../exceptions';
 import { ValueObject } from './value-object';
 
 interface Props {

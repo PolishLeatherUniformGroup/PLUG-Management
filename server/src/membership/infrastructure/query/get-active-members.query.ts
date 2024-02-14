@@ -1,6 +1,5 @@
-import { IQuery } from "@nestjs/cqrs";
-import { MemberView } from "../read-model/model/member.entity";
+import { IQuery } from '@nestjs/cqrs';
 
-export class GetActiveMembersQuery  implements IQuery{
-    constructor(){}
+export class GetActiveMembersQuery implements IQuery {
+  constructor() {}
 }

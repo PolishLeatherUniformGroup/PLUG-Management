@@ -1,3 +1,3 @@
 export class MakeMemberHonoraryRequestDto {
-    public memberId: string;
+  public memberId: string;
 }

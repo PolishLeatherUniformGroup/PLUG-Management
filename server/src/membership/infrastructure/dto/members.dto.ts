@@ -1,5 +1,5 @@
-import { MemberDto } from "./member.dto";
+import { MemberDto } from './member.dto';
 
-export class MembersDto{
-    data: MemberDto[];
+export class MembersDto {
+  data: MemberDto[];
 }

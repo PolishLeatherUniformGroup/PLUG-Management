@@ -1,9 +1,9 @@
-import { AddressDto } from "../../../shared/dto/address.dto";
+import { AddressDto } from '../../../shared/dto/address.dto';
 
 export class ApplyRequestDto {
   firstName: string;
   lastName: string;
-  email: string
+  email: string;
   phoneNumber: string;
   applyDate: Date;
   birthDate: Date;

@@ -15,26 +15,30 @@ import { MemberCardNumber } from './infrastructure/read-model/model/member-card.
 import { MemberSuspensionView } from './infrastructure/read-model/model/member-suspension.entity';
 import { MemberExpulsionView } from './infrastructure/read-model/model/member-expulsion.entity';
 
-
 @Module({
-    imports: [CqrsModule, TypeOrmModule.forFeature([
-        MemberView,
-        MembershipFeeView,
-        MemberCardNumber,
-        MemberSuspensionView,
-        MemberExpulsionView]), EventStoreModule],
-    controllers: [CommandController],
-    providers: [
-        ...CommandHandlers,
-        ...Projections,
-        ...NotificationHandlers,
-        ...MembersProviders
-    ],
-    exports: [],
+  imports: [
+    CqrsModule,
+    TypeOrmModule.forFeature([
+      MemberView,
+      MembershipFeeView,
+      MemberCardNumber,
+      MemberSuspensionView,
+      MemberExpulsionView,
+    ]),
+    EventStoreModule,
+  ],
+  controllers: [CommandController],
+  providers: [
+    ...CommandHandlers,
+    ...Projections,
+    ...NotificationHandlers,
+    ...MembersProviders,
+  ],
+  exports: [],
 })
 export class MembersModule implements OnModuleInit {
-    constructor(private readonly eventStore: EventStore) { }
-    onModuleInit() {
-        this.eventStore.addEventHandlers(MembersEvents);
-    }
+  constructor(private readonly eventStore: EventStore) {}
+  onModuleInit() {
+    this.eventStore.addEventHandlers(MembersEvents);
+  }
 }

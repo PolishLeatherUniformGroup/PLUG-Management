@@ -1,23 +1,26 @@
-import { EventsHandler, IEventHandler } from "@nestjs/cqrs";
-import { MemberExpulsionAppealed, MembershipSuspensionAppealed } from "src/membership/domain/events";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { MemberSuspensionView } from "../model/member-suspension.entity";
-import { MemberExpulsionView } from "../model/member-expulsion.entity";
+import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
+import { MemberExpulsionAppealed } from 'src/membership/domain/events';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { MemberExpulsionView } from '../model/member-expulsion.entity';
 
 @EventsHandler(MemberExpulsionAppealed)
-export class MemberExpulsionAppealedProjection implements IEventHandler<MemberExpulsionAppealed> {
-    constructor(
-        @InjectRepository(MemberExpulsionView) private readonly memberExpulsionRepository: Repository<MemberExpulsionView>
-    ) {
-    }
+export class MemberExpulsionAppealedProjection
+  implements IEventHandler<MemberExpulsionAppealed>
+{
+  constructor(
+    @InjectRepository(MemberExpulsionView)
+    private readonly memberExpulsionRepository: Repository<MemberExpulsionView>,
+  ) {}
 
-    async handle(event: MemberExpulsionAppealed) {
-        const expulsion = await this.memberExpulsionRepository.findOne({ where: { id: event.expulsionId } });
-        if (expulsion) {
-            expulsion.appealDate = event.date;
-            expulsion.appealJustification = event.justification;
-            await this.memberExpulsionRepository.save(expulsion);
-        }
+  async handle(event: MemberExpulsionAppealed) {
+    const expulsion = await this.memberExpulsionRepository.findOne({
+      where: { id: event.expulsionId },
+    });
+    if (expulsion) {
+      expulsion.appealDate = event.date;
+      expulsion.appealJustification = event.justification;
+      await this.memberExpulsionRepository.save(expulsion);
     }
+  }
 }

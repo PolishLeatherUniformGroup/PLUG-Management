@@ -1,4 +1,4 @@
-export class MoneyDto{
-    amount: number;
-    currency: string;
+export class MoneyDto {
+  amount: number;
+  currency: string;
 }

@@ -1,4 +1,3 @@
-export class MakeMemberRegularRequestDto{
-    public memberId:string;
+export class MakeMemberRegularRequestDto {
+  public memberId: string;
 }
-

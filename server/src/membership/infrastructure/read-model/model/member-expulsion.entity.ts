@@ -21,6 +21,6 @@ export class MemberExpulsionView {
   public appealDecisionDate?: Date;
   @Column()
   public appealSuccessful?: boolean;
-  @ManyToOne(type => MemberView, member => member.id)
+  @ManyToOne(() => MemberView, (member) => member.id)
   public member: MemberView;
 }

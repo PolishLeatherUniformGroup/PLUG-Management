@@ -1,10 +1,10 @@
-import { AddressDto } from "src/shared/dto/address.dto";
-import { MembershipFeeDto } from "./membership-fee.dto";
+import { AddressDto } from 'src/shared/dto/address.dto';
+import { MembershipFeeDto } from './membership-fee.dto';
 
-export class CreateMemberRequestDto{
+export class CreateMemberRequestDto {
   firstName: string;
   lastName: string;
-  email: string
+  email: string;
   phoneNumber: string;
   joinDate: Date;
   birthDate: Date;

@@ -1,6 +1,4 @@
-
 export class CancelMembershipRequestDto {
-    public memberId: string;
-    public date: Date;
+  public memberId: string;
+  public date: Date;
 }
-

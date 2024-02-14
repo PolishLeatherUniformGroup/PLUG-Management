@@ -8,21 +8,26 @@ import { TasksModule } from './tasks/tasks.module';
 import { SettingsModule } from './settings/settings.module';
 
 @Module({
-  imports: [ApplyModule, EventStoreModule,TypeOrmModule.forRoot({
-    type: 'mysql',
-    host: 'h27.seohost.pl',
-    port: 3306,
-    username: 'srv58017_plug_app',
-    password: 'nijfos-tUqfyr-picva5',
-    database: 'srv58017_plug_app',
-    synchronize: true,
-    entities: [__dirname + '/**/*.entity.{js,ts}'],
-    logging: false,
-  }), MembersModule, GatheringsModule, TasksModule, SettingsModule],
-  controllers: [],
-  providers: [
+  imports: [
+    ApplyModule,
+    EventStoreModule,
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'h27.seohost.pl',
+      port: 3306,
+      username: 'srv58017_plug_app',
+      password: 'nijfos-tUqfyr-picva5',
+      database: 'srv58017_plug_app',
+      synchronize: true,
+      entities: [__dirname + '/**/*.entity.{js,ts}'],
+      logging: false,
+    }),
+    MembersModule,
+    GatheringsModule,
+    TasksModule,
+    SettingsModule,
   ],
+  controllers: [],
+  providers: [],
 })
-
 export class AppModule {}
-

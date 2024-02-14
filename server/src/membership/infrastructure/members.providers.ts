@@ -1,9 +1,9 @@
-import { MEMBERS } from "../domain/repository/members";
-import { MemberEventStore } from "./eventstore/member-event-store";
+import { MEMBERS } from '../domain/repository/members';
+import { MemberEventStore } from './eventstore/member-event-store';
 
-export const MembersProviders =[
-    {
-        provide : MEMBERS,
-        useClass: MemberEventStore
-    }
-]
+export const MembersProviders = [
+  {
+    provide: MEMBERS,
+    useClass: MemberEventStore,
+  },
+];

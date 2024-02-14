@@ -1,3 +1,1 @@
-export class MemberHistory{
-    
-}
+export class MemberHistory {}

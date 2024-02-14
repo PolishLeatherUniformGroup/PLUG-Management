@@ -1,6 +1,6 @@
 export class RefuseRecommendationRequestDto {
-    constructor(
-        public readonly id: string,
-        public readonly recommendationId: string,
-    ) {}
+  constructor(
+    public readonly id: string,
+    public readonly recommendationId: string,
+  ) {}
 }
