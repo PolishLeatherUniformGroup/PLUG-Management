@@ -1,8 +1,6 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
-import { ApplyRequestDto } from "../dto/apply-request.dto";
 import { ApiOperation, ApiResponse, ApiTags, ApiParam } from "@nestjs/swagger";
-import { CommandBus, QueryBus } from "@nestjs/cqrs";
-import { SendApplicationCommand } from "src/apply/application/command/send-application.command";
+import { Commanders } from "@nestjs/cqrs";
 import { Address } from "src/shared/address";
 import { RequestRecommendations as RequestRecommendationsCommand } from "src/apply/application/command/request-recommendations.command";
 import { ApplicantId } from "src/apply/domain/model";
@@ -26,38 +24,13 @@ import { AcceptApplicationRejectionAppealCommand } from "src/apply/application/c
 import { RejectApplicationRejectionAppealCommand } from "src/apply/application/command/reject-application-rejection-appeal.command";
 import { AcceptApplicationRejectionAppealRequestDto } from "../dto/accept-application-rejection-appeal-request.dto";
 import { RejectApplicationRejectionAppealRequestDto } from "../dto/reject-application-rejection-appeal-request.dto";
-import { ApplicantView } from "../read-model/model/applicant.entity";
-import { RecommendationView } from "../read-model/model/recommendation.entity";
-import { ApplicantDto } from "../dto/applicant.dto";
-import { GetApplicantQuery } from "../query/get-applicant.query";
 
-@Controller('apply')
+@Controller('command')
 @ApiTags('apply')
 export class ApplyController {
 
-    constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) { }
+    constructor(private readonly commandBus: CommandBus) { }
 
-    @Post('commands/send-application')
-    @ApiOperation({ summary: 'Send application' })
-    @ApiResponse({ status: 204, description: 'Create Applicant.' })
-    async sendApplication(@Body() payload: ApplyRequestDto) {
-        try {
-            const command: SendApplicationCommand =
-                new SendApplicationCommand(
-                    payload.firstName,
-                    payload.lastName,
-                    payload.email,
-                    payload.phoneNumber,
-                    payload.applyDate,
-                    payload.birthDate,
-                    Address.fromDto(payload.address),
-                    payload.recommendersCards
-                );
-            await this.commandBus.execute(command);
-        } catch (error) {
-            console.error(error);
-        }
-    }
 
     @Post('commands/request-recommendations')
     @ApiOperation({ summary: 'Request recommendations' })
