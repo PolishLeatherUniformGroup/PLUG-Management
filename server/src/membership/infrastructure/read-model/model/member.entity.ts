@@ -36,5 +36,6 @@ export class MemberView{
     public expireDate?: Date;
     @Column()
     cancelDate?: Date;
+
  
 }

@@ -10,12 +10,15 @@ import { MemberTypeChanged } from './member-type-changed.event';
 import { MemberType } from '../model/member-type';
 import { MembershipExpired } from './membership-expired.event';
 import { MembershipCancelled } from './membership-cancelled.event';
+import { MemberSuspended } from './member-suspended.event';
 
 export * from './member-created.event';
 export * from './member-card-assigned.event';
 export * from './membership-fee-requested.event';
 export * from './membership-fee-paid.event';
-
+export * from './member-type-changed.event';
+export * from './membership-expired.event';
+export * from './membership-cancelled.event';
 
 export { MemberCreated, MemberCardAssigned, MembershipFeeRequested, MembershipFeePaid};
 export const MembersEvents = {
@@ -25,5 +28,6 @@ export const MembersEvents = {
     MembershipFeePaid: (id: string, feeId: string, amount: Money, paidDate: Date) => new MembershipFeePaid(id, feeId, amount, paidDate),
     MemberTypeChanged: (id: string, type: MemberType) => new MemberTypeChanged(id, type),
     MembershipExpired: (id: string, date: Date) => new MembershipExpired(id, date),
-    MembershipCancelled: (id: string, date: Date) => new MembershipCancelled(id, date)
+    MembershipCancelled: (id: string, date: Date) => new MembershipCancelled(id, date),
+    MemberSuspended: (id: string,suspensionId:string, date:Date, reason:string, suspensionEndDate:Date,appealDeadline:Date) => new MemberSuspended(id, suspensionId, date, reason, suspensionEndDate,appealDeadline),
 }

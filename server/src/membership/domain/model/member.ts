@@ -15,6 +15,7 @@ import { MemberSuspension } from "./member-suspension";
 import { MemberExpulsion } from "./member-expulsion";
 import { MembershipExpired } from "../events/membership-expired.event";
 import { MembershipCancelled } from "../events/membership-cancelled.event";
+import { MemberSuspended } from "../events/member-suspended.event";
 
 export class Member extends AggregateRoot{
     
@@ -86,6 +87,11 @@ export class Member extends AggregateRoot{
         this.apply(new MembershipCancelled(this._memberId.value, date));
     }
 
+    public suspendMember(date:Date, reason:string, until:Date, appealDeadline:Date){
+        const suspensionId = `${this._memberId.value}-sus-${this._memberSuspensions.length}`;
+        this.apply(new MemberSuspended(this._memberId.value, suspensionId, date, reason, until,appealDeadline ));
+    }
+
     private onMemberCreated(event: MemberCreated){
         this._memberId = MemberId.fromString(event.id);
         this._firstName = event.firstName;
@@ -128,6 +134,11 @@ export class Member extends AggregateRoot{
     private onMembershipCancelled(event: MembershipCancelled){
         this._status = MemberStatus.Cancelled;
         this._cancelDate = event.date;
+    }
+
+    private onMemberSuspended(event: MemberSuspended){
+        const suspension = MemberSuspension.create(event.suspensionId, event.date, event.reason, event.suspensionEndDate,event.appealDeadline);
+        this._memberSuspensions.push(suspension);
     }
 
 }

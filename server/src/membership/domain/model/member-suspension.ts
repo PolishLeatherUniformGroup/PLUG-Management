@@ -1,3 +1,5 @@
+import { MemberId } from "./member-id";
+
 export class MemberSuspension{
     private _id: string;
     private _suspensionDate: Date;
@@ -10,5 +12,18 @@ export class MemberSuspension{
     private _appealDecision?: string;
     private _appealDecisionDate?: Date;
     private _appealSuccessful?: boolean;
+
+    constructor(){
+    }
+
+    public static create(id:string, suspensionDate:Date, reason:string, suspensionEndDate:Date, appealDeadline:Date): MemberSuspension{
+        const suspension = new MemberSuspension();
+        suspension._id = id;
+        suspension._suspensionDate = suspensionDate;
+        suspension._reason = reason;
+        suspension._susensionEndDate = suspensionEndDate;
+        suspension._appealDeadline = appealDeadline;
+        return suspension;
+    }
 }
 

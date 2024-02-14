@@ -12,10 +12,15 @@ import { Notifications as NotificationHandlers } from './infrastructure/notifica
 import { MembersProviders } from './infrastructure/members.providers';
 import { CommandController } from './infrastructure/controller/command.controller';
 import { MemberCardNumber } from './infrastructure/read-model/model/member-card.entity';
+import { MemberSuspensionView } from './infrastructure/read-model/model/member-suspension.entity';
 
 
 @Module({
-    imports: [CqrsModule,TypeOrmModule.forFeature([MemberView, MembershipFeeView, MemberCardNumber]), EventStoreModule],
+    imports: [CqrsModule, TypeOrmModule.forFeature([
+        MemberView,
+        MembershipFeeView,
+        MemberCardNumber,
+        MemberSuspensionView]), EventStoreModule],
     controllers: [CommandController],
     providers: [
         ...CommandHandlers,
@@ -25,8 +30,8 @@ import { MemberCardNumber } from './infrastructure/read-model/model/member-card.
     ],
     exports: [],
 })
-export class MembersModule implements OnModuleInit{
-    constructor(private readonly eventStore: EventStore) {}
+export class MembersModule implements OnModuleInit {
+    constructor(private readonly eventStore: EventStore) { }
     onModuleInit() {
         this.eventStore.addEventHandlers(MembersEvents);
     }
