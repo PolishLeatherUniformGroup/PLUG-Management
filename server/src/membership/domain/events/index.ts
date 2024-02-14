@@ -16,6 +16,7 @@ import { MembershipSuspensionAppealCancelled } from './membership-suspension-app
 import { MembershipSuspensionAppealAccepted } from './membership-suspension-appeal-accepted.event';
 import { from } from 'rxjs';
 import { MembershipSuspensionAppealRejected } from './membership-suspension-appeal-rejected.event';
+import { MemberSuspensionEnded } from './member-suspension-ended.event';
 
 export * from './member-created.event';
 export * from './member-card-assigned.event';
@@ -42,7 +43,8 @@ export {
     MembershipSuspensionAppealed as MemberSuspensionAppealed,
     MembershipSuspensionAppealCancelled,
     MembershipSuspensionAppealAccepted,
-    MembershipSuspensionAppealRejected
+    MembershipSuspensionAppealRejected,
+    MemberSuspensionEnded
 };
 export const MembersEvents = {
     MemberCreated: (id: string, firstName: string, lastName: string, email: string, phoneNumber: string, joinDate: Date, birthDate: Date, address: Address, initialFee: MembershipFee) => new MemberCreated(id, firstName, lastName, email, phoneNumber, joinDate, birthDate, address, initialFee),
@@ -56,5 +58,6 @@ export const MembersEvents = {
     MembershipSuspensionAppealed: (id: string, suspensionId: string, appealDate: Date, justification: string) => new MembershipSuspensionAppealed(id, suspensionId, appealDate, justification),
     MembershipSuspensionAppealCancelled: (id: string, suspensionId: string) => new MembershipSuspensionAppealCancelled(id, suspensionId),
     MembershipSuspensionAppealAccepted: (id: string, suspensionId: string, date: Date, reason: string) => new MembershipSuspensionAppealAccepted(id, suspensionId, date, reason),
-    MembershipSuspensionAppealRejected: (id: string, suspensionId: string, date: Date, reason: string) => new MembershipSuspensionAppealRejected(id, suspensionId, date, reason)
+    MembershipSuspensionAppealRejected: (id: string, suspensionId: string, date: Date, reason: string) => new MembershipSuspensionAppealRejected(id, suspensionId, date, reason),
+    MemberSuspsensionEnded: (id: string) => new MemberSuspensionEnded(id)
 }
