@@ -11,7 +11,7 @@ export class SendApplicationHandler  implements ICommandHandler<SendApplicationC
         @Inject(APPLICANTS) private readonly applicants: Applicants,
     ) { }
     async execute(command:SendApplicationCommand) {
-        const applicantId = ApplicantId.fromString(`apl-${randomUUID().toLowerCase()}`);
+        const applicantId = ApplicantId.fromUUID(randomUUID());
         const applicant = Applicant.register(
             applicantId,
             command.firstName,

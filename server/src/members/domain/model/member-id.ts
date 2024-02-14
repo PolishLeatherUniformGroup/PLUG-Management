@@ -1,7 +1,7 @@
 import { UUID } from 'crypto';
 import { Id } from '../../../core/domain';
 
-export class ApplicantId extends Id {
+export class MemberId extends Id {
   private constructor(id: string) {
     super(id);
   }
@@ -9,8 +9,7 @@ export class ApplicantId extends Id {
   public static fromString(id: string) {
     return new this(id);
   }
-
   public static fromUUID(id: UUID) {
-    return new this(`apl-${id.toLowerCase()}`);
+    return new this(`mbr-${id.toLowerCase()}`);
   }
 }
