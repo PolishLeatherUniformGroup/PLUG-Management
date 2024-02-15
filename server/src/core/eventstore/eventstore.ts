@@ -13,13 +13,13 @@ export class EventStore implements IEventPublisher, IMessageSource {
     private readonly eventRepository: Repository<Event>,
   ) {}
   bridgeEventsTo<T extends IEvent>(subject: Subject<T>) {
-    throw new Error('Method not implemented.');
+    console.log('bridgeEventsTo', subject.asObservable());
   }
 
   private _eventHandlers: [];
 
   publish<TEvent extends IEvent>(event: TEvent, context?: unknown) {
-    console.log('publishing event', event);
+    console.log('publishing event', context, event);
     if ('id' in event === false) {
       throw new Error('Not a DomainEvent');
     }
@@ -42,11 +42,11 @@ export class EventStore implements IEventPublisher, IMessageSource {
   }
 
   publishAll?<TEvent extends IEvent>(events: TEvent[], context?: unknown) {
-    throw new Error('Method not implemented.');
+    events.forEach((event) => this.publish(event, context));
   }
 
   async read<T extends AggregateRoot>(
-    aggregate: Function,
+    aggregate: () => T,
     id: string,
   ): Promise<T | null> {
     const streamName = `${id}`;

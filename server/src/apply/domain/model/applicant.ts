@@ -247,11 +247,12 @@ export class Applicant extends AggregateRoot {
   }
 
   private onApplicantRecommended(event: ApplicantRecommended) {
-    console.log(event);
+    console.log(event.id);
     this._status = ApplicantStatus.AwaitsDecision;
   }
 
   private onApplicationNotRecommended(event: ApplicationNotRecommended) {
+    console.log(event.id);
     this._status = ApplicantStatus.Rejected;
   }
 
