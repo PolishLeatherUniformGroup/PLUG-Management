@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
 import { QueryBus } from '@nestjs/cqrs';
 import { ApplicantDto } from '../dto/applicant.dto';
@@ -36,6 +36,9 @@ export class QueryController {
   async getApplication(@Param() id: string): Promise<ApplicantDto | null> {
     const query = new GetApplicantQuery(id);
     const applicant = await this.queryBus.execute(query);
+    if (!applicant) {
+      throw new NotFoundException();
+    }
     return applicant;
   }
 

@@ -6,19 +6,19 @@ import { Repository } from 'typeorm';
 import { ApplicantDto } from '../../dto/applicant.dto';
 
 @QueryHandler(GetApplicantQuery)
-export class GetApplicantHandler implements IQueryHandler<GetApplicantQuery> {
+export class GetApplicantHandler implements IQueryHandler<GetApplicantQuery,ApplicantView|null> {
   constructor(
     @InjectRepository(ApplicantView)
     private readonly applicantRepository: Repository<ApplicantView>,
   ) {}
 
-  async execute(query: GetApplicantQuery): Promise<ApplicantDto> {
+  async execute(query: GetApplicantQuery): Promise<ApplicantView|null> {
     const q = JSON.parse(JSON.stringify(query.id));
     console.log('Query:', q);
     const applicant = await this.applicantRepository.findOne({
       where: { id: q.id },
     });
-    console.log('Applicant:', applicant);
-    return { ...applicant } as ApplicantDto;
+    return applicant;
+  
   }
 }
