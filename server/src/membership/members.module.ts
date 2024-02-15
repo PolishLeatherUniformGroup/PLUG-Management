@@ -14,6 +14,9 @@ import { CommandController } from './infrastructure/controller/command.controlle
 import { MemberCardNumber } from './infrastructure/read-model/model/member-card.entity';
 import { MemberSuspensionView } from './infrastructure/read-model/model/member-suspension.entity';
 import { MemberExpulsionView } from './infrastructure/read-model/model/member-expulsion.entity';
+import { QueryController } from './infrastructure/controller/query.controller';
+import { ApplyModule } from 'src/apply/apply.module';
+import { QueryHandlers } from './infrastructure/query/handler';
 
 @Module({
   imports: [
@@ -26,13 +29,15 @@ import { MemberExpulsionView } from './infrastructure/read-model/model/member-ex
       MemberExpulsionView,
     ]),
     EventStoreModule,
+    ApplyModule
   ],
-  controllers: [CommandController],
+  controllers: [CommandController, QueryController],
   providers: [
     ...CommandHandlers,
     ...Projections,
     ...NotificationHandlers,
     ...MembersProviders,
+    ...QueryHandlers
   ],
   exports: [],
 })

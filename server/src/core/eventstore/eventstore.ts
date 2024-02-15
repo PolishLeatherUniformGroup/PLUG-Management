@@ -46,7 +46,7 @@ export class EventStore implements IEventPublisher, IMessageSource {
   }
 
   async read<T extends AggregateRoot>(
-    aggregate: () => T,
+    aggregate: Function,
     id: string,
   ): Promise<T | null> {
     const streamName = `${id}`;
