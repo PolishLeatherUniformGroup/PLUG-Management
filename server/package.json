@@ -17,7 +17,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "typeorm": "typeorm-ts-node-commonjs"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -26,13 +27,18 @@
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^7.2.0",
+    "@nestjs/typeorm": "^10.0.2",
     "dotenv": "^16.4.2",
     "jwks-rsa": "^3.1.0",
     "module": "^1.1.0",
+    "mysql2": "^3.9.1",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "shallow-equal-object": "^1.1.1",
+    "typeorm": "^0.3.20",
+    "uuid-validate": "^0.0.3"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
@@ -44,6 +50,7 @@
     "@types/node": "^20.3.1",
     "@types/passport-jwt": "^4.0.1",
     "@types/supertest": "^6.0.0",
+    "@types/uuid-validate": "^0.0.3",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^8.42.0",
