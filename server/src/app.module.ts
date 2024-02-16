@@ -6,6 +6,7 @@ import { MembersModule } from './membership/members.module';
 import { GatheringsModule } from './gatherings/gatherings.module';
 import { TasksModule } from './tasks/tasks.module';
 import { SettingsModule } from './settings/settings.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { SettingsModule } from './settings/settings.module';
     GatheringsModule,
     TasksModule,
     SettingsModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

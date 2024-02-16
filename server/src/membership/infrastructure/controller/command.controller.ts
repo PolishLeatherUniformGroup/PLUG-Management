@@ -1,6 +1,6 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateMemberRequestDto } from '../dto/create-member-request.dto';
 import { CreateMemberCommand } from 'src/membership/application/command/create-member.command';
 import { MemberId } from 'src/membership/domain/model/member-id';
@@ -37,9 +37,12 @@ import { RequestMembershipFeePaymentDto } from '../dto/request-membership-fee-pa
 import { RequestMembershipFeePaymentCommand } from 'src/membership/application/command/request-membership-fee-payment.command';
 import { RegisterFeePaymentRequestDto } from 'src/apply/infrastructure/dto/register-fee-payment-request.dto';
 import { RegisterFeePaymentCommand } from 'src/apply/application/command/register-fee-payment.command';
+import { JwtGuard } from 'src/auth/jwt.guard';
 
 @Controller('membership/commands')
 @ApiTags('membership')
+@ApiBearerAuth()
+@UseGuards(JwtGuard)
 export class CommandController {
   constructor(private readonly commandBus: CommandBus) {}
 

@@ -1,5 +1,5 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommandBus } from '@nestjs/cqrs';
 import { RequestRecommendations as RequestRecommendationsCommand } from 'src/apply/application/command/request-recommendations.command';
 import { ApplicantId } from 'src/apply/domain/model';
@@ -23,11 +23,15 @@ import { AcceptApplicationRejectionAppealCommand } from 'src/apply/application/c
 import { RejectApplicationRejectionAppealCommand } from 'src/apply/application/command/reject-application-rejection-appeal.command';
 import { AcceptApplicationRejectionAppealRequestDto } from '../dto/accept-application-rejection-appeal-request.dto';
 import { RejectApplicationRejectionAppealRequestDto } from '../dto/reject-application-rejection-appeal-request.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtGuard } from 'src/auth/jwt.guard';
 
 @Controller('apply')
 @ApiTags('apply')
+@ApiBearerAuth()
+@UseGuards(JwtGuard)
 export class CommandController {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(private readonly commandBus: CommandBus) { }
 
   @Post('commands/request-recommendations')
   @ApiOperation({ summary: 'Request recommendations' })

@@ -8,6 +8,7 @@ async function bootstrap() {
     .setTitle('PLUG API')
     .setDescription('The PLUG API description')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('v1', app, document);

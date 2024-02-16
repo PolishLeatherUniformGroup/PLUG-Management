@@ -1,5 +1,5 @@
-import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
+import { Controller, Get, NotFoundException, Param, UseGuards } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
 import { QueryBus } from '@nestjs/cqrs';
 import { ApplicantDto } from '../dto/applicant.dto';
 import { GetApplicantQuery } from '../query/get-applicant.query';
@@ -7,9 +7,13 @@ import { RecommendationsDto } from '../dto/recommendations.dto';
 import { GetApplicantRecommendationsQuery } from '../query/get-applicant-recommendations.query';
 import { ApplicantsDto } from '../dto/applicants.dto';
 import { GetApplicantsQuery } from '../query/get-applicants.query';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtGuard } from 'src/auth/jwt.guard';
 
 @Controller('apply')
 @ApiTags('apply')
+@ApiBearerAuth()
+@UseGuards(JwtGuard)
 export class QueryController {
   constructor(private readonly queryBus: QueryBus) {}
   @Get('applicants')
@@ -33,6 +37,7 @@ export class QueryController {
     description: 'Applicant Id',
     type: 'string',
   })
+
   async getApplication(@Param() id: string): Promise<ApplicantDto | null> {
     const query = new GetApplicantQuery(id);
     const applicant = await this.queryBus.execute(query);
