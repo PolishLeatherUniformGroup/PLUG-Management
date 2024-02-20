@@ -7,6 +7,12 @@ export const siteConfig = {
             href: "/",
             isExternal: false,
             isProtected: false,
+        },
+        {
+            label:'Wnioski',
+            href:'/applicants',
+            isExternal:false,
+            isProtected:true,
         }
 
     ],

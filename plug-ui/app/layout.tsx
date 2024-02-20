@@ -22,7 +22,7 @@ export default function RootLayout({
         <Providers>
           <div className="text-foreground bg-background gradient-radial text-base">
             <Header />
-            <main className="flex min-h-screen mt-3  pt-0 lg:px-24 sm:px-12 xs:px-6" >
+            <main className="flex min-h-screen mt-3 w-dvw py-2 lg:px-24 sm:px-12 xs:px-6">
               {children}
             </main>
           </div>
