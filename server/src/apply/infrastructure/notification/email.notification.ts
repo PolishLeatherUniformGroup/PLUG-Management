@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { EventsHandler, IEvent, IEventHandler } from '@nestjs/cqrs';
+import { EventsHandler, IEvent, IEventHandler, QueryBus } from '@nestjs/cqrs';
 import {
   ApplicantAccepted,
   ApplicantRejected,
@@ -13,6 +13,12 @@ import { ApplicantRecommendationsRequested } from 'src/apply/domain/events/appli
 import { ApplicationCancelled } from 'src/apply/domain/events/application-cancelled.event';
 import { ApplicationReceived } from 'src/apply/domain/events/application-received.event';
 import { TypedEventEmitter } from 'src/event-emitter/typed-event-emmitter';
+import { GetApplicantQuery } from '../query/get-applicant.query';
+import { GetMemberByCardQuery } from 'src/membership/infrastructure/query/get-member-by-card.query';
+import { ApplicantView } from '../read-model/model/applicant.entity';
+import { GetApplicantRecommendationsQuery } from '../query/get-applicant-recommendations.query';
+import { RecommendationView } from '../read-model/model/recommendation.entity';
+import { MemberView } from 'src/membership/infrastructure/read-model/model/member.entity';
 
 @EventsHandler(
   ApplicationReceived,
@@ -39,7 +45,8 @@ export class EmailNotification
     IEventHandler<ApplicantRejectionAppealAccepted>,
     IEventHandler<ApplicantRejectionAppealRejected>
 {
-  constructor(private readonly emitter: TypedEventEmitter) {}
+  constructor(private readonly emitter: TypedEventEmitter,
+    private readonly queryBus: QueryBus) {}
 
   async handle(event: IEvent) {
     if (event instanceof ApplicationReceived) {
@@ -80,59 +87,79 @@ export class EmailNotification
       name: event.firstName,
     });
   }
-  
+
   async handleRecommendationsRequested(
     event: ApplicantRecommendationsRequested,
   ) {
-    event.recommendations.forEach(async (recommendation) => {
-      await this.emitter.emitAsync('apply.request-recomendation', {
-        email: recommendation.email,
-        name: recommendation.name,
-      });
-    });
+    const applicantQuery = new GetApplicantQuery(event.id);
+    const applicant:ApplicantView = await this.queryBus.execute(applicantQuery);
 
     await this.emitter.emitAsync('apply.request-fee-payment', {
-      email: event.email,
-      name: event.firstName,
+      email: applicant.email,
+      name: applicant.firstName,
       feeAmount: event.requiredFee.amount,
       feeCurrency: event.requiredFee.currency,
-    })
-   
+    });
+    
+    const recommendationsQuery = new GetApplicantRecommendationsQuery(applicant.id);
+    const recommendations:RecommendationView[] = await this.queryBus.execute(recommendationsQuery);
+    
+    recommendations.forEach(async (recommendation) => {
+      const memberQuery = new GetMemberByCardQuery(recommendation.cardNumber);
+      const member:MemberView = await this.queryBus.execute(memberQuery);
+      await this.emitter.emitAsync('apply.request-recomendation', {
+        email: member.email,
+        name: member.firstName,
+      });
+    });
   }
 
   async handleApplicationCancelled(event: ApplicationCancelled) {
+    const query = new GetApplicantQuery(event.id);
+    const applicant = await this.queryBus.execute(query);
     await this.emitter.emitAsync('apply.application-cancelled', {
-      email: event.email,
-      name: event.firstName,
+      email: applicant.email,
+      name: applicant.firstName,
     });
   }
 
   async handleApplicationRecommendationRefused(
     event: ApplicantRecommendationRefused,
   ) {
-    console.log('Recommendation refused:', event);
+    const query = new GetApplicantQuery(event.id);
+    const applicant = await this.queryBus.execute(query);
+    await this.emitter.emitAsync('apply.application-not-recommended', {
+      email: applicant.email,
+      name: applicant.firstName,
+    });
   }
+
   async handleApplicantAccepted(event: ApplicantAccepted) {
     console.log('Application accepted:', event);
   }
+
   async handleApplicantRejected(event: ApplicantRejected) {
     console.log('Application rejected:', event);
   }
+
   async handleApplicantRejectionAppealReceived(
     event: ApplicantRejectionAppealReceived,
   ) {
     console.log('Appeal received:', event);
   }
+
   async handleApplicantRejectionAppealCancelled(
     event: ApplicantRejectionAppealCancelled,
   ) {
     console.log('Appeal cancelled:', event);
   }
+
   async handleApplicantRejectionAppealAccepted(
     event: ApplicantRejectionAppealAccepted,
   ) {
     console.log('Appeal accepted:', event);
   }
+  
   async handleApplicantRejectionAppealRejected(
     event: ApplicantRejectionAppealRejected,
   ) {

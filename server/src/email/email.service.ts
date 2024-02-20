@@ -45,11 +45,11 @@ export class EmailService {
     async requestApplyFeePayment(data:EventPayloads['apply.request-fee-payment']){
         const {email, name} = data;
         console.log(__dirname)
-        const subject = `Kandydat do oczekuje na  twoją rekomendacje`;
+        const subject = `Informacjo dotyczaca wniosku członkowskiego PLUG`;
         await this.mailerService.sendMail({
             to: email,
             subject,
-            template: './request-fee-payment',
+            template: './apply-request-fee-payment',
             context: {
               ...data,
             },
@@ -65,6 +65,21 @@ export class EmailService {
             to: email,
             subject,
             template: './application-cancelled',
+            context: {
+              name,
+            },
+          });
+    }
+
+    @OnEvent('apply.application-not-recommended')
+    async applicationNotRecommended(data:EventPayloads['apply.application-not-recommended']){
+        const {email, name} = data;
+        console.log(__dirname)
+        const subject = `Informacjo dotyczaca wniosku członkowskiego PLUG`;
+        await this.mailerService.sendMail({
+            to: email,
+            subject,
+            template: './recommendation-refused',
             context: {
               name,
             },

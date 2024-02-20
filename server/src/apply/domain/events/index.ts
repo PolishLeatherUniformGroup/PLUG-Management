@@ -71,13 +71,10 @@ export const ApplyEvents = {
     ),
   ApplicantRecommendationsRequested: (
     id: string,
-    firstName: string,
-    email: string,
     requestedDate: Date,
-    requiredFee: Money,
-    recomendations: {name:string, email:string}[],
-  ) => new ApplicantRecommendationsRequested(id,firstName,email, requestedDate, requiredFee,recomendations),
-  ApplicationCancelled: (id: string, firstName:string, email:string) => new ApplicationCancelled(id,firstName,email),
+    requiredFee: Money
+  ) => new ApplicantRecommendationsRequested(id, requestedDate, requiredFee),
+  ApplicationCancelled: (id: string) => new ApplicationCancelled(id),
   ApplicantPaidFee: (id: string, paymentDate: Date, fee: Money) =>
     new ApplicantPaidFee(id, paymentDate, fee),
   ApplicantRecommendationConfirmed: (id: string, recommendationId: string) =>
