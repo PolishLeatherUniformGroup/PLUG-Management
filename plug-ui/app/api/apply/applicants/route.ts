@@ -5,7 +5,6 @@ export const GET = withApiAuthRequired(async function getApplications(req) {
     try {
         const res = new NextResponse();
         const {accessToken} = await getAccessToken(req, res);
-        console.log(accessToken);
         const endpoint = `${process.env.PLUG_API_URL}apply/applicants`;
         const response = await fetch(endpoint, {
             headers: {

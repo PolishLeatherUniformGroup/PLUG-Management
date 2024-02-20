@@ -28,10 +28,31 @@ export default function Applicants() {
         label: 'Akcje'
 
     }];
+    const displayStatus = (status: number) => {
+        if (status === 1) {
+            return (<Chip color="primary" size="sm" variant="bordered">Otrzymany</Chip>);
+        }
+        if (status === 2) {
+            return (<Chip color="warning" size="sm" variant="bordered">Anulowany</Chip>);
+        }
+        if (status === 3) {
+            return (<Chip color="primary" size="sm" variant="bordered">W rekomendacji</Chip>);
+        }
+        if (status === 4) {
+            return (<Chip color="primary" size="sm" variant="bordered">Oczekuje decyzji</Chip>);
+        }
+        if (status === 5) {
+            return (<Chip color="success" size="sm" variant="bordered">Przyjęty</Chip>);
+        }
+        if (status === 6) {
+            return (<Chip color="danger" size="sm" variant="bordered">Odrzucony</Chip>);
+        }
+        return '';
+    };
     const renderCell = React.useCallback((user: any, columnKey: any) => {
         const cellValue = user[columnKey];
         if (columnKey === 'status') {
-            return <Chip color="primary" size="sm" variant="flat">{cellValue}</Chip>
+            return displayStatus(cellValue);
         } else {
             return cellValue;
         }
@@ -54,7 +75,7 @@ export default function Applicants() {
                         }
                     });
                     setApplicants({ rows: items, loading: false });
-                }else{
+                } else {
                     setApplicants({ rows: [], loading: false });
                 }
             })
