@@ -1,0 +1,30 @@
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <p>
+        Witaj <%= locals.name %>,
+    </p>
+    <p>
+      Jest nam przykro, ale twój wniosek został odrzucony z powodu: <%= locals.reason %> </p>
+    <p>
+        Możesz odwołać się od tej decyzji, pisząc na adres mailowy zarządu, wraz z uzasadnieniem.
+        Na twoje odwołanie czekamy do <%= locals.deadline %>. Brak odwołania w tym terminie, będzie
+        skutkować ostatecznym odrzuceniem wniosku.
+    </p>
+    <p>
+        Otrzymałeś ten e-mail, ponieważ na twój adres e-mail został złożony wniosek o członkostwo w Stowarzyszeniu
+        Polish Leader Uniform Group. Jeśli nie wysyłałeś wniosku, poinformuj nas o tym mailowo.
+    </p>
+    <p>Zarząd Stowarzyszenia
+        Polish Leather Uniform Group</p>
+</body>
+
+</html>

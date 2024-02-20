@@ -43,7 +43,7 @@ export class EmailService {
 
     @OnEvent('apply.request-fee-payment')
     async requestApplyFeePayment(data:EventPayloads['apply.request-fee-payment']){
-        const {email, name} = data;
+        const {email} = data;
         console.log(__dirname)
         const subject = `Informacjo dotyczaca wniosku członkowskiego PLUG`;
         await this.mailerService.sendMail({
@@ -82,6 +82,36 @@ export class EmailService {
             template: './recommendation-refused',
             context: {
               name,
+            },
+          });
+    }
+
+    @OnEvent('apply.application-approved')
+    async applicationAccepted(data:EventPayloads['apply.application-approved']){
+        const {email, name} = data;
+        console.log(__dirname)
+        const subject = `Informacja o przyjęciu do Stowarzyszenia PLUG`;
+        await this.mailerService.sendMail({
+            to: email,
+            subject,
+            template: './application-approved',
+            context: {
+              name,
+            },
+          });
+    }
+
+    @OnEvent('apply.application-rejected')
+    async applicationRejected(data:EventPayloads['apply.application-rejected']){
+        const {email} = data;
+        console.log(__dirname)
+        const subject = `Informacja o odrzuceniu wniosku o dołączenie do Stowarzyszenia PLUG`;
+        await this.mailerService.sendMail({
+            to: email,
+            subject,
+            template: './application-rejected',
+            context: {
+              ...data
             },
           });
     }

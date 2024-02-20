@@ -4,4 +4,6 @@ export interface EventPayloads {
     'apply.application-cancelled': { name: string; email: string };
     'apply.request-fee-payment': { name: string; email: string; feeAmount: number, feeCurrency: string };
     'apply.application-not-recommended': { name: string; email: string };
+    'apply.application-approved': { name: string; email: string };
+    'apply.application-rejected': { name: string; email: string; reason: string; deadline: string };
   }

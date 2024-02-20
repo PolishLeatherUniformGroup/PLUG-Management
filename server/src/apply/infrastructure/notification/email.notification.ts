@@ -34,19 +34,19 @@ import { MemberView } from 'src/membership/infrastructure/read-model/model/membe
 )
 export class EmailNotification
   implements
-    IEventHandler<ApplicationReceived>,
-    IEventHandler<ApplicantRecommendationsRequested>,
-    IEventHandler<ApplicationCancelled>,
-    IEventHandler<ApplicantRecommendationRefused>,
-    IEventHandler<ApplicantAccepted>,
-    IEventHandler<ApplicantRejected>,
-    IEventHandler<ApplicantRejectionAppealReceived>,
-    IEventHandler<ApplicantRejectionAppealCancelled>,
-    IEventHandler<ApplicantRejectionAppealAccepted>,
-    IEventHandler<ApplicantRejectionAppealRejected>
+  IEventHandler<ApplicationReceived>,
+  IEventHandler<ApplicantRecommendationsRequested>,
+  IEventHandler<ApplicationCancelled>,
+  IEventHandler<ApplicantRecommendationRefused>,
+  IEventHandler<ApplicantAccepted>,
+  IEventHandler<ApplicantRejected>,
+  IEventHandler<ApplicantRejectionAppealReceived>,
+  IEventHandler<ApplicantRejectionAppealCancelled>,
+  IEventHandler<ApplicantRejectionAppealAccepted>,
+  IEventHandler<ApplicantRejectionAppealRejected>
 {
   constructor(private readonly emitter: TypedEventEmitter,
-    private readonly queryBus: QueryBus) {}
+    private readonly queryBus: QueryBus) { }
 
   async handle(event: IEvent) {
     if (event instanceof ApplicationReceived) {
@@ -92,7 +92,7 @@ export class EmailNotification
     event: ApplicantRecommendationsRequested,
   ) {
     const applicantQuery = new GetApplicantQuery(event.id);
-    const applicant:ApplicantView = await this.queryBus.execute(applicantQuery);
+    const applicant: ApplicantView = await this.queryBus.execute(applicantQuery);
 
     await this.emitter.emitAsync('apply.request-fee-payment', {
       email: applicant.email,
@@ -100,13 +100,13 @@ export class EmailNotification
       feeAmount: event.requiredFee.amount,
       feeCurrency: event.requiredFee.currency,
     });
-    
+
     const recommendationsQuery = new GetApplicantRecommendationsQuery(applicant.id);
-    const recommendations:RecommendationView[] = await this.queryBus.execute(recommendationsQuery);
-    
+    const recommendations: RecommendationView[] = await this.queryBus.execute(recommendationsQuery);
+
     recommendations.forEach(async (recommendation) => {
       const memberQuery = new GetMemberByCardQuery(recommendation.cardNumber);
-      const member:MemberView = await this.queryBus.execute(memberQuery);
+      const member: MemberView = await this.queryBus.execute(memberQuery);
       await this.emitter.emitAsync('apply.request-recomendation', {
         email: member.email,
         name: member.firstName,
@@ -135,7 +135,12 @@ export class EmailNotification
   }
 
   async handleApplicantAccepted(event: ApplicantAccepted) {
-    console.log('Application accepted:', event);
+    const query = new GetApplicantQuery(event.id);
+    const applicant = await this.queryBus.execute(query);
+    await this.emitter.emitAsync('apply.application-approved', {
+      email: applicant.email,
+      name: applicant.firstName,
+    });
   }
 
   async handleApplicantRejected(event: ApplicantRejected) {
@@ -159,7 +164,7 @@ export class EmailNotification
   ) {
     console.log('Appeal accepted:', event);
   }
-  
+
   async handleApplicantRejectionAppealRejected(
     event: ApplicantRejectionAppealRejected,
   ) {
