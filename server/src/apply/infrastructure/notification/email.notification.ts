@@ -1,4 +1,4 @@
-import { Inject } from '@nestjs/common';
+import { format} from 'date-fns';
 import { EventsHandler, IEvent, IEventHandler, QueryBus } from '@nestjs/cqrs';
 import {
   ApplicantAccepted,
@@ -144,7 +144,15 @@ export class EmailNotification
   }
 
   async handleApplicantRejected(event: ApplicantRejected) {
-    console.log('Application rejected:', event);
+    const query = new GetApplicantQuery(event.id);
+    const applicant = await this.queryBus.execute(query);
+
+    await this.emitter.emitAsync('apply.application-rejected', {
+      email: applicant.email,
+      name: applicant.firstName,
+      reason: event.reason,
+      deadline: format(event.appealDeadline, 'dd-MM-yyyy'),
+    });
   }
 
   async handleApplicantRejectionAppealReceived(
