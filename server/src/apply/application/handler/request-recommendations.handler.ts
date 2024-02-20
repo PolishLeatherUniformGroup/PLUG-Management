@@ -22,6 +22,8 @@ export class RequestRecommendationsHandler
       (applicant as Applicant).requestRecommendations(
         command.requestDate,
         command.requiredFee,
+        command.recommendersEmails,
+        command.recommendersNames,
       );
       this.applicants.save(applicant);
     } catch (error) {

@@ -7,5 +7,7 @@ export class RequestRecommendations implements ICommand {
     public readonly applicantId: ApplicantId,
     public readonly requestDate: Date,
     public readonly requiredFee: Money,
+    public readonly recommendersEmails: string[],
+    public readonly recommendersNames: string[],
   ) {}
 }

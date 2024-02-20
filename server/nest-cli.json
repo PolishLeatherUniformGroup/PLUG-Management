@@ -4,7 +4,11 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "assets": ["mail/templates/**/*"],
+    "assets": [{
+      "include": "/**/*.ejs",
+      "outDir":"./dist/src",
+      "watchAssets": true
+    }],
     "watchAssets": true,
     "plugins": [
       {

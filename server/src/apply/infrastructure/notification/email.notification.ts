@@ -80,14 +80,33 @@ export class EmailNotification
       name: event.firstName,
     });
   }
+  
   async handleRecommendationsRequested(
     event: ApplicantRecommendationsRequested,
   ) {
-    console.log('Recommendations requested:', event);
+    event.recommendations.forEach(async (recommendation) => {
+      await this.emitter.emitAsync('apply.request-recomendation', {
+        email: recommendation.email,
+        name: recommendation.name,
+      });
+    });
+
+    await this.emitter.emitAsync('apply.request-fee-payment', {
+      email: event.email,
+      name: event.firstName,
+      feeAmount: event.requiredFee.amount,
+      feeCurrency: event.requiredFee.currency,
+    })
+   
   }
+
   async handleApplicationCancelled(event: ApplicationCancelled) {
-    console.log('Application cancelled:', event);
+    await this.emitter.emitAsync('apply.application-cancelled', {
+      email: event.email,
+      name: event.firstName,
+    });
   }
+
   async handleApplicationRecommendationRefused(
     event: ApplicantRecommendationRefused,
   ) {

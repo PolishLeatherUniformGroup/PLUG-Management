@@ -15,6 +15,7 @@ import { ApplyEvents } from './domain/events';
 import { CommandController } from './infrastructure/controller/command.controller';
 import { QueryController } from './infrastructure/controller/query.controller';
 import { EmailModule } from 'src/email/email.module';
+import { EventHandlers } from './domain/handler';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { EmailModule } from 'src/email/email.module';
     ...ApplyProviders,
     ...NotificationHandlers,
     ...QueryHandlers,
+    ...EventHandlers
   ]
 })
 export class ApplyModule implements OnModuleInit {

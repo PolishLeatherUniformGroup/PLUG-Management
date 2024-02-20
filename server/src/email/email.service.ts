@@ -14,12 +14,57 @@ export class EmailService {
     @OnEvent('apply.application-received')
     async applyConfirmation(data:EventPayloads['apply.application-received']){
         const {email, name} = data;
-
+        console.log(__dirname)
         const subject = `Wniosek członkowski PLUG`;
         await this.mailerService.sendMail({
             to: email,
             subject,
             template: './apply-confirmation',
+            context: {
+              name,
+            },
+          });
+    }
+
+    @OnEvent('apply.request-recommendation')
+    async requestRecommendation(data:EventPayloads['apply.request-recomendation']){
+        const {email, name} = data;
+        console.log(__dirname)
+        const subject = `Kandydat do oczekuje na  twoją rekomendacje`;
+        await this.mailerService.sendMail({
+            to: email,
+            subject,
+            template: './request-recommendation',
+            context: {
+              name,
+            },
+          });
+    }
+
+    @OnEvent('apply.request-fee-payment')
+    async requestApplyFeePayment(data:EventPayloads['apply.request-fee-payment']){
+        const {email, name} = data;
+        console.log(__dirname)
+        const subject = `Kandydat do oczekuje na  twoją rekomendacje`;
+        await this.mailerService.sendMail({
+            to: email,
+            subject,
+            template: './request-fee-payment',
+            context: {
+              ...data,
+            },
+          });
+    }
+
+    @OnEvent('apply.application-cancelled')
+    async applicationCancelled(data:EventPayloads['apply.application-cancelled']){
+        const {email, name} = data;
+        console.log(__dirname)
+        const subject = `Informacjo dotyczaca wniosku członkowskiego PLUG`;
+        await this.mailerService.sendMail({
+            to: email,
+            subject,
+            template: './application-cancelled',
             context: {
               name,
             },

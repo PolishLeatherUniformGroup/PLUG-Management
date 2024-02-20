@@ -23,7 +23,6 @@ export class SendApplicationHandler
       command.address,
       command.recommendersCards,
     );
-    console.log(applicant);
     this.applicants.save(applicant);
   }
 }

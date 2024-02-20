@@ -10,7 +10,7 @@ import { EmailService } from './email.service';
       MailerModule.forRoot({
         transport: {
           host: 'smtppro.zoho.eu',
-          port: Number('587'),
+          port: Number('465'),
           secure: true,
           auth: {
             user: 'tomasz.molis@plug.org.pl',
@@ -21,10 +21,10 @@ import { EmailService } from './email.service';
           from: '"Stowarzyszenie PLUG" <kontakt@plug.org.pl>',
         },
         template: {
-          dir: join(__dirname, 'templates'),
+          dir: join(__dirname,'templates'),
           adapter: new EjsAdapter(),
           options: {
-            strict: true,
+            strict: false,
           },
         },
       }),
