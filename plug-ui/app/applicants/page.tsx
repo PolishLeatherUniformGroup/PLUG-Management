@@ -47,6 +47,18 @@ export default function Applicants() {
         if (status === 6) {
             return (<Chip color="danger" size="sm" variant="bordered">Odrzucony</Chip>);
         }
+        if (status === 7) {
+            return (<Chip color="warning" size="sm" variant="bordered">W odwołaniu</Chip>);
+        }
+        if (status === 8) {
+            return (<Chip color="danger" size="sm" variant="bordered">Odwołanie nieważne</Chip>);
+        }
+        if (status === 9) {
+            return (<Chip color="success" size="sm" variant="bordered">Odwołanie uznane</Chip>);
+        }
+        if (status === 10) {
+            return (<Chip color="danger" size="sm" variant="bordered">Odwołanie odrzucone</Chip>);
+        }
         return '';
     };
     const renderCell = React.useCallback((user: any, columnKey: any) => {
