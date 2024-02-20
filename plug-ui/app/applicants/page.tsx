@@ -23,36 +23,40 @@ export default function Applicants() {
         key: 'status',
         label: 'Status'
 
-    },{
+    }, {
         key: 'actions',
         label: 'Akcje'
-    
+
     }];
-    const renderCell = React.useCallback((user:any, columnKey:any) => {
+    const renderCell = React.useCallback((user: any, columnKey: any) => {
         const cellValue = user[columnKey];
-        if(columnKey === 'status') {
+        if (columnKey === 'status') {
             return <Chip color="primary" size="sm" variant="flat">{cellValue}</Chip>
-        }else{
+        } else {
             return cellValue;
         }
-      }, []);
+    }, []);
     const [applicants, setApplicants] = useState({ loading: true, rows: [] as any[] })
     let selectedApplicant: string | undefined | null = null;
     useEffect(() => {
         fetch('/api/apply/applicants')
             .then(response => response.json())
             .then((data: ApplicantDto[]) => {
-                const items = data.map((applicant) => {
-                    return {
-                        key: applicant.id,
-                        firstName: applicant.firstName,
-                        lastName: applicant.lastName,
-                        email: applicant.email,
-                        applyDate: format(applicant.applyDate, "dd-MM-yyyy"),
-                        status: applicant.status
-                    }
-                });
-                setApplicants({ rows: items, loading: false });
+                if (data.length > 0) {
+                    const items = data.map((applicant) => {
+                        return {
+                            key: applicant.id,
+                            firstName: applicant.firstName,
+                            lastName: applicant.lastName,
+                            email: applicant.email,
+                            applyDate: format(applicant.applyDate, "dd-MM-yyyy"),
+                            status: applicant.status
+                        }
+                    });
+                    setApplicants({ rows: items, loading: false });
+                }else{
+                    setApplicants({ rows: [], loading: false });
+                }
             })
     }, []);
     return (
@@ -65,7 +69,7 @@ export default function Applicants() {
                     size="sm"
                     isIndeterminate
                     aria-label="Loading..."
-                    className="max-w-md"
+                    className="max-w-full"
                 />}
                 <Table radius="sm" selectionMode="single">
                     <TableHeader columns={columns}>
@@ -78,8 +82,8 @@ export default function Applicants() {
                     <TableBody items={applicants.rows}>
                         {(item) => (
                             <TableRow key={item.id}>
-                            {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-                          </TableRow>
+                                {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+                            </TableRow>
                         )}
                     </TableBody>
                 </Table>

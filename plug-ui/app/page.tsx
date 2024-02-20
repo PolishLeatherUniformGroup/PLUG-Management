@@ -1,10 +1,11 @@
-import Image from "next/image";
+
 import { ApplyForm } from "./components/apply-form";
+import React from "react";
+
 
 export default function Home() {
-  return (
-    <section>
+  return (<div>
       <ApplyForm />
-    </section>
+    </div>
   );
 }

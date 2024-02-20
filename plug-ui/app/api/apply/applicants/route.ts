@@ -5,18 +5,18 @@ export const GET = withApiAuthRequired(async function getApplications(req) {
     try {
         const res = new NextResponse();
         const {accessToken} = await getAccessToken(req, res);
+        console.log(accessToken);
         const endpoint = `${process.env.PLUG_API_URL}apply/applicants`;
         const response = await fetch(endpoint, {
             headers: {
                 accept: 'application/json',
-                Authorization: `Bearer ${accessToken}`
+                authorization: `bearer ${accessToken}`
             },
             method: 'GET'
         });
         const applicants = await response.json();
         return Response.json(applicants.data);
     } catch (error) {
-        return Response.error();
+        return Response.json({ error: error }, { status: 500 });
     }
-
 });

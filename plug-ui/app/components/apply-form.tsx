@@ -1,48 +1,11 @@
 import { Input } from "@nextui-org/react";
 import { SubmitButton } from "../common/submit-button";
 
-import { buildUrl } from 'build-url-ts';
-export function ApplyForm() {
-    let successApply:boolean = false;
-    async function sendApplication(formData: FormData) {
-        'use server'
-
-        const apiUrl =process.env.PLUG_API_BASE;
-        const rawFormData = {
-            firstName: formData.get('firstName'),
-            lastName: formData.get('lastName'),
-            email: formData.get('email'),
-            phone: formData.get('phone'),
-            birthDate: formData.get('birthdate'),
-            address:{
-                country: formData.get('country'),
-                state: formData.get('state'),
-                city: formData.get('city'),
-                postalCode: formData.get('postalCode'),
-                street: formData.get('street')
-            },
-            recommendations:[
-                formData.get('card1'),
-                formData.get('card2')
-            ]
-        };
-        const endpoint =  buildUrl(apiUrl, {path:'apply/send-application'}) as string;
-    
-        var response = await fetch(endpoint,{
-            method: 'POST',
-            body: JSON.stringify(rawFormData)
-        });
-        if( response.status<300){
-            successApply = true;
-        }
-        else{
-
-        }
-    }
+export function ApplyForm() {    
     return (<article className="bg-content1 p-4 rounded-lg light:drop-shadow-sm" >
         <h2 className="font-bold text-4xl text-center mt-4 mb-6">Deklaracja Członkowska</h2>
             <p></p>
-            <form action={sendApplication}>
+            <form method="POST" action="/api/apply">
                 <div className="grid grid-cols-2 xs:grid-cols-1 gap-10 xs:gap-5">
                     <Input label="Imię" name="firstName" required size="lg" />
                     <Input label="Nazwisko" name="lastName" required size="lg" />
