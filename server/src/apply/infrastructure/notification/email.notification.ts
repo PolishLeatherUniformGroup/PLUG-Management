@@ -1,3 +1,4 @@
+import { Inject } from '@nestjs/common';
 import { EventsHandler, IEvent, IEventHandler } from '@nestjs/cqrs';
 import {
   ApplicantAccepted,
@@ -11,10 +12,8 @@ import { ApplicantRecommendationRefused } from 'src/apply/domain/events/applican
 import { ApplicantRecommendationsRequested } from 'src/apply/domain/events/applicant-recommendations-requested.event';
 import { ApplicationCancelled } from 'src/apply/domain/events/application-cancelled.event';
 import { ApplicationReceived } from 'src/apply/domain/events/application-received.event';
+import { TypedEventEmitter } from 'src/event-emitter/typed-event-emmitter';
 
-/**
- * Sends email notifications.
- */
 @EventsHandler(
   ApplicationReceived,
   ApplicantRecommendationsRequested,
@@ -40,6 +39,8 @@ export class EmailNotification
     IEventHandler<ApplicantRejectionAppealAccepted>,
     IEventHandler<ApplicantRejectionAppealRejected>
 {
+  constructor(private readonly emitter: TypedEventEmitter) {}
+
   async handle(event: IEvent) {
     if (event instanceof ApplicationReceived) {
       this.handleApplicationReceived(event);
@@ -74,7 +75,10 @@ export class EmailNotification
   }
 
   async handleApplicationReceived(event: ApplicationReceived) {
-    console.log('Application received:', event);
+    await this.emitter.emitAsync('apply.application-received', {
+      email: event.email,
+      name: event.firstName,
+    });
   }
   async handleRecommendationsRequested(
     event: ApplicantRecommendationsRequested,

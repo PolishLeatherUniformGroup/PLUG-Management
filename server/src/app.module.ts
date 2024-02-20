@@ -7,6 +7,10 @@ import { GatheringsModule } from './gatherings/gatherings.module';
 import { TasksModule } from './tasks/tasks.module';
 import { SettingsModule } from './settings/settings.module';
 import { AuthModule } from './auth/auth.module';
+import { EmailModule } from './email/email.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { TypedEventEmitterModule } from './event-emitter/event-emitter.module';
+
 
 @Module({
   imports: [
@@ -28,6 +32,9 @@ import { AuthModule } from './auth/auth.module';
     TasksModule,
     SettingsModule,
     AuthModule,
+    EmailModule,
+    TypedEventEmitterModule,
+    EventEmitterModule.forRoot(),
   ],
   controllers: [],
   providers: [],

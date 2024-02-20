@@ -14,12 +14,15 @@ import { EventStore } from 'src/core/eventstore/eventstore';
 import { ApplyEvents } from './domain/events';
 import { CommandController } from './infrastructure/controller/command.controller';
 import { QueryController } from './infrastructure/controller/query.controller';
+import { EmailModule } from 'src/email/email.module';
 
 @Module({
   imports: [
     CqrsModule,
     TypeOrmModule.forFeature([ApplicantView, RecommendationView]),
     EventStoreModule,
+    EmailModule,
+    
   ],
   controllers: [ApplyController, QueryController, CommandController],
   providers: [
