@@ -4,7 +4,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { JwtGuard } from './jwt.guard';
 
 @Module({
-    imports: [PassportModule.register({ defaultStrategy: 'jwt' })],
+    imports: [PassportModule.register({ defaultStrategy: 'jwt'})],
     providers: [JwtStrategy,{ provide: 'APP_GUARD', useClass: JwtGuard }],
     exports: [PassportModule],
   })

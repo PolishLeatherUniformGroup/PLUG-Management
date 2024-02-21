@@ -88,15 +88,22 @@ export class Applicant extends AggregateRoot {
   }
 
   public cancelApplication() {
-    this.apply(new ApplicationCancelled(this._applicantId.value));
+    this.apply(new ApplicationCancelled(this._applicantId.value, this._firstName,this._email));
   }
 
-  public requestRecommendations(requestDate: Date, requiredFee: Money) {
+  public requestRecommendations(requestDate: Date, requiredFee: Money, recommendersEmails: string[], recommendersNames: string[]) {
+    const recomendations:{email: string, name: string}[] = [];
+    for (let i = 0; i < recommendersEmails.length; i++) {
+      recomendations.push({email: recommendersEmails[i], name: recommendersNames[i]});
+    }
     this.apply(
       new ApplicantRecommendationsRequested(
         this._applicantId.value,
+        this._firstName,
+        this._email,
         requestDate,
         requiredFee,
+        recomendations,
       ),
     );
   }

@@ -72,7 +72,7 @@ export const ApplyEvents = {
   ApplicantRecommendationsRequested: (
     id: string,
     requestedDate: Date,
-    requiredFee: Money,
+    requiredFee: Money
   ) => new ApplicantRecommendationsRequested(id, requestedDate, requiredFee),
   ApplicationCancelled: (id: string) => new ApplicationCancelled(id),
   ApplicantPaidFee: (id: string, paymentDate: Date, fee: Money) =>

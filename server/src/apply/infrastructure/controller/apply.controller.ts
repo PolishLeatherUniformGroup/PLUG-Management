@@ -4,9 +4,11 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommandBus } from '@nestjs/cqrs';
 import { SendApplicationCommand } from 'src/apply/application/command/send-application.command';
 import { Address } from 'src/shared/address';
+import { AllowAnonymous } from 'src/auth/allow-anonymous.decorator';
 
 @Controller('apply')
 @ApiTags('apply')
+@AllowAnonymous()
 export class ApplyController {
   constructor(private readonly commandBus: CommandBus) {}
 

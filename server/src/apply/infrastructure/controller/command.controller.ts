@@ -33,25 +33,6 @@ import { JwtGuard } from 'src/auth/jwt.guard';
 export class CommandController {
   constructor(private readonly commandBus: CommandBus) { }
 
-  @Post('commands/request-recommendations')
-  @ApiOperation({ summary: 'Request recommendations' })
-  @ApiResponse({ status: 204, description: 'Recommendations requested.' })
-  async requestRecommendations(@Body() payload: RequestRecommendationsDto) {
-    try {
-      const command: RequestRecommendationsCommand =
-        new RequestRecommendationsCommand(
-          ApplicantId.fromString(payload.applicantId),
-          payload.requestDate,
-          Money.create(
-            payload.requiredFee.amount,
-            payload.requiredFee.currency,
-          ),
-        );
-      await this.commandBus.execute(command);
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   @Post('commands/cancel-application')
   @ApiOperation({ summary: 'Cancel application' })
