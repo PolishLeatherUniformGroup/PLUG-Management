@@ -160,13 +160,13 @@ export default function Applicants() {
                     )}
                 </TableBody>
             </Table>
-            <Modal backdrop="blur" isOpen={isOpen} onClose={onClose} size="4xl" scrollBehavior="inside" >
+            <Modal backdrop="blur" isOpen={isOpen} onClose={onClose} size="4xl" scrollBehavior="inside">
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader>
-                                {!applicant.loading ? <h2 className="text-2xl">Wniosek z dnia {`${format(new Date(applicant.data.applyDate),"dd-MM-yyyy")}`}</h2>
-                                    : <h2>Wczutuje ...</h2>} 
+                            <ModalHeader className="text-2xl">
+                                {!applicant.loading ? `Aplikacja z ${format(new Date(applicant.data.applyDate),"dd-MM-yyyy")}`:'Wczytuje ...'}
+                                  
                             </ModalHeader>
                             
                             <ModalBody>
