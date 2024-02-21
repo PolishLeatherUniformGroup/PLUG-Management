@@ -160,7 +160,7 @@ export default function Applicants() {
                     )}
                 </TableBody>
             </Table>
-            <Modal backdrop="blur" isOpen={isOpen} onClose={onClose} size="4xl" >
+            <Modal backdrop="blur" isOpen={isOpen} onClose={onClose} size="4xl" scrollBehavior="inside" >
                 <ModalContent>
                     {(onClose) => (
                         <>
