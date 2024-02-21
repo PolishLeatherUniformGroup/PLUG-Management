@@ -16,6 +16,7 @@ export const GET = withApiAuthRequired(async function getApplications(req) {
         const applicants = await response.json();
         return Response.json(applicants.data);
     } catch (error) {
+        console.error(error);
         return Response.json({ error: error }, { status: 500 });
     }
 });
