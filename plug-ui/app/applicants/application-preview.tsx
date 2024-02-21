@@ -6,25 +6,24 @@ import { ApplicantDetails, Recommendation } from "../models/applicant-details.dt
 import { useEffect, useState } from "react";
 import { Address } from "./address";
 import { Fee } from "./fee";
+import { format } from "date-fns";
 
-export default function ApplicationPreview({applicantId}:{applicantId:string}) {
-    const [applicant, setApplicant] = useState({loading: true, data: {} as ApplicantDetails});
-    const [recomendations, setRecommendations] = useState({loading: true, data: [] as Recommendation[]});
-    useEffect(() => {
-        fetch(`/api/apply/applicants/${applicantId}`)
-            .then(response => response.json())
-            .then((data) => {
-                
-                setApplicant({data, loading: false});
-            });
-        fetch(`/api/apply/applicants/${applicantId}/recommendations`)
-        .then(response => response.json())
-            .then((data) => {
-                
-                setRecommendations({data, loading: false});
-            });
-    }, []);
+export default function ApplicationPreview({ applicant, recommendations }: { applicant?: ApplicantDetails | null, recommendations: Recommendation[]}) {
 
+    const chooseActions = (status?:number)=>{
+        if(status === 1 || status === 3){
+            return beforeDecisionActions();
+        }
+        if(status === 4){
+            return readyForDecisionActions();
+        }
+        if(status === 6){
+            return afterDecisionActions();
+        }
+        if(status === 7){
+            return afterAppealActions();
+        }
+    }
     const readyForDecisionActions = () => (
         <ButtonGroup className="mx-2">
             <Button color="success"><FontAwesomeIcon icon={faCheck} />Akcetuj</Button>
@@ -48,45 +47,86 @@ export default function ApplicationPreview({applicantId}:{applicantId:string}) {
         </ButtonGroup>
     );
 
+    const displayStatus = (status?: number) => {
+        if (status === 1) {
+            return (<Chip color="primary" size="lg" variant="bordered" className="col-span-3">Otrzymany</Chip>);
+        }
+        if (status === 2) {
+            return (<Chip color="warning" size="lg" variant="bordered" className="col-span-3">Anulowany</Chip>);
+        }
+        if (status === 3) {
+            return (<Chip color="primary" size="lg" variant="bordered" className="col-span-3">W rekomendacji</Chip>);
+        }
+        if (status === 4) {
+            return (<Chip color="primary" size="lg" variant="bordered" className="col-span-3">Oczekuje decyzji</Chip>);
+        }
+        if (status === 5) {
+            return (<Chip color="success" size="lg" variant="bordered" className="col-span-3">Przyjęty</Chip>);
+        }
+        if (status === 6) {
+            return (<Chip color="danger" size="lg" variant="bordered" className="col-span-3">Odrzucony</Chip>);
+        }
+        if (status === 7) {
+            return (<Chip color="warning" size="lg" variant="bordered" className="col-span-3">W odwołaniu</Chip>);
+        }
+        if (status === 8) {
+            return (<Chip color="danger" size="lg" variant="bordered" className="col-span-3">Odwołanie nieważne</Chip>);
+        }
+        if (status === 9) {
+            return (<Chip color="success" size="lg" variant="bordered">Odwołanie uznane</Chip>);
+        }
+        if (status === 10) {
+            return (<Chip color="danger" size="lg" variant="bordered">Odwołanie odrzucone</Chip>);
+        }
+        return '';
+    };
 
     return (<div className="bg-content1 p-4 mb-2 drop-shadow-sm rounded-lg gap-1">
-        <div className="grid grid-cols-4 gap-2 py-2">
-            <h3 className="text-2xl mb-2 col-span-3">{`Wniosek z dnia: ${applicant.data.applyDate}`}</h3>
-            <Chip color="primary" size="lg" variant="bordered" radius="sm">W rekomendacji</Chip>
-            <div className="bg-content2 py-2 rounded-2xl mb-1 col-span-4">
-                {beforeDecisionActions()}
+        <div className="grid grid-cols-12 gap-2 py-2">
+            <h3 className="text-2xl mb-2 col-span-3">Status wniosku</h3>
+            {displayStatus(applicant?.status)}
+            <div className="bg-content2 py-2 rounded-2xl mb-1 col-span-12">
+                {chooseActions(applicant?.status)}
             </div>
 
-            <h4 className="text-lg col-span-4">Szczegóły Wniosku</h4>
-            <Input label="Imię" isReadOnly className="col-span-2" value={applicant.data.firstName} />
-            <Input label="Nazwisko" isReadOnly className="col-span-2" value={applicant.data.lastName} />
-            <Input label="Email" isReadOnly className="col-span-2" value={applicant.data.email}/>
-            <Input label="Telefon" isReadOnly className="col-span-2" value={applicant.data.phoneNumber} />
-            <Input label="Data urodzenia" isReadOnly type="date" className="col-span-2" />
-            <div className="col-span-4">
+            <h4 className="text-lg col-span-12">Szczegóły Wniosku</h4>
+            <Input label="Imię" isReadOnly className="col-span-6" value={applicant?.firstName} />
+            <Input label="Nazwisko" isReadOnly className="col-span-6" value={applicant?.lastName} />
+            <Input label="Email" isReadOnly className="col-span-6" value={applicant?.email} />
+            <Input label="Telefon" isReadOnly className="col-span-6" value={applicant?.phoneNumber} />
+            <Input label="Data urodzenia" isReadOnly type="date" className="col-span-6" value={applicant?.birthDate.toString()}/>
+            <div className="col-span-12">
                 <Accordion >
                     <AccordionItem title="Adres" key="address">
-                        <Address address={applicant.data.address} />
+                        <Address address={applicant?.address} />
                     </AccordionItem>
                     <AccordionItem title="Rekomendacje">
                         <div className="grid grid-cols-4 gap-2">
-                            <Input label="Rekomendacja 1" isReadOnly className="col-span-3" value={recomendations.data[0].card} />
-                            <Button color="default" isIconOnly variant="bordered" isDisabled size="lg" className="my-auto">
-                                <FontAwesomeIcon icon={faQuestion} />
-                            </Button>
-                            <Input label="Rekomedacja 2" isReadOnly className="col-span-3" value={recomendations.data[1].card}/>
-                            <Button color="success" isIconOnly variant="bordered" isDisabled size="lg" className="my-auto">
-                                <FontAwesomeIcon icon={faCheck} />
-                            </Button>
+                            {recommendations?.map((recomendation, index) => {
+                                return (<>
+                                    <Input label={`Rekomendacja ${index + 1}`} isReadOnly className="col-span-3" value={recomendation.card} />
+                                   {recomendation.status === true}&&(<Button color="success" isIconOnly variant="bordered" isDisabled size="lg" className="my-auto">
+                                         <FontAwesomeIcon icon={faCheck} />
+                                    </Button>)
+                                    {recomendation.status === false}&&(<Button color="danger" isIconOnly variant="bordered" isDisabled size="lg" className="my-auto">
+                                         <FontAwesomeIcon icon={faXmark} />
+                                    </Button>)
+                                    {recomendation.status === undefined}&&(<Button color="danger" isIconOnly variant="bordered" isDisabled size="lg" className="my-auto">
+                                         <FontAwesomeIcon icon={faQuestion} />
+                                    </Button>)
+                                </>)
+                            })}
+
+
                         </div>
                     </AccordionItem>
                     <AccordionItem title="Składka">
-                        <Fee fee={applicant.data.fee} />
+                        <Fee fee={applicant?.fee} />
                     </AccordionItem>
                 </Accordion>
             </div>
-            <h4 className="text-lg col-span-4">Historia wniosku</h4>
-            <Table radius="sm" className="col-span-4">
+            <h4 className="text-lg col-span-12">Historia wniosku</h4>
+            <Table radius="sm" className="col-span-12">
                 <TableHeader>
                     <TableColumn>Data</TableColumn>
                     <TableColumn>Akcja</TableColumn>
@@ -94,6 +134,6 @@ export default function ApplicationPreview({applicantId}:{applicantId:string}) {
                 <TableBody emptyContent={"Brak historii"}>{[]}</TableBody>
             </Table>
         </div>
-        
+
     </div>)
 }

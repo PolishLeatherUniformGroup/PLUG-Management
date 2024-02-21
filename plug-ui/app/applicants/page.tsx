@@ -1,12 +1,23 @@
 'use client';
-import { useEffect, useState } from "react"
+import { Key, useEffect, useState } from "react"
 import { ApplicantDto } from '@/app/models/applicant.dto';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue, Progress, Chip } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue, Progress, Chip, Button, Modal, useDisclosure, ModalContent, ModalHeader, ModalBody, ButtonGroup, CircularProgress } from "@nextui-org/react";
 import { parseISO, format } from 'date-fns';
 import ApplicationPreview from "./application-preview";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faEye, faFileArrowDown, faFileInvoiceDollar, faXmark } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
+import { ApplicantDetails, Recommendation } from "../models/applicant-details.dto";
 
 export default function Applicants() {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [applicant, setApplicant] = useState({ loading: true, data: {} as ApplicantDetails });
+    const [recomendations, setRecommendations] = useState({ loading: true, data: [] as Recommendation[] });
+    const handleOpen = (key: Key) => {
+        loadApplicant(key);
+        onOpen();
+    }
+    const [selectedApplicant, setSelectedApplicant] = useState("" as string);
     const columns = [{
         key: 'firstName',
         label: 'Imię'
@@ -22,12 +33,31 @@ export default function Applicants() {
     }, {
         key: 'status',
         label: 'Status'
-
-    }, {
-        key: 'actions',
-        label: 'Akcje'
-
     }];
+
+    const readyForDecisionActions = () => (
+        <ButtonGroup className="mx-2">
+            <Button color="success"><FontAwesomeIcon icon={faCheck} />Akcetuj</Button>
+            <Button color="warning"><FontAwesomeIcon icon={faXmark} />Odrzuć</Button>
+        </ButtonGroup>
+    );
+    const beforeDecisionActions = () => (
+        <ButtonGroup className="mx-2">
+            <Button color="default"><FontAwesomeIcon icon={faFileInvoiceDollar} />Rejestruj płatność</Button>
+        </ButtonGroup>
+    )
+    const afterDecisionActions = () => (
+        <ButtonGroup className="mx-2">
+            <Button color="default"><FontAwesomeIcon icon={faFileArrowDown} />Przyjmij odwołanie</Button>
+        </ButtonGroup>
+    )
+    const afterAppealActions = () => (
+        <ButtonGroup className="mx-2">
+            <Button color="success"><FontAwesomeIcon icon={faCheck} />Akcetuj odwołanie</Button>
+            <Button color="danger"><FontAwesomeIcon icon={faXmark} />Odrzuć odwołanie</Button>
+        </ButtonGroup>
+    );
+
     const displayStatus = (status: number) => {
         if (status === 1) {
             return (<Chip color="primary" size="sm" variant="bordered">Otrzymany</Chip>);
@@ -61,16 +91,29 @@ export default function Applicants() {
         }
         return '';
     };
+
+    const loadApplicant = (id: Key) => {
+        fetch(`/api/apply/applicants/${id}`)
+            .then(response => response.json())
+            .then((data) => {
+                console.log("loaded: ", data);
+                setApplicant({ data, loading: false });
+            });
+    }
+
     const renderCell = React.useCallback((user: any, columnKey: any) => {
         const cellValue = user[columnKey];
         if (columnKey === 'status') {
             return displayStatus(cellValue);
-        } else {
+        }
+
+        else {
             return cellValue;
         }
     }, []);
+
     const [applicants, setApplicants] = useState({ loading: true, rows: [] as any[] })
-    let selectedApplicant: string | undefined | null = null;
+
     useEffect(() => {
         fetch('/api/apply/applicants')
             .then(response => response.json())
@@ -92,38 +135,49 @@ export default function Applicants() {
                 }
             })
     }, []);
-    return (
-        <div className="w-full grid grid-cols-12 p-2 gap-2 auto-rows-min">
-            <div className="col-span-7">
-                <div className="bg-content1 p-4 drop-shadow-sm rounded-lg mb-2">
 
-                </div>
-                {applicants.loading && <Progress
-                    size="sm"
-                    isIndeterminate
-                    aria-label="Loading..."
-                    className="max-w-full"
-                />}
-                <Table radius="sm" selectionMode="single">
-                    <TableHeader columns={columns}>
-                        {(column) => (
-                            <TableColumn key={column.key} align={column.key === "actions" ? "center" : "start"}>
-                                {column.label}
-                            </TableColumn>
-                        )}
-                    </TableHeader>
-                    <TableBody items={applicants.rows}>
-                        {(item) => (
-                            <TableRow key={item.id}>
-                                {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-                            </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
-            </div>
-            <div className="col-span-5 row-span-2 ">
-                {selectedApplicant}
-                {selectedApplicant !== null && <ApplicationPreview applicantId={selectedApplicant} />}
-            </div>
+    return (
+        <div className="w-full">
+            {applicants.loading && <Progress
+                size="sm"
+                isIndeterminate
+                aria-label="Loading..."
+                className="max-w-full"
+            />}
+            <Table radius="sm" selectionMode="single" selectionBehavior="replace" onRowAction={(key) => handleOpen(key)}>
+                <TableHeader columns={columns}>
+                    {(column) => (
+                        <TableColumn key={column.key} align={column.key === "actions" ? "center" : "start"}>
+                            {column.label}
+                        </TableColumn>
+                    )}
+                </TableHeader>
+                <TableBody items={applicants.rows}>
+                    {(item) => (
+                        <TableRow key={item.id}>
+                            {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+                        </TableRow>
+                    )}
+                </TableBody>
+            </Table>
+            <Modal backdrop="blur" isOpen={isOpen} onClose={onClose} size="4xl" >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader>
+                                {!applicant.loading ? <h2 className="text-2xl">Wniosek z dnia {`${format(new Date(applicant.data.applyDate),"dd-MM-yyyy")}`}</h2>
+                                    : <h2>Wczutuje ...</h2>} 
+                            </ModalHeader>
+                            
+                            <ModalBody>
+                                {applicant.loading && <CircularProgress aria-label="Loading..."  size="lg" className="self-center" />}
+                                {!applicant.loading && (
+                                <ApplicationPreview applicant={applicant.data} recommendations={recomendations.data} />
+                                )}
+                            </ModalBody></>
+                    )}
+                </ModalContent>
+            </Modal>
+
         </div>);
 }
