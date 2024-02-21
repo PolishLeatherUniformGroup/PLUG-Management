@@ -1,6 +1,8 @@
-export const POST = async function sendApplication(formData: FormData){
-    const endpoint = `${process.env.PLUG_API_URL}apply/commands/send-application`;
+import { NextRequest } from "next/server";
 
+export const POST = async function sendApplication(req:NextRequest){
+    const endpoint = `${process.env.PLUG_API_URL}apply/commands/send-application`;
+    const formData = await req.formData();
     const payload = {
         firstName: formData.get('firstName'),
         lastName: formData.get('lastName'),

@@ -1,9 +1,11 @@
 'use client'
 
-import { SunFilledIcon, MoonFilledIcon } from "./icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSun, faMoon } from "@fortawesome/free-regular-svg-icons";
 import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
 import Image from "next/image"
+import '@fortawesome/fontawesome-svg-core/styles.css'
 
 export default function ThemeSwitcher() {
 
@@ -25,11 +27,11 @@ export default function ThemeSwitcher() {
   )
 
   if (resolvedTheme === 'dark') {
-    return <SunFilledIcon onClick={() => setTheme('light')} />
+    return <FontAwesomeIcon icon={faSun} onClick={() => setTheme('light')} />
   }
 
   if (resolvedTheme === 'light') {
-    return <MoonFilledIcon onClick={() => setTheme('dark')} />
+    return <FontAwesomeIcon icon={faMoon} onClick={() => setTheme('dark')} />
   }
 
 };
