@@ -6,6 +6,7 @@ export interface ApplicantDetails {
     phoneNumber:string;
     status:number;
     applyDate: Date;
+    birthDate: Date;
     address?: AddressDto;
     fee: FeeDto;
 }
