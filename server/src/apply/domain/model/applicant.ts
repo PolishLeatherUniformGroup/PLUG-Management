@@ -88,7 +88,7 @@ export class Applicant extends AggregateRoot {
   }
 
   public cancelApplication() {
-    this.apply(new ApplicationCancelled(this._applicantId.value, this._firstName,this._email));
+    this.apply(new ApplicationCancelled(this._applicantId.value));
   }
 
   public requestRecommendations(requestDate: Date, requiredFee: Money, recommendersEmails: string[], recommendersNames: string[]) {
@@ -99,11 +99,9 @@ export class Applicant extends AggregateRoot {
     this.apply(
       new ApplicantRecommendationsRequested(
         this._applicantId.value,
-        this._firstName,
-        this._email,
         requestDate,
         requiredFee,
-        recomendations,
+
       ),
     );
   }

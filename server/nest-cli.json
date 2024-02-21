@@ -5,8 +5,7 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "assets": [{
-      "include": "/**/*.ejs",
-      "outDir":"./dist/src",
+      "include": "/**/*.ejs", 
       "watchAssets": true
     }],
     "watchAssets": true,
