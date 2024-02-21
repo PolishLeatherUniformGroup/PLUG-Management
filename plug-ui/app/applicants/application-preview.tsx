@@ -94,7 +94,7 @@ export default function ApplicationPreview({ applicant, recommendations }: { app
             <Input label="Nazwisko" isReadOnly className="col-span-6" value={applicant?.lastName} />
             <Input label="Email" isReadOnly className="col-span-6" value={applicant?.email} />
             <Input label="Telefon" isReadOnly className="col-span-6" value={applicant?.phoneNumber} />
-            <Input label="Data urodzenia" isReadOnly type="date" className="col-span-6" value={applicant?.birthDate.toString()}/>
+            <Input label="Data urodzenia" isReadOnly className="col-span-6" value={applicant != undefined? new Date(applicant.birthDate).toISOString():""}/>
             <div className="col-span-12">
                 <Accordion >
                     <AccordionItem title="Adres" key="address">
