@@ -35,7 +35,7 @@ export default function RootLayout({
                 </p>
               </div>
             </div>)}
-            <main className="flex min-h-screen mt-3 w-full py-2 px-6 sm:px-3 xs:px-1">
+            <main className="flex min-h-screen mt-3 w-full py-2 px-6 sm:px-3 xs:px-1 items-centerjustify-between">
 
               {children}
             </main>
