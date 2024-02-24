@@ -26,11 +26,10 @@ export class EmailService {
           });
     }
 
-    @OnEvent('apply.request-recommendation')
+    @OnEvent('apply.request-recomendation')
     async requestRecommendation(data:EventPayloads['apply.request-recomendation']){
         const {email, name} = data;
-        console.log(__dirname)
-        const subject = `Kandydat do oczekuje na  twoją rekomendacje`;
+        const subject = `Kandydat do oczekuje na twoją rekomendacje`;
         await this.mailerService.sendMail({
             to: email,
             subject,
@@ -44,7 +43,6 @@ export class EmailService {
     @OnEvent('apply.request-fee-payment')
     async requestApplyFeePayment(data:EventPayloads['apply.request-fee-payment']){
         const {email} = data;
-        console.log(__dirname)
         const subject = `Informacjo dotyczaca wniosku członkowskiego PLUG`;
         await this.mailerService.sendMail({
             to: email,

@@ -59,7 +59,7 @@ export class EventStore implements IEventPublisher, IMessageSource {
         where: { streamId: streamName },
         order: { timestamp: 'ASC' },
       });
-
+      console.log('eventStream', eventStream);
       const events = eventStream.map((event) => {
         const eventType = event.eventType;
         const data = JSON.parse(event.data);

@@ -6,4 +6,5 @@ export interface EventPayloads {
     'apply.application-not-recommended': { name: string; email: string };
     'apply.application-approved': { name: string; email: string };
     'apply.application-rejected': { name: string; email: string; reason: string; deadline: string };
+    'apply.verify-application': { id:string, rcomendationsCount: number};
   }

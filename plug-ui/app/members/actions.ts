@@ -1,5 +1,4 @@
 export async function createMember(onSuccess: () => void, formData: FormData) {
-    console.log(formData);
     const payload = {
         card: formData.get('card'),
         firstName: formData.get('firstname'),

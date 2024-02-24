@@ -82,10 +82,12 @@ export class EmailNotification
   }
 
   async handleApplicationReceived(event: ApplicationReceived) {
+    console.log('Application received:', event.id);
     await this.emitter.emitAsync('apply.application-received', {
       email: event.email,
       name: event.firstName,
     });
+    await this.emitter.emitAsync('apply.verify-application', {id: event.id, rcomendationsCount: event.recommendations.length});
   }
 
   async handleRecommendationsRequested(
@@ -93,7 +95,6 @@ export class EmailNotification
   ) {
     const applicantQuery = new GetApplicantQuery(event.id);
     const applicant: ApplicantView = await this.queryBus.execute(applicantQuery);
-
     await this.emitter.emitAsync('apply.request-fee-payment', {
       email: applicant.email,
       name: applicant.firstName,

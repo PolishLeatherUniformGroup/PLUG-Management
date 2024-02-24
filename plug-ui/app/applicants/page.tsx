@@ -97,7 +97,6 @@ export default withPageAuthRequired(function Applicants() {
         fetch(`/api/apply/applicants/${id}`)
             .then(response => response.json())
             .then((data) => {
-                console.log("loaded: ", data);
                 setApplicant({ data, loading: false });
             });
     }

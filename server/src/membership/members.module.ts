@@ -1,4 +1,4 @@
-import { Module, OnModuleInit } from '@nestjs/common';
+import { Global, Module, OnModuleInit } from '@nestjs/common';
 import { MemberView } from './infrastructure/read-model/model/member.entity';
 import { MembershipFeeView } from './infrastructure/read-model/model/membership-fee.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -18,6 +18,7 @@ import { QueryController } from './infrastructure/controller/query.controller';
 import { ApplyModule } from 'src/apply/apply.module';
 import { QueryHandlers } from './infrastructure/query/handler';
 
+@Global()
 @Module({
   imports: [
     CqrsModule,
@@ -28,8 +29,7 @@ import { QueryHandlers } from './infrastructure/query/handler';
       MemberSuspensionView,
       MemberExpulsionView,
     ]),
-    EventStoreModule,
-    ApplyModule
+    EventStoreModule
   ],
   controllers: [CommandController, QueryController],
   providers: [
@@ -39,7 +39,9 @@ import { QueryHandlers } from './infrastructure/query/handler';
     ...MembersProviders,
     ...QueryHandlers
   ],
-  exports: [],
+  exports: [
+    ...QueryHandlers,
+  ],
 })
 export class MembersModule implements OnModuleInit {
   constructor(private readonly eventStore: EventStore) {}

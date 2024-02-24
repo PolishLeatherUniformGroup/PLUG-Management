@@ -12,6 +12,7 @@ export class SendApplicationHandler
   constructor(@Inject(APPLICANTS) private readonly applicants: Applicants) {}
   async execute(command: SendApplicationCommand) {
     const applicantId = ApplicantId.fromUUID(randomUUID());
+    console.log('applicantId', applicantId.value);
     const applicant = Applicant.register(
       applicantId,
       command.firstName,

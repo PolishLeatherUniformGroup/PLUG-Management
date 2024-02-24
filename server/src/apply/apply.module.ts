@@ -1,4 +1,4 @@
-import { Module, OnModuleInit } from '@nestjs/common';
+import { Get, Module, OnModuleInit } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { EventStoreModule } from 'src/core/eventstore/eventstore.module';
 import { ApplyController } from './infrastructure/controller/apply.controller';
@@ -15,15 +15,21 @@ import { ApplyEvents } from './domain/events';
 import { CommandController } from './infrastructure/controller/command.controller';
 import { QueryController } from './infrastructure/controller/query.controller';
 import { EmailModule } from 'src/email/email.module';
-import { EventHandlers } from './domain/handler';
+import { Member } from 'src/membership/domain/model/member';
+import { MembersModule } from 'src/membership/members.module';
+import { VerificationService } from 'src/membership/application/service/verification.service';
+import { GetMemberByCardQuery } from 'src/membership/infrastructure/query/get-member-by-card.query';
+import { GetMemberByCardHandler } from 'src/membership/infrastructure/query/handler';
+import { MemberView } from 'src/membership/infrastructure/read-model/model/member.entity';
+import { ApplyService } from './application/service/apply.service';
 
 @Module({
   imports: [
     CqrsModule,
-    TypeOrmModule.forFeature([ApplicantView, RecommendationView]),
+    TypeOrmModule.forFeature([ApplicantView, RecommendationView, MemberView]),
     EventStoreModule,
     EmailModule,
-    
+    MembersModule,
   ],
   controllers: [ApplyController, QueryController, CommandController],
   providers: [
@@ -32,7 +38,9 @@ import { EventHandlers } from './domain/handler';
     ...ApplyProviders,
     ...NotificationHandlers,
     ...QueryHandlers,
-    ...EventHandlers
+    VerificationService,
+    GetMemberByCardHandler,
+    ApplyService
   ]
 })
 export class ApplyModule implements OnModuleInit {

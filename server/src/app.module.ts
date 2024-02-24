@@ -25,7 +25,7 @@ import { TypedEventEmitterModule } from './event-emitter/event-emitter.module';
       database: 'srv58017_plug_app',
       synchronize: true,
       entities: [__dirname + '/**/*.entity.{js,ts}'],
-      logging: true,
+      logging: false,
     }),
     MembersModule,
     GatheringsModule,

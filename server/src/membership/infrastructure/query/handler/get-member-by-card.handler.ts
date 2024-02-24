@@ -5,7 +5,7 @@ import { MemberView } from "../../read-model/model/member.entity";
 import { GetMemberByCardQuery } from "../get-member-by-card.query";
 import { GetMemberQuery } from "../get-member.query";
 
-@QueryHandler(GetMemberQuery)
+@QueryHandler(GetMemberByCardQuery)
 export class GetMemberByCardHandler implements IQueryHandler<GetMemberByCardQuery, MemberView | null> {
     constructor(@InjectRepository(MemberView)private readonly memberRepository: Repository<MemberView>) {}
   

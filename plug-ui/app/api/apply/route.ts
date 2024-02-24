@@ -4,7 +4,6 @@ import { redirect } from 'next/navigation'
 export const POST = async function sendApplication(req:NextRequest){
     const endpoint = `${process.env.PLUG_API_URL}apply/commands/send-application`;
     const formData = await req.formData();
-   console.log(new Date(Date.parse(formData.get('birthdate')as string)).toISOString());
     const payload = {
         firstName: formData.get('firstName'),
         lastName: formData.get('lastName'),
@@ -28,6 +27,5 @@ export const POST = async function sendApplication(req:NextRequest){
         },
         body: JSON.stringify(payload)
     });
-    console.log(req.url);
     redirect('/join/success');
 }

@@ -25,9 +25,7 @@ export default withPageAuthRequired(function Members() {
         fetch('/api/members')
             .then(response => response.json())
             .then((data: MemberDto[]) => {
-                console.log(data);
                 if (data.length > 0) {
-                    console.log("data:", data);
                     const items = data.map((member) => {
                         return {
                             id: member.id,
@@ -37,7 +35,6 @@ export default withPageAuthRequired(function Members() {
                             email: member.email,
                         }
                     });
-                    console.log("items:", items);
                     setMembers({ rows: items, loading: false });
 
                 } else {

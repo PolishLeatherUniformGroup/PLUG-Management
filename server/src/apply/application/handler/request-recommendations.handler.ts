@@ -13,6 +13,7 @@ export class RequestRecommendationsHandler
 
   async execute(command: RequestRecommendations): Promise<any> {
     try {
+      console.log('ApplicantId', command.applicantId.value);
       const applicant: Applicant | null = await this.applicants.get(
         command.applicantId,
       );
