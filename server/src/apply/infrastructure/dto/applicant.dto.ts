@@ -1,3 +1,5 @@
+import { AddressDto } from "src/shared/dto/address.dto";
+
 export class ApplicantDto {
   public id: string;
 
@@ -13,15 +15,7 @@ export class ApplicantDto {
 
   public birthDate: Date;
 
-  public addressCountry: string;
-
-  public addressCity: string;
-
-  public addressStreet: string;
-
-  public addressPostalCode: string;
-
-  public addressState?: string;
+  public address:AddressDto;
 
   public status: number;
 

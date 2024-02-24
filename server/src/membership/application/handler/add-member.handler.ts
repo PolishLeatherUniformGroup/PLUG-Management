@@ -12,7 +12,6 @@ export class AddMemberHandler
 
   async execute(command: AddMemberCommand): Promise<void> {
     try {
-      console.log('AddMemberHandler', command);
       const member = Member.add(
         command.memberId,
         command.card,

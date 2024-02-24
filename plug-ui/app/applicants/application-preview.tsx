@@ -8,19 +8,19 @@ import { Address } from "./address";
 import { Fee } from "./fee";
 import { format } from "date-fns";
 
-export default function ApplicationPreview({ applicant, recommendations }: { applicant?: ApplicantDetails | null, recommendations: Recommendation[]}) {
+export default function ApplicationPreview({ applicant, recommendations }: { applicant?: ApplicantDetails | null, recommendations: Recommendation[] }) {
 
-    const chooseActions = (status?:number)=>{
-        if(status === 1 || status === 3){
+    const chooseActions = (status?: number) => {
+        if (status === 1 || status === 3) {
             return beforeDecisionActions();
         }
-        if(status === 4){
+        if (status === 4) {
             return readyForDecisionActions();
         }
-        if(status === 6){
+        if (status === 6) {
             return afterDecisionActions();
         }
-        if(status === 7){
+        if (status === 7) {
             return afterAppealActions();
         }
     }
@@ -94,7 +94,7 @@ export default function ApplicationPreview({ applicant, recommendations }: { app
             <Input label="Nazwisko" isReadOnly className="col-span-6" value={applicant?.lastName} />
             <Input label="Email" isReadOnly className="col-span-6" value={applicant?.email} />
             <Input label="Telefon" isReadOnly className="col-span-6" value={applicant?.phoneNumber} />
-            <Input label="Data urodzenia" isReadOnly className="col-span-6" value={applicant != undefined? new Date(applicant.birthDate).toISOString():""}/>
+            <Input label="Data urodzenia" isReadOnly className="col-span-6" value={applicant != undefined ? format(applicant.birthDate,"dd-MM-yyyy") : ""} />
             <div className="col-span-12">
                 <Accordion >
                     <AccordionItem title="Adres" key="address">
@@ -102,18 +102,18 @@ export default function ApplicationPreview({ applicant, recommendations }: { app
                     </AccordionItem>
                     <AccordionItem title="Rekomendacje">
                         <div className="grid grid-cols-4 gap-2">
-                            {recommendations?.map((recomendation, index) => {
+                            {applicant?.recommendations.map((recomendation, index) => {
                                 return (<>
-                                    <Input label={`Rekomendacja ${index + 1}`} isReadOnly className="col-span-3" value={recomendation.card} />
-                                   {recomendation.status === true}&&(<Button color="success" isIconOnly variant="bordered" isDisabled size="lg" className="my-auto">
-                                         <FontAwesomeIcon icon={faCheck} />
-                                    </Button>)
-                                    {recomendation.status === false}&&(<Button color="danger" isIconOnly variant="bordered" isDisabled size="lg" className="my-auto">
-                                         <FontAwesomeIcon icon={faXmark} />
-                                    </Button>)
-                                    {recomendation.status === undefined}&&(<Button color="danger" isIconOnly variant="bordered" isDisabled size="lg" className="my-auto">
-                                         <FontAwesomeIcon icon={faQuestion} />
-                                    </Button>)
+                                    <Input label={`Rekomendacja ${index + 1}`} isReadOnly className="col-span-3" value={recomendation.cardNumber} />
+                                    {recomendation.status === true&&(<Button color="success" isIconOnly variant="bordered" isDisabled size="lg" className="my-auto">
+                                        <FontAwesomeIcon icon={faCheck} />
+                                    </Button>)}
+                                    {recomendation.status === false&&(<Button color="danger" isIconOnly variant="bordered" isDisabled size="lg" className="my-auto">
+                                        <FontAwesomeIcon icon={faXmark} />
+                                    </Button>)}
+                                    {recomendation.status === undefined&&(<Button color="danger" isIconOnly variant="bordered" isDisabled size="lg" className="my-auto">
+                                        <FontAwesomeIcon icon={faQuestion} />
+                                    </Button>)}
                                 </>)
                             })}
 
@@ -123,16 +123,18 @@ export default function ApplicationPreview({ applicant, recommendations }: { app
                     <AccordionItem title="Składka">
                         <Fee fee={applicant?.fee} />
                     </AccordionItem>
+                    <AccordionItem title="Historia wniosku">
+                        < Table radius="sm" className="col-span-12">
+                            <TableHeader>
+                                <TableColumn>Data</TableColumn>
+                                <TableColumn>Akcja</TableColumn>
+                            </TableHeader>
+                            <TableBody emptyContent={"Brak historii"}>{[]}</TableBody>
+                        </Table>
+                    </AccordionItem>
                 </Accordion>
             </div>
-            <h4 className="text-lg col-span-12">Historia wniosku</h4>
-            <Table radius="sm" className="col-span-12">
-                <TableHeader>
-                    <TableColumn>Data</TableColumn>
-                    <TableColumn>Akcja</TableColumn>
-                </TableHeader>
-                <TableBody emptyContent={"Brak historii"}>{[]}</TableBody>
-            </Table>
+
         </div>
 
     </div>)

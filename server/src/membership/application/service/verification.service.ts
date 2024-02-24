@@ -11,12 +11,10 @@ export class VerificationService{
         const locatedMembers:MemberView[]=[];
         for(const cardNumber of cardNumbers) {
             const member = await this.verifyCardNumber(cardNumber);
-            console.log("member:",member);
             if(member !== null) {
                 locatedMembers.push(member);
             }
         }
-        console.log("located members:",locatedMembers);
         return locatedMembers;
     }
     async verifyCardNumber(cardNumber:string):Promise<MemberView|null> {

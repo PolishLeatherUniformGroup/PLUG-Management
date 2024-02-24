@@ -18,7 +18,6 @@ export class GetApplicantRecommendationsHandler
     query: GetApplicantRecommendationsQuery,
   ): Promise<RecommendationDto[]> {
     const q = JSON.parse(JSON.stringify(query.id));
-    console.log('Query:', q);
     const recommendations = await this.repository.find({
       where: { applicant: { id: q.id } },
     });

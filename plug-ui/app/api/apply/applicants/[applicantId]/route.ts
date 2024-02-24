@@ -1,15 +1,15 @@
 import { ApplicantDetails } from "@/app/models/applicant-details.dto";
-import { getAccessToken, withApiAuthRequired } from "@auth0/nextjs-auth0";
+import { getAccessToken } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async function getApplications(
     request: NextRequest,
-    {params: {applicantId}}: {params: {applicantId: string}}
-  ) {
-    
+    { params: { applicantId } }: { params: { applicantId: string } }
+) {
+
     try {
         const res = new NextResponse();
-        const {accessToken} = await getAccessToken(request, res);
+        const { accessToken } = await getAccessToken(request, res);
         const endpoint = `${process.env.PLUG_API_URL}apply/applicants/${applicantId}`;
         const response = await fetch(endpoint, {
             headers: {
@@ -18,9 +18,42 @@ export const GET = async function getApplications(
             },
             method: 'GET'
         });
-        const applicant:ApplicantDetails = await response.json();
+        const applicantData = await response.json();
+        const recommendationRequests = await fetch(`${process.env.PLUG_API_URL}apply/applicants/${applicantId}/recommendations`, {
+            headers: {
+                accept: 'application/json',
+                authorization: `bearer ${accessToken}`
+            },
+            method: 'GET'
+        });
+        console.log(applicantData);
+        const applicant: ApplicantDetails = {
+            id: applicantData.id,
+            firstName: applicantData.firstName,
+            lastName: applicantData.lastName,
+            email: applicantData.email,
+            phoneNumber: applicantData.phoneNumber,
+            status: applicantData.status,
+            applyDate: applicantData.applyDate,
+            birthDate: applicantData.birthDate,
+            address: {
+                street: applicantData.address.street,
+                city: applicantData.address.city,
+                postalCode: applicantData.address.postalCode,
+                country: applicantData.address.country,
+                state: applicantData.address.state
+            },
+            recommendations: (await recommendationRequests.json()).data,
+            fee: {
+                requiredFee: applicantData.requiredFeeAmount,
+                paidFee: applicantData.feeePaidAmount == null ? 0 : applicantData.feeePaidAmount,
+                currency: applicantData.feeCurrency
+            }
+        }
+        console.log(applicant);
         return Response.json(applicant);
     } catch (error) {
+        console.error(error);
         return Response.json({ error: error }, { status: 500 });
     }
-  };
+};

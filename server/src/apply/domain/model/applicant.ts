@@ -207,7 +207,6 @@ export class Applicant extends AggregateRoot {
 
   private onApplicationReceived(event: ApplicationReceived) {
     this._applicantId = ApplicantId.fromString(event.id);
-    console.log('applicantId', this._applicantId.value);
     this._firstName = event.firstName;
     this._lastName = event.lastName;
     this._email = event.email;

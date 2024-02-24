@@ -9,6 +9,8 @@ import { ApplicantsDto } from '../dto/applicants.dto';
 import { GetApplicantsQuery } from '../query/get-applicants.query';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtGuard } from 'src/auth/jwt.guard';
+import { ApplicantView } from '../read-model/model/applicant.entity';
+import { AddressDto } from 'src/shared/dto/address.dto';
 
 @Controller('apply')
 @ApiTags('apply')
@@ -40,11 +42,20 @@ export class QueryController {
 
   async getApplication(@Param() id: string): Promise<ApplicantDto | null> {
     const query = new GetApplicantQuery(id);
-    const applicant = await this.queryBus.execute(query);
+    const applicant:ApplicantView = await this.queryBus.execute(query);
     if (!applicant) {
       throw new NotFoundException();
     }
-    return applicant;
+    return {
+      ...applicant,
+      address: {
+        country: applicant.addressCountry,
+        city: applicant.addressCity,
+        street: applicant.addressStreet,
+        postalCode: applicant.addressPostalCode,
+        state: applicant.addressState,
+      } as AddressDto,
+    }as ApplicantDto;
   }
 
   @Get('applicants/:id/recommendations')

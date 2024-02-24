@@ -14,7 +14,6 @@ export class EmailService {
     @OnEvent('apply.application-received')
     async applyConfirmation(data:EventPayloads['apply.application-received']){
         const {email, name} = data;
-        console.log(__dirname)
         const subject = `Wniosek członkowski PLUG`;
         await this.mailerService.sendMail({
             to: email,
@@ -57,7 +56,6 @@ export class EmailService {
     @OnEvent('apply.application-cancelled')
     async applicationCancelled(data:EventPayloads['apply.application-cancelled']){
         const {email, name} = data;
-        console.log(__dirname)
         const subject = `Informacjo dotyczaca wniosku członkowskiego PLUG`;
         await this.mailerService.sendMail({
             to: email,
@@ -72,7 +70,6 @@ export class EmailService {
     @OnEvent('apply.application-not-recommended')
     async applicationNotRecommended(data:EventPayloads['apply.application-not-recommended']){
         const {email, name} = data;
-        console.log(__dirname)
         const subject = `Informacjo dotyczaca wniosku członkowskiego PLUG`;
         await this.mailerService.sendMail({
             to: email,
@@ -87,7 +84,6 @@ export class EmailService {
     @OnEvent('apply.application-approved')
     async applicationAccepted(data:EventPayloads['apply.application-approved']){
         const {email, name} = data;
-        console.log(__dirname)
         const subject = `Informacja o przyjęciu do Stowarzyszenia PLUG`;
         await this.mailerService.sendMail({
             to: email,
@@ -102,7 +98,6 @@ export class EmailService {
     @OnEvent('apply.application-rejected')
     async applicationRejected(data:EventPayloads['apply.application-rejected']){
         const {email} = data;
-        console.log(__dirname)
         const subject = `Informacja o odrzuceniu wniosku o dołączenie do Stowarzyszenia PLUG`;
         await this.mailerService.sendMail({
             to: email,

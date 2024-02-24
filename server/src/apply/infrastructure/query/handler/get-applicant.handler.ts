@@ -14,7 +14,6 @@ export class GetApplicantHandler implements IQueryHandler<GetApplicantQuery,Appl
 
   async execute(query: GetApplicantQuery): Promise<ApplicantView|null> {
     const q = JSON.parse(JSON.stringify(query.id));
-    console.log('Query:', q);
     const applicant = await this.applicantRepository.findOne({
       where: { id: q.id },
     });

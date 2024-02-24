@@ -30,11 +30,11 @@ export class ApplicantAcceptedHandler
       applicant.decisionDate || applicant.appealDecisionDate || new Date(),
       applicant.birthDate,
       Address.create({
-        country: applicant.addressCountry,
-        city: applicant.addressCity,
-        street: applicant.addressStreet,
-        postalCode: applicant.addressPostalCode,
-        state: applicant.addressState,
+        country: applicant.address.country,
+        city: applicant.address.city,
+        street: applicant.address.street,
+        postalCode: applicant.address.postalCode,
+        state: applicant.address.state,
       }),
       MembershipFee.initialFeeForMember(
         memberId,

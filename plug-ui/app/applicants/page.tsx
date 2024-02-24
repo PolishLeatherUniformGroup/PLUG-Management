@@ -97,6 +97,7 @@ export default withPageAuthRequired(function Applicants() {
         fetch(`/api/apply/applicants/${id}`)
             .then(response => response.json())
             .then((data) => {
+                console.log(data);
                 setApplicant({ data, loading: false });
             });
     }
@@ -165,7 +166,7 @@ export default withPageAuthRequired(function Applicants() {
                     {(onClose) => (
                         <>
                             <ModalHeader className="text-2xl">
-                                {!applicant.loading ? `Aplikacja z ${format(new Date(applicant.data.applyDate),"dd-MM-yyyy")}`:'Wczytuje ...'}
+                                {!applicant.loading ? `Aplikacja z ${format(applicant.data.applyDate,"dd-MM-yyyy")}`:'Wczytuje ...'}
                                   
                             </ModalHeader>
                             

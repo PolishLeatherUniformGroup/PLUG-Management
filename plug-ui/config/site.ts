@@ -13,11 +13,13 @@ export const siteConfig = {
             href:'/applicants',
             isExternal:false,
             isProtected:true,
+            role: 'board'
         },{
             label:'Członkowie',
             href:'/members',
             isExternal:false,
             isProtected:true,
+            role: 'board'
         }
 
     ],

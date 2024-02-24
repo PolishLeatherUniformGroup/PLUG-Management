@@ -9,6 +9,7 @@ export interface ApplicantDetails {
     birthDate: Date;
     address?: AddressDto;
     fee: FeeDto;
+    recommendations: Recommendation[];
 }
 export interface AddressDto{
     street: string;
@@ -18,7 +19,7 @@ export interface AddressDto{
     state?: string;
 }
 export interface Recommendation{
-    card:string;
+    cardNumber:string;
     status?:boolean
 }
 export interface FeeDto{
