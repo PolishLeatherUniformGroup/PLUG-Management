@@ -21,6 +21,11 @@ export default function AddMember({ onSuccess, onCancel }: { onSuccess: () => vo
             <Input label="Miejscowość" name="city" required size="lg" className="col-span-2" />
             <Input label="Kod pocztowy" name="postalCode" required size="lg" className="col-span-2" />
             <Input label="Ulica" name="street" required size="lg" className="col-span-3" />
+            <h3 className="col-span-4 text-xl font-bold">Składka</h3>
+            <Input label="Kwota" name="feeAmount" required size="lg" className="col-span-2" />
+            <Input label="Waluta" name="feeCurrency" value="PLN" isReadOnly type="text" required size="lg" className="col-span-2" />
+            <Input label="Data płatności" name="feeDate" labelPlacement="outside-left" type="date" required size="lg" className="col-span-2" />
+            <Input label="Rok" type="text" name="year" size="lg" className="col-span-2" />
             <Divider className="col-span-4" />
             <div className="col-start-4">
                 <Button color="danger" variant="light" onPress={onCancel} className="mx-2" size="md" >

@@ -8,7 +8,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faEye, faFileArrowDown, faFileInvoiceDollar, faXmark } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { ApplicantDetails, Recommendation } from "../models/applicant-details.dto";
-import { withPageAuthRequired } from "@auth0/nextjs-auth0/client";
 
 export default withPageAuthRequired(function Applicants() {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -181,4 +180,4 @@ export default withPageAuthRequired(function Applicants() {
             </Modal>
 
         </div>);
-});
+})

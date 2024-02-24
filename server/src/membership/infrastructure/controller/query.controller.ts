@@ -31,6 +31,7 @@ export class QueryController {
             data: queryresult.map((member) => {
                 return {
                     id: member.id,
+                    card: member.cardNumber,
                     firstName: member.firstName,
                     lastName: member.lastName,
                     email: member.email,
@@ -72,6 +73,7 @@ export class QueryController {
                 state: member.addressState,
             } as AddressDto,
             type: member.memberType,
+            card: member.cardNumber,
         } as MemberDto;
         return memberDto;
 

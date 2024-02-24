@@ -10,7 +10,9 @@ export class GetMembersHandler implements IQueryHandler<GetMembersQuery,MemberVi
     @InjectRepository(MemberView)private readonly memberRepository: Repository<MemberView>) {}
 
   async execute(query: GetMembersQuery): Promise<MemberView[]> {
-    const members = await this.memberRepository.find();
+    const members = await this.memberRepository.find({
+      order: { cardNumber: 'ASC' },
+    });
     return members;
 
   }

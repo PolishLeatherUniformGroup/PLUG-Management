@@ -72,6 +72,8 @@ export const MembersEvents = {
     birthDate: Date,
     address: Address,
     initialFee: MembershipFee,
+    notify: boolean = false,
+    card: number | null = null,
   ) =>
     new MemberCreated(
       id,
@@ -83,6 +85,8 @@ export const MembersEvents = {
       birthDate,
       address,
       initialFee,
+      notify,
+      card
     ),
   MemberCardAssigned: (id: string, cardNumber: MemberCard) =>
     new MemberCardAssigned(id, cardNumber),

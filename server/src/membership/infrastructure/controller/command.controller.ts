@@ -1,8 +1,8 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateMemberRequestDto } from '../dto/create-member-request.dto';
-import { CreateMemberCommand } from 'src/membership/application/command/create-member.command';
+import { AddMemberRequestDto } from '../dto/add-member-request.dto';
+import { AddMemberCommand } from 'src/membership/application/command/add-member.command';
 import { MemberId } from 'src/membership/domain/model/member-id';
 import { randomUUID } from 'crypto';
 import { Address } from 'src/shared/address';
@@ -47,13 +47,14 @@ export class CommandController {
   constructor(private readonly commandBus: CommandBus) {}
 
   @Post('create-member')
-  @ApiOperation({ summary: 'Manula member creation' })
+  @ApiOperation({ summary: 'Manual member creation' })
   @ApiResponse({ status: 204, description: 'Member created.' })
-  async createMember(@Body() payload: CreateMemberRequestDto) {
+  async createMember(@Body() payload: AddMemberRequestDto) {
     try {
       const newId = MemberId.fromUUID(randomUUID());
-      const command: CreateMemberCommand = new CreateMemberCommand(
+      const command: AddMemberCommand = new AddMemberCommand(
         newId,
+        payload.card,
         payload.firstName,
         payload.lastName,
         payload.email,

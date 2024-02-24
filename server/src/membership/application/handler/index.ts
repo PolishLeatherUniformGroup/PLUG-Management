@@ -15,6 +15,7 @@ import { ExpelMemberHandler } from './expel-member.handler';
 import { AppealMemberExpulsionHandler } from './appeal-member-expulsion.handler';
 import { AcceptMemberExpulsionAppealHandler } from './accept-member-expulsion-appeal.handler';
 import { RejectMemberExpulsionAppealHandler } from './reject-member-expulsion-appeal.handler';
+import { AddMemberHandler } from './add-member.handler';
 
 export * from './create-member.handler';
 export * from './assign-card-number.handler';
@@ -33,6 +34,7 @@ export * from './expel-member.handler';
 export * from './appeal-member-expulsion.handler';
 export * from './accept-member-expulsion-appeal.handler';
 export * from './reject-member-expulsion-appeal.handler';
+export * from './add-member.handler';
 
 export const CommandHandlers = [
   CreateMemberHandler,
@@ -52,4 +54,5 @@ export const CommandHandlers = [
   AppealMemberExpulsionHandler,
   AcceptMemberExpulsionAppealHandler,
   RejectMemberExpulsionAppealHandler,
+  AddMemberHandler,
 ];

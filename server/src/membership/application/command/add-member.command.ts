@@ -1,10 +1,12 @@
-import { DomainEvent } from 'src/core/domain';
+import { ICommand } from '@nestjs/cqrs';
+import { MemberId } from 'src/membership/domain/model/member-id';
+import { MembershipFee } from 'src/membership/domain/model/membership-fee';
 import { Address } from 'src/shared/address';
-import { MembershipFee } from '../model/membership-fee';
 
-export class MemberCreated implements DomainEvent {
+export class AddMemberCommand implements ICommand {
   constructor(
-    public readonly id: string,
+    public readonly memberId: MemberId,
+    public readonly card:number,
     public readonly firstName: string,
     public readonly lastName: string,
     public readonly email: string,
@@ -13,7 +15,5 @@ export class MemberCreated implements DomainEvent {
     public readonly birthDate: Date,
     public readonly address: Address,
     public readonly initialFee: MembershipFee,
-    public readonly notify: boolean=false,
-    public readonly card: number|null = null,
   ) {}
 }

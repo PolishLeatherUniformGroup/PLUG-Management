@@ -14,21 +14,10 @@ export class GetActiveMembersHandler
     private readonly memberViewRepository: Repository<MemberView>,
   ) {}
 
-  public async execute(): Promise<MemberDto[]> {
+  public async execute(): Promise<MemberView[]> {
     const members = await this.memberViewRepository.find({
-      where: { status: 1 },
+      where: { status: 1 }, order: { cardNumber: 'ASC' },
     });
-    return members.map((member) => {
-      return {
-        ...member,
-        address: {
-          city: member.addressCity,
-          country: member.addressCountry,
-          street: member.addressStreet,
-          postalCode: member.addressPostalCode,
-          state: member.addressState,
-        } as AddressDto,
-      } as MemberDto;
-    });
+    return members;
   }
 }

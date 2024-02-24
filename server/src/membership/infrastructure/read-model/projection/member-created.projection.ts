@@ -10,6 +10,7 @@ import { MemberCard } from 'src/membership/domain/model/member-card';
 import { AssignCardNumberCommand } from 'src/membership/application/command/assign-card-number.command';
 import { MemberId } from 'src/membership/domain/model/member-id';
 import { MemberType } from 'src/membership/domain/model/member-type';
+import e from 'express';
 
 @EventsHandler(MemberCreated)
 export class MemberCreatedProjection implements IEventHandler<MemberCreated> {
@@ -21,13 +22,14 @@ export class MemberCreatedProjection implements IEventHandler<MemberCreated> {
     @InjectRepository(MemberCardNumber)
     private memberCardRepository: Repository<MemberCardNumber>,
     private readonly commandBus: CommandBus,
-  ) {}
+  ) { }
   async handle(event: MemberCreated) {
     try {
-      const card = await this.memberCardRepository.findOne({
-        where: { prefix: 'PLUG' },
-      });
-
+      
+        const card = await this.memberCardRepository.findOne({
+          where: { prefix: 'PLUG' },
+        });
+      console.log('MemberCreatedProjection', event);
       const member = new MemberView();
       member.id = event.id;
       member.firstName = event.firstName;
@@ -42,7 +44,7 @@ export class MemberCreatedProjection implements IEventHandler<MemberCreated> {
       member.addressPostalCode = event.address.postalCode;
       member.addressState = event.address.state;
       member.status = MemberStatus.Active;
-      if (card) {
+      if (event.notify && card) {
         const command = new AssignCardNumberCommand(
           MemberId.fromString(member.id),
           MemberCard.create(card.prefix, card.nextCard),
@@ -50,6 +52,8 @@ export class MemberCreatedProjection implements IEventHandler<MemberCreated> {
         await this.commandBus.execute(command);
         card.nextCard++;
         this.memberCardRepository.save(card);
+      }else if(card && event.card){
+        member.cardNumber = MemberCard.create(card.prefix, event.card).toString();
       }
       member.memberType = MemberType.Regular;
       await this.memberRepository.save(member);
