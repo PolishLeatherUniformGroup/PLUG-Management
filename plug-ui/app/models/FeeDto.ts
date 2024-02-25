@@ -5,4 +5,5 @@ export interface FeeItemDto {
     paidFee?: string;
     requiredFeeDate: string;
     paidFeeDate?: string;
+    currency: string;
 }

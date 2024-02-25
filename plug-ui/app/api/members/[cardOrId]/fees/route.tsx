@@ -34,6 +34,7 @@ export const GET = async function getMemberFees(req: NextRequest,
         paidFee: `${fee.paidAmount.amount} ${fee.paidAmount.currency}`,
         requiredFeeDate: fee.dueDate,
         paidFeeDate: fee.paidDate,
+        currency: fee.dueAmount.currency
     } as FeeItemDto})
     console.log(mapped);
     return NextResponse.json(mapped);
