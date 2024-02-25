@@ -3,8 +3,6 @@ import { GetActiveMembersQuery } from '../get-active-members.query';
 import { MemberView } from '../../read-model/model/member.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MemberDto } from '../../dto/member.dto';
-import { AddressDto } from 'src/shared/dto/address.dto';
 
 export class GetActiveMembersHandler
   implements IQueryHandler<GetActiveMembersQuery>

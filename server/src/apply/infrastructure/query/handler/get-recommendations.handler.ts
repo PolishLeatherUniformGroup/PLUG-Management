@@ -3,7 +3,6 @@ import { RecommendationView } from '../../read-model/model/recommendation.entity
 import { GetRecommendationsQuery } from '../get-recommendations.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ApplicantView } from '../../read-model/model/applicant.entity';
 
 @QueryHandler(GetRecommendationsQuery)
 export class GetRecommendationsHandler

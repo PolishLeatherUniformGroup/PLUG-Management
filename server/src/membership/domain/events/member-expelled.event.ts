@@ -1,4 +1,4 @@
-import { DomainEvent } from 'src/core/domain';
+import { DomainEvent } from "../../../core/domain";
 
 export class MemberExpelled implements DomainEvent {
   constructor(

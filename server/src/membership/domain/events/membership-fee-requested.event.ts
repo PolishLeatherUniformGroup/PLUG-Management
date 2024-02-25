@@ -1,4 +1,4 @@
-import { DomainEvent } from 'src/core/domain';
+import { DomainEvent } from "../../../core/domain";
 import { Money } from 'src/shared/money';
 
 export class MembershipFeeRequested implements DomainEvent {

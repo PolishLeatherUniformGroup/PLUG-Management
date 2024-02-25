@@ -1,4 +1,4 @@
-import { Money } from 'src/shared/money';
+import { Money } from '../../../shared/money';
 import { MemberId } from './member-id';
 
 export class MembershipFee {

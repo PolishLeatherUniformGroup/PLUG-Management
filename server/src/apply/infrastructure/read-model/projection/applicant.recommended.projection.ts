@@ -1,11 +1,11 @@
 import { IEventHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ApplicantRecommended } from '../../domain/events/applicant-recommended.event';
 import { Repository } from 'typeorm';
+import { ApplicantRecommended } from '../../../domain/events';
+import { ApplicantIdNotFound } from '../../../domain/exception/applicant-id-not-found.error';
+import { ApplicantId, ApplicantStatus } from '../../../domain/model';
 import { ApplicantView } from '../model/applicant.entity';
-import { ApplicantId } from '../../domain/model';
-import { ApplicantIdNotFound } from '../../domain/exception/applicant-id-not-found.error';
-import { ApplicantStatus } from '../../domain/model/applicant-status';
+
 
 export class ApplicantRecommendedProjection
   implements IEventHandler<ApplicantRecommended>

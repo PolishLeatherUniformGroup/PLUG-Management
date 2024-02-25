@@ -1,6 +1,7 @@
 import { ICommand } from '@nestjs/cqrs';
 import { MemberId } from '../../domain/model/member-id';
-import { Money } from 'src/shared/money';
+import { Money } from '../../../shared/money';
+
 
 export class RegisterMembershipFeePaymentCommand implements ICommand {
   constructor(

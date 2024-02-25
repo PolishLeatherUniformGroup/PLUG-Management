@@ -1,4 +1,4 @@
-import { AddressDto } from 'src/shared/dto/address.dto';
+import { AddressDto } from '../../../shared/dto/address.dto';
 import { MembershipFeeDto } from './membership-fee.dto';
 
 export class AddMemberRequestDto {

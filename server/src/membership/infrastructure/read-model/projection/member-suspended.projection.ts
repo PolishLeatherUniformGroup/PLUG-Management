@@ -1,9 +1,10 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { MemberSuspended } from 'src/membership/domain/events/member-suspended.event';
-import { MemberSuspensionView } from '../model/member-suspension.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { MemberSuspended } from '../../../domain/events';
+import { MemberSuspensionView } from '../model/member-suspension.entity';
 import { MemberView } from '../model/member.entity';
+
 
 @EventsHandler(MemberSuspended)
 export class MemberSuspendedProjection

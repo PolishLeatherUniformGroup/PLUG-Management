@@ -1,9 +1,9 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { MembershipCancelled } from 'src/membership/domain/events/membership-cancelled.event';
-import { MemberView } from '../model/member.entity';
-import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MemberStatus } from 'src/membership/domain/model/member-status';
+import { Repository } from 'typeorm';
+import { MembershipCancelled } from '../../../domain/events';
+import { MemberStatus } from '../../../domain/model/member-status';
+import { MemberView } from '../model/member.entity';
 
 @EventsHandler(MembershipCancelled)
 export class MembershipCancelledProjection

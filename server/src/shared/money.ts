@@ -1,4 +1,4 @@
-import { ValueObject } from 'src/core/domain';
+import { ValueObject } from "../core/domain";
 
 interface MoneyProps {
   amount: number;

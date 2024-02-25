@@ -1,21 +1,22 @@
 import { Global, Module, OnModuleInit } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { NotificationHandlers } from '../apply/infrastructure/notification';
+import { EventStore } from '../core/eventstore/eventstore';
+import { EventStoreModule } from '../core/eventstore/eventstore.module';
+import { CommandHandlers } from './application/handler';
+import { MembersEvents } from './domain/events';
+import { CommandController } from './infrastructure/controller/command.controller';
+import { QueryController } from './infrastructure/controller/query.controller';
+import { MembersProviders } from './infrastructure/members.providers';
+import { QueryHandlers } from './infrastructure/query/handler';
+import { MemberCardNumber } from './infrastructure/read-model/model/member-card.entity';
+import { MemberExpulsionView } from './infrastructure/read-model/model/member-expulsion.entity';
+import { MemberSuspensionView } from './infrastructure/read-model/model/member-suspension.entity';
 import { MemberView } from './infrastructure/read-model/model/member.entity';
 import { MembershipFeeView } from './infrastructure/read-model/model/membership-fee.entity';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { CqrsModule } from '@nestjs/cqrs';
-import { EventStoreModule } from 'src/core/eventstore/eventstore.module';
-import { CommandHandlers } from './application/handler';
-import { EventStore } from 'src/core/eventstore/eventstore';
-import { MembersEvents } from './domain/events';
 import { Projections } from './infrastructure/read-model/projection';
-import { Notifications as NotificationHandlers } from './infrastructure/notifications';
-import { MembersProviders } from './infrastructure/members.providers';
-import { CommandController } from './infrastructure/controller/command.controller';
-import { MemberCardNumber } from './infrastructure/read-model/model/member-card.entity';
-import { MemberSuspensionView } from './infrastructure/read-model/model/member-suspension.entity';
-import { MemberExpulsionView } from './infrastructure/read-model/model/member-expulsion.entity';
-import { QueryController } from './infrastructure/controller/query.controller';
-import { QueryHandlers } from './infrastructure/query/handler';
+
 
 @Global()
 @Module({

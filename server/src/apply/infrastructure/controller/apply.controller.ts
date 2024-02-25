@@ -3,8 +3,8 @@ import { ApplyRequestDto } from '../dto/apply-request.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommandBus } from '@nestjs/cqrs';
 import { SendApplicationCommand } from '../../application/command/send-application.command';
-import { Address } from 'src/shared/address';
 import { AllowAnonymous } from 'src/auth/allow-anonymous.decorator';
+import { Address } from '../../../shared/address';
 
 @Controller('apply')
 @ApiTags('apply')

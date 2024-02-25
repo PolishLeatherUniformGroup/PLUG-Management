@@ -1,5 +1,6 @@
-import { AddressDto } from 'src/shared/dto/address.dto';
-import { ValueObject } from 'src/core/domain';
+import { ValueObject } from "../core/domain";
+import { AddressDto } from "./dto/address.dto";
+
 
 interface Props {
   country: string;

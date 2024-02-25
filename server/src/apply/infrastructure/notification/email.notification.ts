@@ -1,24 +1,14 @@
-import { format } from 'date-fns';
-import { EventsHandler, IEvent, IEventHandler, QueryBus } from '@nestjs/cqrs';
-import {
-  ApplicantAccepted,
-  ApplicantRejected,
-  ApplicantRejectionAppealAccepted,
-  ApplicantRejectionAppealCancelled,
-  ApplicantRejectionAppealReceived,
-  ApplicantRejectionAppealRejected,
-} from '../../domain/events';
-import { ApplicantRecommendationRefused } from '../../domain/events/applicant-recommendation-refused.event';
-import { ApplicantRecommendationsRequested } from '../../domain/events/applicant-recommendations-requested.event';
-import { ApplicationCancelled } from '../../domain/events/application-cancelled.event';
-import { ApplicationReceived } from '../../domain/events/application-received.event';
-import { TypedEventEmitter } from 'src/event-emitter/typed-event-emmitter';
-import { GetApplicantQuery } from '../query/get-applicant.query';
-import { GetMemberQuery } from 'src/membership/infrastructure/query/get-member.query';
-import { ApplicantView } from '../read-model/model/applicant.entity';
-import { GetApplicantRecommendationsQuery } from '../query/get-applicant-recommendations.query';
-import { RecommendationView } from '../read-model/model/recommendation.entity';
-import { MemberView } from 'src/membership/infrastructure/read-model/model/member.entity';
+import { EventsHandler, IEventHandler, QueryBus, IEvent } from "@nestjs/cqrs";
+import { format } from "date-fns";
+import { GetMemberQuery } from "../../../membership/infrastructure/query/get-member.query";
+import { MemberView } from "../../../membership/infrastructure/read-model/model/member.entity";
+import { ApplicationReceived, ApplicantRecommendationsRequested, ApplicationCancelled, ApplicantRecommendationRefused, ApplicantAccepted, ApplicantRejected, ApplicantRejectionAppealReceived, ApplicantRejectionAppealCancelled, ApplicantRejectionAppealAccepted, ApplicantRejectionAppealRejected } from "../../domain/events";
+import { GetApplicantRecommendationsQuery } from "../query/get-applicant-recommendations.query";
+import { GetApplicantQuery } from "../query/get-applicant.query";
+import { ApplicantView } from "../read-model/model/applicant.entity";
+import { RecommendationView } from "../read-model/model/recommendation.entity";
+import { TypedEventEmitter } from "../../../event-emitter/typed-event-emmitter";
+
 
 @EventsHandler(
   ApplicationReceived,

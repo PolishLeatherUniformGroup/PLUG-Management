@@ -1,8 +1,8 @@
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { MemberTypeChanged } from '../../../domain/events';
 import { MemberView } from '../model/member.entity';
-import { MemberTypeChanged } from 'src/membership/domain/events/member-type-changed.event';
 
 @EventsHandler(MemberTypeChanged)
 export class MemberTypeChangedProjection

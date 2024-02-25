@@ -5,9 +5,10 @@ import { ApplicantDto } from '../../../apply/infrastructure/dto/applicant.dto';
 import { GetApplicantQuery } from '../../../apply/infrastructure/query/get-applicant.query';
 import { CreateMemberCommand } from 'src/membership/application/command/create-member.command';
 import { MemberId } from '../../domain/model/member-id';
-import { MembershipFee } from 'src/membership/domain/model/membership-fee';
-import { Address } from 'src/shared/address';
-import { Money } from 'src/shared/money';
+import { Address } from '../../../shared/address';
+import { Money } from '../../../shared/money';
+import { MembershipFee } from '../../domain/model/membership-fee';
+
 
 export class ApplicantAcceptedHandler
   implements IEventHandler<ApplicantAccepted>

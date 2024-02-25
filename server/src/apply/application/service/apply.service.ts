@@ -7,9 +7,9 @@ import { RequestRecommendations } from '../command/request-recommendations.comma
 import { OnEvent } from '@nestjs/event-emitter';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EventPayloads } from 'src/event-emitter/event-payloads';
 import { RecommendationView } from '../../infrastructure/read-model/model/recommendation.entity';
 import { Injectable } from '@nestjs/common';
+import { EventPayloads } from '../../../event-emitter/event-payloads';
 
 @Injectable()
 export class ApplyService {

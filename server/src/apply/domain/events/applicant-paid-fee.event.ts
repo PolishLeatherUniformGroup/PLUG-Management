@@ -1,5 +1,6 @@
 import { DomainEvent } from '../../../core/domain/models/domain-event';
-import { Money } from 'src/shared/money';
+import { Money } from '../../../shared/money';
+
 
 export class ApplicantPaidFee implements DomainEvent {
   public constructor(

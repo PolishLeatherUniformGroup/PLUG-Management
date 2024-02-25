@@ -1,8 +1,8 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MembershipFeePaid } from 'src/membership/domain/events';
-import { MembershipFeeView } from '../model/membership-fee.entity';
 import { Repository } from 'typeorm';
+import { MembershipFeePaid } from '../../../domain/events';
+import { MembershipFeeView } from '../model/membership-fee.entity';
 
 @EventsHandler(MembershipFeePaid)
 export class MembershipFeePaidProjection

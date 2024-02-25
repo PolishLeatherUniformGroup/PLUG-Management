@@ -1,10 +1,11 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { MemberExpulsionAppealCancelled } from 'src/membership/domain/events';
-import { MemberSuspensionView } from '../model/member-suspension.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { MemberExpulsionAppealCancelled } from '../../../domain/events';
+import { MemberStatus } from '../../../domain/model/member-status';
+import { MemberSuspensionView } from '../model/member-suspension.entity';
 import { MemberView } from '../model/member.entity';
-import { MemberStatus } from 'src/membership/domain/model/member-status';
+;
 
 @EventsHandler(MemberExpulsionAppealCancelled)
 export class MemberExpulsionAppealCancelledProjection

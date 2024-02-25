@@ -3,7 +3,6 @@ import { GetApplicantQuery } from '../get-applicant.query';
 import { ApplicantView } from '../../read-model/model/applicant.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ApplicantDto } from '../../dto/applicant.dto';
 
 @QueryHandler(GetApplicantQuery)
 export class GetApplicantHandler

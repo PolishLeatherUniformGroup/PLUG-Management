@@ -1,9 +1,9 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { MembershipExpired } from 'src/membership/domain/events/membership-expired.event';
-import { MemberView } from '../model/member.entity';
-import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MemberStatus } from 'src/membership/domain/model/member-status';
+import { Repository } from 'typeorm';
+import { MembershipExpired } from '../../../domain/events';
+import { MemberStatus } from '../../../domain/model/member-status';
+import { MemberView } from '../model/member.entity';
 
 @EventsHandler(MembershipExpired)
 export class MembershipExpiredProjection

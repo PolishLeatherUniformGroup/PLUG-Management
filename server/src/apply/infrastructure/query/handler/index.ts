@@ -1,4 +1,3 @@
-import { GetRecommendationsQuery } from '../get-recommendations.query';
 import { GetApplicantRecommendationsHandler } from './get-applicant-recommendations.handler';
 import { GetApplicantHandler } from './get-applicant.handler';
 import { GetApplicantsHandler } from './get-applicants.handler';

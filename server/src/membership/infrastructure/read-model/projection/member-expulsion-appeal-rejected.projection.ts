@@ -1,10 +1,11 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { MemberExpulsionAppealRejected } from 'src/membership/domain/events';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { MemberView } from '../model/member.entity';
-import { MemberStatus } from 'src/membership/domain/model/member-status';
+import { MemberExpulsionAppealRejected } from '../../../domain/events';
+import { MemberStatus } from '../../../domain/model/member-status';
 import { MemberExpulsionView } from '../model/member-expulsion.entity';
+import { MemberView } from '../model/member.entity';
+
 
 @EventsHandler(MemberExpulsionAppealRejected)
 export class MemberExpulsionAppealRejectedProjection

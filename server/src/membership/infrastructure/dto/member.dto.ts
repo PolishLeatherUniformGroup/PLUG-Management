@@ -1,4 +1,4 @@
-import { AddressDto } from 'src/shared/dto/address.dto';
+import { AddressDto } from "../../../shared/dto/address.dto";
 
 export class MemberDto {
   public id: string;

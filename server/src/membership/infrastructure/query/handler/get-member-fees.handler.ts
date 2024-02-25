@@ -3,7 +3,6 @@ import { GetMemberFeesQuery } from '../get-member-fees.query';
 import { MembershipFeeView } from '../../read-model/model/membership-fee.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MembershipFeeDto } from '../../dto/membership-fee.dto';
 
 @QueryHandler(GetMemberFeesQuery)
 export class GetMemberFeesHandler

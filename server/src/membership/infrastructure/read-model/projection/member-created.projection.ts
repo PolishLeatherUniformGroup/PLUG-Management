@@ -8,9 +8,9 @@ import { MemberStatus } from 'src/membership/domain/model/member-status';
 import { MemberCardNumber } from '../model/member-card.entity';
 import { MemberCard } from 'src/membership/domain/model/member-card';
 import { AssignCardNumberCommand } from 'src/membership/application/command/assign-card-number.command';
-import { MemberId } from '../../domain/model/member-id';
 import { MemberType } from 'src/membership/domain/model/member-type';
-import e from 'express';
+import { MemberId } from '../../../domain/model/member-id';
+
 
 @EventsHandler(MemberCreated)
 export class MemberCreatedProjection implements IEventHandler<MemberCreated> {

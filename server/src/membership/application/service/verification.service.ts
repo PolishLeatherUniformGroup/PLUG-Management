@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { GetMemberQuery } from 'src/membership/infrastructure/query/get-member.query';
-import { MemberView } from 'src/membership/infrastructure/read-model/model/member.entity';
+import { GetMemberQuery } from '../../infrastructure/query/get-member.query';
+import { MemberView } from '../../infrastructure/read-model/model/member.entity';
 
 @Injectable()
 export class VerificationService {

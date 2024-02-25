@@ -1,33 +1,15 @@
-import { AggregateRoot } from 'src/core/domain';
-import { Address } from 'src/shared/address';
-import { MemberId } from './member-id';
-import { MembershipFee } from './membership-fee';
-import { MemberStatus } from './member-status';
-import { MemberCreated } from '../events/member-created.event';
-import { MemberCard } from './member-card';
-import { MemberCardAssigned } from '../events/member-card-assigned.event';
-import { Money } from 'src/shared/money';
-import {
-  MembershipSuspensionAppealCancelled,
-  MembershipSuspensionAppealed,
-  MembershipFeeRequested,
-  MembershipSuspensionAppealRejected,
-  MemberExpelled,
-  MemberExpulsionAppealCancelled,
-  MemberExpulsionAppealAccepted,
-  MemberExpulsionAppealRejected,
-} from '../events';
-import { MembershipFeePaid } from '../events/membership-fee-paid.event';
-import { MemberType } from './member-type';
-import { MemberTypeChanged } from '../events/member-type-changed.event';
-import { MemberSuspension } from './member-suspension';
-import { MemberExpulsion } from './member-expulsion';
-import { MembershipExpired } from '../events/membership-expired.event';
-import { MembershipCancelled } from '../events/membership-cancelled.event';
-import { MemberSuspended } from '../events/member-suspended.event';
-import { MembershipSuspensionAppealAccepted } from '../events/membership-suspension-appeal-accepted.event';
-import { MemberSuspensionEnded } from '../events/member-suspension-ended.event';
-import { MemberExpulsionAppealed } from '../events/member-expulsion-appealed.event';
+import { AggregateRoot } from "../../../core/domain";
+import { Address } from "../../../shared/address";
+import { Money } from "../../../shared/money";
+import { MemberCreated, MemberCardAssigned, MembershipFeeRequested, MembershipFeePaid, MemberTypeChanged, MembershipExpired, MembershipCancelled, MemberSuspended, MembershipSuspensionAppealed, MembershipSuspensionAppealCancelled, MembershipSuspensionAppealAccepted, MembershipSuspensionAppealRejected, MemberSuspensionEnded, MemberExpelled, MemberExpulsionAppealed, MemberExpulsionAppealCancelled, MemberExpulsionAppealAccepted, MemberExpulsionAppealRejected } from "../events";
+import { MemberCard } from "./member-card";
+import { MemberExpulsion } from "./member-expulsion";
+import { MemberId } from "./member-id";
+import { MemberStatus } from "./member-status";
+import { MemberSuspension } from "./member-suspension";
+import { MemberType } from "./member-type";
+import { MembershipFee } from "./membership-fee";
+
 
 export class Member extends AggregateRoot {
   private _memberId: MemberId;

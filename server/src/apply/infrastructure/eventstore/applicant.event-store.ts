@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 import { ApplicantId, Applicant } from '../../domain/model';
 import { Applicants } from '../../domain/repository';
-import { EventStore } from 'src/core/eventstore/eventstore';
+import { EventStore } from '../../../core/eventstore/eventstore';
 
 @Injectable()
 export class ApplicantEventStore implements Applicants {

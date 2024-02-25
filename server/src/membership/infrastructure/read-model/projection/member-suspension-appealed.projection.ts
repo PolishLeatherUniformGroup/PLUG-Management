@@ -1,7 +1,7 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { MembershipSuspensionAppealed } from 'src/membership/domain/events';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { MembershipSuspensionAppealed } from '../../../domain/events';
 import { MemberSuspensionView } from '../model/member-suspension.entity';
 
 @EventsHandler(MembershipSuspensionAppealed)

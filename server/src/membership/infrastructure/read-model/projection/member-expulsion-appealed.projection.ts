@@ -1,8 +1,9 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { MemberExpulsionAppealed } from 'src/membership/domain/events';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { MemberExpulsionAppealed } from '../../../domain/events';
 import { MemberExpulsionView } from '../model/member-expulsion.entity';
+
 
 @EventsHandler(MemberExpulsionAppealed)
 export class MemberExpulsionAppealedProjection
