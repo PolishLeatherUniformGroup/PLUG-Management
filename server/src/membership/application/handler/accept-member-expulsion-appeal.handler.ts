@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { MEMBERS, Members } from 'src/membership/domain/repository/members';
 import { Inject } from '@nestjs/common';
 import { AcceptMemberExpulsionAppealCommand } from '../command/accept-member-expulsion-appeal.command';
+import { MEMBERS, Members } from '../../domain/repository/members';
 
 @CommandHandler(AcceptMemberExpulsionAppealCommand)
 export class AcceptMemberExpulsionAppealHandler

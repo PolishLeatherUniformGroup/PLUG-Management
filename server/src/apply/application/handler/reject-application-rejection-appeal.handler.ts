@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { ApplicantIdNotFound } from 'src/apply/domain/exception/applicant-id-not-found.error';
-import { APPLICANTS, Applicants } from 'src/apply/domain/repository';
+import { ApplicantIdNotFound } from '../../domain/exception/applicant-id-not-found.error';
+import { APPLICANTS, Applicants } from '../../domain/repository';
 import { RejectApplicationRejectionAppealCommand } from '../command/reject-application-rejection-appeal.command';
 
 @CommandHandler(RejectApplicationRejectionAppealCommand)

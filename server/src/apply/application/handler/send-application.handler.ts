@@ -2,7 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { SendApplicationCommand } from '../command/send-application.command';
 import { APPLICANTS, Applicants } from '../../domain/repository/applicants';
 import { Inject } from '@nestjs/common';
-import { Applicant, ApplicantId } from 'src/apply/domain/model';
+import { Applicant, ApplicantId } from '../../domain/model';
 import { randomUUID } from 'crypto';
 
 @CommandHandler(SendApplicationCommand)

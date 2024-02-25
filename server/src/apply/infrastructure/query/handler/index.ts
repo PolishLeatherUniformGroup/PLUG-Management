@@ -12,5 +12,5 @@ export const QueryHandlers = [
   GetApplicantHandler,
   GetApplicantRecommendationsHandler,
   GetApplicantsHandler,
-  GetRecommendationsHandler
+  GetRecommendationsHandler,
 ];

@@ -1,5 +1,5 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { ApplicantRecommendationsRequested } from 'src/apply/domain/events/applicant-recommendations-requested.event';
+import { ApplicantRecommendationsRequested } from '../../domain/events/applicant-recommendations-requested.event';
 
 /**
  * Sends in app notifications.

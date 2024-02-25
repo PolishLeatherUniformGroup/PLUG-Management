@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { ExpireMembershipCommand } from '../command/expire-membership.command';
 import { Inject } from '@nestjs/common';
-import { MEMBERS, Members } from 'src/membership/domain/repository/members';
+import { MEMBERS, Members } from '../../domain/repository/members';
 import { CancelMembershipCommand } from '../command/cancel-membership.command';
 
 @CommandHandler(CancelMembershipCommand)

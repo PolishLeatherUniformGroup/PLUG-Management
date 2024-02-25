@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { EventPayloads } from './event-payloads'
+import { EventPayloads } from './event-payloads';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
@@ -9,7 +9,7 @@ export class TypedEventEmitter {
   async emitAsync<K extends keyof EventPayloads>(
     event: K,
     payload: EventPayloads[K],
-  ): Promise<any>{
-     await this.eventEmitter.emitAsync(event, payload);
+  ): Promise<any> {
+    await this.eventEmitter.emitAsync(event, payload);
   }
 }

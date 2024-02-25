@@ -4,7 +4,7 @@ import { Inject } from '@nestjs/common';
 import { MEMBERS, Members } from 'src/membership/domain/repository/members';
 import { GetActiveMembersQuery } from 'src/membership/infrastructure/query/get-active-members.query';
 import { MemberView } from 'src/membership/infrastructure/read-model/model/member.entity';
-import { MemberId } from 'src/membership/domain/model/member-id';
+import { MemberId } from '../../domain/model/member-id';
 
 @CommandHandler(RequestMembershipFeePaymentCommand)
 export class RequestMembershipFeePaymentHandler

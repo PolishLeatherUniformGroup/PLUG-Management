@@ -1,5 +1,5 @@
-import { DomainEvent } from 'src/core/domain';
-import { Address } from 'src/shared/address';
+import { DomainEvent } from '../../../core/domain/models/domain-event';
+import { Address } from '../../../shared/address';
 import { Recommendation } from '../model/recommendation';
 
 export class ApplicationReceived implements DomainEvent {

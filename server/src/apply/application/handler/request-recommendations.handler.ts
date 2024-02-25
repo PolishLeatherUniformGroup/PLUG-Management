@@ -1,9 +1,9 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { RequestRecommendations } from '../command/request-recommendations.command';
-import { APPLICANTS, Applicants } from 'src/apply/domain/repository';
+import { APPLICANTS, Applicants } from '../../domain/repository';
 import { Inject } from '@nestjs/common';
-import { ApplicantIdNotFound } from 'src/apply/domain/exception/applicant-id-not-found.error';
-import { Applicant } from 'src/apply/domain/model';
+import { ApplicantIdNotFound } from '../../domain/exception/applicant-id-not-found.error';
+import { Applicant } from '../../domain/model';
 
 @CommandHandler(RequestRecommendations)
 export class RequestRecommendationsHandler

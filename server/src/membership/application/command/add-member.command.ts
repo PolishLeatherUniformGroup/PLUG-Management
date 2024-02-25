@@ -1,12 +1,12 @@
 import { ICommand } from '@nestjs/cqrs';
-import { MemberId } from 'src/membership/domain/model/member-id';
+import { MemberId } from '../../domain/model/member-id';
 import { MembershipFee } from 'src/membership/domain/model/membership-fee';
 import { Address } from 'src/shared/address';
 
 export class AddMemberCommand implements ICommand {
   constructor(
     public readonly memberId: MemberId,
-    public readonly card:number,
+    public readonly card: number,
     public readonly firstName: string,
     public readonly lastName: string,
     public readonly email: string,

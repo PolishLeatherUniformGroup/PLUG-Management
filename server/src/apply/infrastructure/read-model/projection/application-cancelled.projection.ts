@@ -1,9 +1,9 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ApplicationCancelled } from 'src/apply/domain/events/application-cancelled.event';
+import { ApplicationCancelled } from '../../domain/events/application-cancelled.event';
 import { Repository } from 'typeorm';
 import { ApplicantView } from '../model/applicant.entity';
-import { ApplicantStatus } from 'src/apply/domain/model/applicant-status';
+import { ApplicantStatus } from '../../domain/model/applicant-status';
 
 @EventsHandler(ApplicationCancelled)
 export class ApplicationCancelledProjection

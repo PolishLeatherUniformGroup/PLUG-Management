@@ -1,5 +1,5 @@
 import { ICommand } from '@nestjs/cqrs';
-import { MemberId } from 'src/membership/domain/model/member-id';
+import { MemberId } from '../../domain/model/member-id';
 
 export class AppealMemberExpulsionCommand implements ICommand {
   constructor(

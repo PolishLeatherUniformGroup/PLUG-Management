@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
+import { EventStore } from '../../../core/eventstore/eventstore';
+import { Member } from '../../domain/model/member';
+import { MemberId } from '../../domain/model/member-id';
+import { Members } from '../../domain/repository/members';
 
-import { EventStore } from 'src/core/eventstore/eventstore';
-import { Member } from 'src/membership/domain/model/member';
-import { MemberId } from 'src/membership/domain/model/member-id';
-import { Members } from 'src/membership/domain/repository/members';
+
 
 @Injectable()
 export class MemberEventStore implements Members {

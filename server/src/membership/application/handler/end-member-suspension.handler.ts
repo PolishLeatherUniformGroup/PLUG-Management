@@ -1,7 +1,7 @@
 import { ICommandHandler } from '@nestjs/cqrs';
 import { EndMemberSuspensionCommand } from '../command/end-member-suspension.command';
 import { Inject } from '@nestjs/common';
-import { MEMBERS, Members } from 'src/membership/domain/repository/members';
+import { MEMBERS, Members } from '../../domain/repository/members';
 
 export class EndMemberSuspensionHandler
   implements ICommandHandler<EndMemberSuspensionCommand>

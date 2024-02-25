@@ -57,7 +57,7 @@ export class Member extends AggregateRoot {
 
   public static add(
     memberId: MemberId,
-    card:number,
+    card: number,
     firstName: string,
     lastName: string,
     email: string,
@@ -66,7 +66,7 @@ export class Member extends AggregateRoot {
     birthDate: Date,
     address: Address,
     initialFee: MembershipFee,
-  ):Member {
+  ): Member {
     const member = new Member();
     member.apply(
       new MemberCreated(
@@ -80,7 +80,7 @@ export class Member extends AggregateRoot {
         address,
         initialFee,
         false,
-        card
+        card,
       ),
     );
     return member;
@@ -109,7 +109,7 @@ export class Member extends AggregateRoot {
         birthDate,
         address,
         initialFee,
-        true
+        true,
       ),
     );
     return member;
@@ -316,9 +316,8 @@ export class Member extends AggregateRoot {
     this._membershipFees = [event.initialFee];
     this._status = MemberStatus.Active;
     this._memberType = MemberType.Regular;
-    if(!event.notify && event.card){
-  
-      this._memberCard = MemberCard.create("PLUG",event.card);
+    if (!event.notify && event.card) {
+      this._memberCard = MemberCard.create('PLUG', event.card);
     }
   }
 

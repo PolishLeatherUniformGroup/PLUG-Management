@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import { ApplicantId, Applicant } from 'src/apply/domain/model';
-import { Applicants } from 'src/apply/domain/repository';
+import { ApplicantId, Applicant } from '../../domain/model';
+import { Applicants } from '../../domain/repository';
 import { EventStore } from 'src/core/eventstore/eventstore';
 
 @Injectable()

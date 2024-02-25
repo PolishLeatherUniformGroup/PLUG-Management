@@ -1,12 +1,11 @@
-import { AggregateRoot } from 'src/core/domain';
 import { ApplicantId } from './applicant-id';
 import { ApplicationReceived } from '../events/application-received.event';
-import { Address } from 'src/shared/address';
+import { Address } from '../../../shared/address';
 import { Recommendation } from './recommendation';
-import { CardNumber } from 'src/shared/card-number';
+import { CardNumber } from '../../../shared/card-number';
 import { ApplicantStatus } from './applicant-status';
 import { ApplicationCancelled } from '../events/application-cancelled.event';
-import { Money } from 'src/shared/money';
+import { Money } from '../../../shared/money';
 import { ApplicantRecommendationsRequested } from '../events/applicant-recommendations-requested.event';
 import { ApplicantPaidFee } from '../events/applicant-paid-fee.event';
 import { ApplicantRecommendationConfirmed } from '../events/applicant-recommendation-confirmed.event';
@@ -19,6 +18,7 @@ import { ApplicantRejectionAppealCancelled } from '../events/applicant-rejection
 import { ApplicantRejectionAppealReceived } from '../events/applicant-rejection-appeal-received.event';
 import { ApplicantRejectionAppealAccepted } from '../events/applicant-rejection-appeal-accepted.event';
 import { ApplicantRejectionAppealRejected } from '../events/applicant-rejection-appeal-rejected.event';
+import { AggregateRoot } from 'src/core/domain/models/aggregate-root';
 
 export class Applicant extends AggregateRoot {
   private _applicantId: ApplicantId;
@@ -91,17 +91,24 @@ export class Applicant extends AggregateRoot {
     this.apply(new ApplicationCancelled(this._applicantId.value));
   }
 
-  public requestRecommendations(requestDate: Date, requiredFee: Money, recommendersEmails: string[], recommendersNames: string[]) {
-    const recomendations:{email: string, name: string}[] = [];
+  public requestRecommendations(
+    requestDate: Date,
+    requiredFee: Money,
+    recommendersEmails: string[],
+    recommendersNames: string[],
+  ) {
+    const recomendations: { email: string; name: string }[] = [];
     for (let i = 0; i < recommendersEmails.length; i++) {
-      recomendations.push({email: recommendersEmails[i], name: recommendersNames[i]});
+      recomendations.push({
+        email: recommendersEmails[i],
+        name: recommendersNames[i],
+      });
     }
     this.apply(
       new ApplicantRecommendationsRequested(
         this._applicantId.value,
         requestDate,
         requiredFee,
-
       ),
     );
   }

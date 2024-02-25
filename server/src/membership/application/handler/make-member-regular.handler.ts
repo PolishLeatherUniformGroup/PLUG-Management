@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { MakeMemberRegularCommand } from '../command/make-member-regular.command';
-import { MEMBERS, Members } from 'src/membership/domain/repository/members';
+import { MEMBERS, Members } from '../../domain/repository/members';
 import { Inject } from '@nestjs/common';
 
 @CommandHandler(MakeMemberRegularCommand)

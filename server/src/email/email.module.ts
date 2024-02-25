@@ -6,30 +6,30 @@ import { EmailController } from './email.controller';
 import { EmailService } from './email.service';
 
 @Module({
-    imports: [
-      MailerModule.forRoot({
-        transport: {
-          host: 'smtppro.zoho.eu',
-          port: Number('465'),
-          secure: true,
-          auth: {
-            user: 'tomasz.molis@plug.org.pl',
-            pass: 'd!Zujocaci2212',
-          },
+  imports: [
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtppro.zoho.eu',
+        port: Number('465'),
+        secure: true,
+        auth: {
+          user: 'tomasz.molis@plug.org.pl',
+          pass: 'd!Zujocaci2212',
         },
-        defaults: {
-          from: '"Stowarzyszenie PLUG" <kontakt@plug.org.pl>',
+      },
+      defaults: {
+        from: '"Stowarzyszenie PLUG" <kontakt@plug.org.pl>',
+      },
+      template: {
+        dir: join(__dirname, 'templates'),
+        adapter: new EjsAdapter(),
+        options: {
+          strict: false,
         },
-        template: {
-          dir: join(__dirname,'templates'),
-          adapter: new EjsAdapter(),
-          options: {
-            strict: false,
-          },
-        },
-      }),
-    ],
-    controllers: [EmailController],
-    providers: [EmailService]
-  })
+      },
+    }),
+  ],
+  controllers: [EmailController],
+  providers: [EmailService],
+})
 export class EmailModule {}

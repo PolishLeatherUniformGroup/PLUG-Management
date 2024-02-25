@@ -1,5 +1,17 @@
-import { Controller, Get, NotFoundException, Param, UseGuards } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiParam,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { QueryBus } from '@nestjs/cqrs';
 import { ApplicantDto } from '../dto/applicant.dto';
 import { GetApplicantQuery } from '../query/get-applicant.query';
@@ -40,10 +52,9 @@ export class QueryController {
     description: 'Applicant Id',
     type: 'string',
   })
-
   async getApplication(@Param() id: string): Promise<ApplicantDto | null> {
     const query = new GetApplicantQuery(id);
-    const applicant:ApplicantView = await this.queryBus.execute(query);
+    const applicant: ApplicantView = await this.queryBus.execute(query);
     if (!applicant) {
       throw new NotFoundException();
     }
@@ -56,7 +67,7 @@ export class QueryController {
         postalCode: applicant.addressPostalCode,
         state: applicant.addressState,
       } as AddressDto,
-    }as ApplicantDto;
+    } as ApplicantDto;
   }
 
   @Get('applicants/:id/recommendations')
@@ -98,9 +109,7 @@ export class QueryController {
     description: 'Member Id',
     type: 'string',
   })
-  async getRecommendations(
-    @Param() id: string,
-  ): Promise<RecommendationsDto> {
+  async getRecommendations(@Param() id: string): Promise<RecommendationsDto> {
     const query = new GetRecommendationsQuery(id);
     const recommendations = await this.queryBus.execute(query);
     return { data: recommendations } as RecommendationsDto;

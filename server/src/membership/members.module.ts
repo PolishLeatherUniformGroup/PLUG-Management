@@ -15,7 +15,6 @@ import { MemberCardNumber } from './infrastructure/read-model/model/member-card.
 import { MemberSuspensionView } from './infrastructure/read-model/model/member-suspension.entity';
 import { MemberExpulsionView } from './infrastructure/read-model/model/member-expulsion.entity';
 import { QueryController } from './infrastructure/controller/query.controller';
-import { ApplyModule } from 'src/apply/apply.module';
 import { QueryHandlers } from './infrastructure/query/handler';
 
 @Global()
@@ -29,7 +28,7 @@ import { QueryHandlers } from './infrastructure/query/handler';
       MemberSuspensionView,
       MemberExpulsionView,
     ]),
-    EventStoreModule
+    EventStoreModule,
   ],
   controllers: [CommandController, QueryController],
   providers: [
@@ -37,11 +36,9 @@ import { QueryHandlers } from './infrastructure/query/handler';
     ...Projections,
     ...NotificationHandlers,
     ...MembersProviders,
-    ...QueryHandlers
-  ],
-  exports: [
     ...QueryHandlers,
   ],
+  exports: [...QueryHandlers],
 })
 export class MembersModule implements OnModuleInit {
   constructor(private readonly eventStore: EventStore) {}

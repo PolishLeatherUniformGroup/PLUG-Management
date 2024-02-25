@@ -1,10 +1,10 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ApplicantPaidFee } from 'src/apply/domain/events/applicant-paid-fee.event';
+import { ApplicantPaidFee } from '../../domain/events/applicant-paid-fee.event';
 import { Repository } from 'typeorm';
 import { ApplicantView } from '../model/applicant.entity';
-import { ApplicantIdNotFound } from 'src/apply/domain/exception/applicant-id-not-found.error';
-import { ApplicantId } from 'src/apply/domain/model';
+import { ApplicantIdNotFound } from '../../domain/exception/applicant-id-not-found.error';
+import { ApplicantId } from '../../domain/model';
 
 @EventsHandler(ApplicantPaidFee)
 export class ApplicantPaidFeeProjection

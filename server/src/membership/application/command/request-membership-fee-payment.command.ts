@@ -1,5 +1,5 @@
 import { ICommand } from '@nestjs/cqrs';
-import { Money } from 'src/shared/money';
+import { Money } from '../../../shared/money';
 
 export class RequestMembershipFeePaymentCommand implements ICommand {
   constructor(

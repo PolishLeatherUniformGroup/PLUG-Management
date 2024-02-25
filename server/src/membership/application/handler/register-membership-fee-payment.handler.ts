@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { RegisterMembershipFeePaymentCommand } from '../command/register-membership-fee-payment.command';
 import { Inject } from '@nestjs/common';
-import { MEMBERS, Members } from 'src/membership/domain/repository/members';
+import { MEMBERS, Members } from '../../domain/repository/members';
 
 @CommandHandler(RegisterMembershipFeePaymentCommand)
 export class RegisterMembershipFeePaymentHandler

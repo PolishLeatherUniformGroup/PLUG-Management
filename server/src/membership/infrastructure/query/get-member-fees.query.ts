@@ -1,5 +1,5 @@
-import { IQuery } from "@nestjs/cqrs";
+import { IQuery } from '@nestjs/cqrs';
 
-export class GetMemberFeesQuery implements IQuery{
-    constructor(public readonly id: string) {}
+export class GetMemberFeesQuery implements IQuery {
+  constructor(public readonly id: string) {}
 }

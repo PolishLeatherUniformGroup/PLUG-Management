@@ -2,7 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { ApplyRequestDto } from '../dto/apply-request.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommandBus } from '@nestjs/cqrs';
-import { SendApplicationCommand } from 'src/apply/application/command/send-application.command';
+import { SendApplicationCommand } from '../../application/command/send-application.command';
 import { Address } from 'src/shared/address';
 import { AllowAnonymous } from 'src/auth/allow-anonymous.decorator';
 

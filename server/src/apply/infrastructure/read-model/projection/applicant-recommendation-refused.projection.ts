@@ -6,10 +6,10 @@ import { RecommendationView } from '../model/recommendation.entity';
 import {
   ApplicantIdNotFound,
   RecommendationIdNotFound,
-} from 'src/apply/domain/exception/applicant-id-not-found.error';
-import { ApplicantId } from 'src/apply/domain/model';
-import { ApplicantRecommendationRefused } from 'src/apply/domain/events/applicant-recommendation-refused.event';
-import { ApplicantStatus } from 'src/apply/domain/model/applicant-status';
+} from '../../domain/exception/applicant-id-not-found.error';
+import { ApplicantId } from '../../domain/model';
+import { ApplicantRecommendationRefused } from '../../domain/events/applicant-recommendation-refused.event';
+import { ApplicantStatus } from '../../domain/model/applicant-status';
 
 @EventsHandler(ApplicantRecommendationRefused)
 export class ApplicantRecommendationRefusedProjection

@@ -1,4 +1,4 @@
-import { AddressDto } from "src/shared/dto/address.dto";
+import { AddressDto } from '../../../shared/dto/address.dto';
 
 export class ApplicantDto {
   public id: string;
@@ -15,7 +15,7 @@ export class ApplicantDto {
 
   public birthDate: Date;
 
-  public address:AddressDto;
+  public address: AddressDto;
 
   public status: number;
 

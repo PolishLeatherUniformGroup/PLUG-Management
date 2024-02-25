@@ -1,10 +1,10 @@
 import { CommandBus, IEventHandler, QueryBus } from '@nestjs/cqrs';
 import { randomUUID } from 'crypto';
-import { ApplicantAccepted } from 'src/apply/domain/events';
-import { ApplicantDto } from 'src/apply/infrastructure/dto/applicant.dto';
-import { GetApplicantQuery } from 'src/apply/infrastructure/query/get-applicant.query';
+import { ApplicantAccepted } from '../../../apply/domain/events/applicant-accepted.event';
+import { ApplicantDto } from '../../../apply/infrastructure/dto/applicant.dto';
+import { GetApplicantQuery } from '../../../apply/infrastructure/query/get-applicant.query';
 import { CreateMemberCommand } from 'src/membership/application/command/create-member.command';
-import { MemberId } from 'src/membership/domain/model/member-id';
+import { MemberId } from '../../domain/model/member-id';
 import { MembershipFee } from 'src/membership/domain/model/membership-fee';
 import { Address } from 'src/shared/address';
 import { Money } from 'src/shared/money';

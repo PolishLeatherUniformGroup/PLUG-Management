@@ -16,7 +16,8 @@ export class GetActiveMembersHandler
 
   public async execute(): Promise<MemberView[]> {
     const members = await this.memberViewRepository.find({
-      where: { status: 1 }, order: { cardNumber: 'ASC' },
+      where: { status: 1 },
+      order: { cardNumber: 'ASC' },
     });
     return members;
   }

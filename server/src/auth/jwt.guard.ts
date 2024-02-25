@@ -1,11 +1,11 @@
-import { ExecutionContext, Optional } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
-import { AuthGuard, AuthModuleOptions } from "@nestjs/passport";
-import { Observable } from "rxjs";
-import { ALLOW_ANONYMOUS_META_KEY } from "./allow-anonymous.decorator";
+import { ExecutionContext, Optional } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { AuthGuard, AuthModuleOptions } from '@nestjs/passport';
+import { Observable } from 'rxjs';
+import { ALLOW_ANONYMOUS_META_KEY } from './allow-anonymous.decorator';
 
 export class JwtGuard extends AuthGuard('jwt') {
-    constructor(
+  constructor(
     @Optional() protected readonly options: AuthModuleOptions,
     private readonly reflector: Reflector,
   ) {
@@ -23,7 +23,6 @@ export class JwtGuard extends AuthGuard('jwt') {
       ) ||
       this.reflector.get<boolean>(ALLOW_ANONYMOUS_META_KEY, context.getClass());
     if (isAnonymousAllowed) {
-
       return true;
     }
 

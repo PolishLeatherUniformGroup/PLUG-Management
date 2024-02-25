@@ -17,14 +17,16 @@ export class GetApplicantsHandler implements IQueryHandler<GetApplicantsQuery> {
     const applicants = await this.repository.find();
 
     return applicants.map((applicant) => {
-      return { ...applicant, address:{
-        country: applicant.addressCountry,
-        city: applicant.addressCity,
-        street: applicant.addressStreet,
-        postalCode: applicant.addressPostalCode,
-        state: applicant.addressState,
-      
-      } } as ApplicantDto;
+      return {
+        ...applicant,
+        address: {
+          country: applicant.addressCountry,
+          city: applicant.addressCity,
+          street: applicant.addressStreet,
+          postalCode: applicant.addressPostalCode,
+          state: applicant.addressState,
+        },
+      } as ApplicantDto;
     });
   }
 }

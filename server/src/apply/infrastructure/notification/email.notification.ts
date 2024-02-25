@@ -1,4 +1,4 @@
-import { format} from 'date-fns';
+import { format } from 'date-fns';
 import { EventsHandler, IEvent, IEventHandler, QueryBus } from '@nestjs/cqrs';
 import {
   ApplicantAccepted,
@@ -7,11 +7,11 @@ import {
   ApplicantRejectionAppealCancelled,
   ApplicantRejectionAppealReceived,
   ApplicantRejectionAppealRejected,
-} from 'src/apply/domain/events';
-import { ApplicantRecommendationRefused } from 'src/apply/domain/events/applicant-recommendation-refused.event';
-import { ApplicantRecommendationsRequested } from 'src/apply/domain/events/applicant-recommendations-requested.event';
-import { ApplicationCancelled } from 'src/apply/domain/events/application-cancelled.event';
-import { ApplicationReceived } from 'src/apply/domain/events/application-received.event';
+} from '../../domain/events';
+import { ApplicantRecommendationRefused } from '../../domain/events/applicant-recommendation-refused.event';
+import { ApplicantRecommendationsRequested } from '../../domain/events/applicant-recommendations-requested.event';
+import { ApplicationCancelled } from '../../domain/events/application-cancelled.event';
+import { ApplicationReceived } from '../../domain/events/application-received.event';
 import { TypedEventEmitter } from 'src/event-emitter/typed-event-emmitter';
 import { GetApplicantQuery } from '../query/get-applicant.query';
 import { GetMemberQuery } from 'src/membership/infrastructure/query/get-member.query';
@@ -34,19 +34,21 @@ import { MemberView } from 'src/membership/infrastructure/read-model/model/membe
 )
 export class EmailNotification
   implements
-  IEventHandler<ApplicationReceived>,
-  IEventHandler<ApplicantRecommendationsRequested>,
-  IEventHandler<ApplicationCancelled>,
-  IEventHandler<ApplicantRecommendationRefused>,
-  IEventHandler<ApplicantAccepted>,
-  IEventHandler<ApplicantRejected>,
-  IEventHandler<ApplicantRejectionAppealReceived>,
-  IEventHandler<ApplicantRejectionAppealCancelled>,
-  IEventHandler<ApplicantRejectionAppealAccepted>,
-  IEventHandler<ApplicantRejectionAppealRejected>
+    IEventHandler<ApplicationReceived>,
+    IEventHandler<ApplicantRecommendationsRequested>,
+    IEventHandler<ApplicationCancelled>,
+    IEventHandler<ApplicantRecommendationRefused>,
+    IEventHandler<ApplicantAccepted>,
+    IEventHandler<ApplicantRejected>,
+    IEventHandler<ApplicantRejectionAppealReceived>,
+    IEventHandler<ApplicantRejectionAppealCancelled>,
+    IEventHandler<ApplicantRejectionAppealAccepted>,
+    IEventHandler<ApplicantRejectionAppealRejected>
 {
-  constructor(private readonly emitter: TypedEventEmitter,
-    private readonly queryBus: QueryBus) { }
+  constructor(
+    private readonly emitter: TypedEventEmitter,
+    private readonly queryBus: QueryBus,
+  ) {}
 
   async handle(event: IEvent) {
     if (event instanceof ApplicationReceived) {
@@ -87,14 +89,18 @@ export class EmailNotification
       email: event.email,
       name: event.firstName,
     });
-    await this.emitter.emitAsync('apply.verify-application', {id: event.id, rcomendationsCount: event.recommendations.length});
+    await this.emitter.emitAsync('apply.verify-application', {
+      id: event.id,
+      rcomendationsCount: event.recommendations.length,
+    });
   }
 
   async handleRecommendationsRequested(
     event: ApplicantRecommendationsRequested,
   ) {
     const applicantQuery = new GetApplicantQuery(event.id);
-    const applicant: ApplicantView = await this.queryBus.execute(applicantQuery);
+    const applicant: ApplicantView =
+      await this.queryBus.execute(applicantQuery);
     await this.emitter.emitAsync('apply.request-fee-payment', {
       email: applicant.email,
       name: applicant.firstName,
@@ -102,8 +108,11 @@ export class EmailNotification
       feeCurrency: event.requiredFee.currency,
     });
 
-    const recommendationsQuery = new GetApplicantRecommendationsQuery(applicant.id);
-    const recommendations: RecommendationView[] = await this.queryBus.execute(recommendationsQuery);
+    const recommendationsQuery = new GetApplicantRecommendationsQuery(
+      applicant.id,
+    );
+    const recommendations: RecommendationView[] =
+      await this.queryBus.execute(recommendationsQuery);
 
     recommendations.forEach(async (recommendation) => {
       const memberQuery = new GetMemberQuery(recommendation.cardNumber);

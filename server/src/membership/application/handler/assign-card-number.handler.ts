@@ -1,6 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { MEMBERS, Members } from 'src/membership/domain/repository/members';
+import { MEMBERS, Members } from '../..//domain/repository/members';
 import { AssignCardNumberCommand } from '../command/assign-card-number.command';
 
 @CommandHandler(AssignCardNumberCommand)

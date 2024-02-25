@@ -1,5 +1,5 @@
 import { ICommand } from '@nestjs/cqrs';
-import { ApplicantId } from 'src/apply/domain/model';
+import { ApplicantId } from '../../domain/model';
 
 export class AppealApplicationRejectionCommand implements ICommand {
   constructor(

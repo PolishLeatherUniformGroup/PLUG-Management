@@ -1,10 +1,10 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ApplicationReceived } from 'src/apply/domain/events/application-received.event';
+import { ApplicationReceived } from '../../domain/events/application-received.event';
 import { ApplicantView } from '../model/applicant.entity';
 import { Repository } from 'typeorm';
 import { RecommendationView } from '../model/recommendation.entity';
-import { ApplicantStatus } from 'src/apply/domain/model/applicant-status';
+import { ApplicantStatus } from '../../domain/model/applicant-status';
 
 @EventsHandler(ApplicationReceived)
 export class ApplicationReceivedProjection

@@ -5,9 +5,7 @@ import { Inject } from '@nestjs/common';
 import { Member } from 'src/membership/domain/model/member';
 
 @CommandHandler(AddMemberCommand)
-export class AddMemberHandler
-  implements ICommandHandler<AddMemberCommand>
-{
+export class AddMemberHandler implements ICommandHandler<AddMemberCommand> {
   constructor(@Inject(MEMBERS) private readonly members: Members) {}
 
   async execute(command: AddMemberCommand): Promise<void> {

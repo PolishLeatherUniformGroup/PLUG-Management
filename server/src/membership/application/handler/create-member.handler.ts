@@ -1,8 +1,8 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateMemberCommand } from '../command/create-member.command';
-import { MEMBERS, Members } from 'src/membership/domain/repository/members';
+import { MEMBERS, Members } from '../..//domain/repository/members';
 import { Inject } from '@nestjs/common';
-import { Member } from 'src/membership/domain/model/member';
+import { Member } from '../../domain/model/member';
 
 @CommandHandler(CreateMemberCommand)
 export class CreateMemberHandler

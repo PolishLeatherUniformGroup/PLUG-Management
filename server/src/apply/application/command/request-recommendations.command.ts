@@ -1,6 +1,6 @@
 import { ICommand } from '@nestjs/cqrs';
-import { ApplicantId } from 'src/apply/domain/model';
-import { Money } from 'src/shared/money';
+import { ApplicantId } from '../../domain/model';
+import { Money } from '../../../shared/money';
 
 export class RequestRecommendations implements ICommand {
   constructor(

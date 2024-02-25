@@ -14,7 +14,9 @@ export class MembershipFeePaidProjection
   ) {}
 
   async handle(event: MembershipFeePaid) {
-    const fee = await this.repository.findOne({ where: { feeId: event.feeId } });
+    const fee = await this.repository.findOne({
+      where: { feeId: event.feeId },
+    });
     if (!fee) {
       throw new Error('Membership fee not found');
     }

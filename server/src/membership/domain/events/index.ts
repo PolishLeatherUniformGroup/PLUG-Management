@@ -86,7 +86,7 @@ export const MembersEvents = {
       address,
       initialFee,
       notify,
-      card
+      card,
     ),
   MemberCardAssigned: (id: string, cardNumber: MemberCard) =>
     new MemberCardAssigned(id, cardNumber),

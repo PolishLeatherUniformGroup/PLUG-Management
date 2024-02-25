@@ -11,7 +11,6 @@ import { EmailModule } from './email/email.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { TypedEventEmitterModule } from './event-emitter/event-emitter.module';
 
-
 @Module({
   imports: [
     ApplyModule,

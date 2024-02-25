@@ -13,7 +13,7 @@ export class MemberCreated implements DomainEvent {
     public readonly birthDate: Date,
     public readonly address: Address,
     public readonly initialFee: MembershipFee,
-    public readonly notify: boolean=false,
-    public readonly card: number|null = null,
+    public readonly notify: boolean = false,
+    public readonly card: number | null = null,
   ) {}
 }

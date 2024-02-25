@@ -1,38 +1,39 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CommandBus } from '@nestjs/cqrs';
-import { RequestRecommendations as RequestRecommendationsCommand } from 'src/apply/application/command/request-recommendations.command';
-import { ApplicantId } from 'src/apply/domain/model';
-import { Money } from 'src/shared/money';
-import { RequestRecommendationsDto } from '../dto/request-recommendations.dto';
+import { ApplicantId } from '../../domain/model';
+import { Money } from '../../../shared/money';
 import { CancelRequestDto } from '../dto/cancel-request.dto';
-import { CancelApplicationCommand } from 'src/apply/application/command/cancel-application.command';
+import { CancelApplicationCommand } from '../../application/command/cancel-application.command';
 import { RegisterFeePaymentRequestDto } from '../dto/register-fee-payment-request.dto';
-import { RegisterFeePaymentCommand } from 'src/apply/application/command/register-fee-payment.command';
+import { RegisterFeePaymentCommand } from '../../application/command/register-fee-payment.command';
 import { ConfirmRecommendationRequestDto } from '../dto/confirm-recommendation-request.dto';
-import { ConfirmRecommendationCommand } from 'src/apply/application/command/confirm-recommendation.command';
-import { RefuseRecommendationCommand } from 'src/apply/application/command/refuse-recommendation.command';
+import { ConfirmRecommendationCommand } from '../../application/command/confirm-recommendation.command';
+import { RefuseRecommendationCommand } from '../../application/command/refuse-recommendation.command';
 import { RefuseRecommendationRequestDto } from '../dto/refuse-recommendatiom-request.dto';
 import { AcceptApplicationRequestDto } from '../dto/accept-application-request.dto';
-import { AcceptApplicationCommand } from 'src/apply/application/command/accept-application.command';
+import { AcceptApplicationCommand } from '../../application/command/accept-application.command';
 import { RejectApplicationRequestDto } from '../dto/reject-application-request.dto';
-import { RejectApplicationCommand } from 'src/apply/application/command/reject-application.command';
+import { RejectApplicationCommand } from '../../application/command/reject-application.command';
 import { AppealApplicationRejectionRequestDto } from '../dto/appeal-application-rejection-request.dto';
-import { AppealApplicationRejectionCommand } from 'src/apply/application/command/appeal-application-rejection.command';
-import { AcceptApplicationRejectionAppealCommand } from 'src/apply/application/command/accept-application-rejection-appeal.command';
-import { RejectApplicationRejectionAppealCommand } from 'src/apply/application/command/reject-application-rejection-appeal.command';
+import { AppealApplicationRejectionCommand } from '../../application/command/appeal-application-rejection.command';
+import { AcceptApplicationRejectionAppealCommand } from '../../application/command/accept-application-rejection-appeal.command';
+import { RejectApplicationRejectionAppealCommand } from '../../application/command/reject-application-rejection-appeal.command';
 import { AcceptApplicationRejectionAppealRequestDto } from '../dto/accept-application-rejection-appeal-request.dto';
 import { RejectApplicationRejectionAppealRequestDto } from '../dto/reject-application-rejection-appeal-request.dto';
-import { AuthGuard } from '@nestjs/passport';
-import { JwtGuard } from 'src/auth/jwt.guard';
+import { JwtGuard } from '../../../auth/jwt.guard';
 
 @Controller('apply')
 @ApiTags('apply')
 @ApiBearerAuth()
 @UseGuards(JwtGuard)
 export class CommandController {
-  constructor(private readonly commandBus: CommandBus) { }
-
+  constructor(private readonly commandBus: CommandBus) {}
 
   @Post('commands/cancel-application')
   @ApiOperation({ summary: 'Cancel application' })

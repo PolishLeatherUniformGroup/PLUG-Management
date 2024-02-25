@@ -11,4 +11,3 @@ export class CreateMemberRequestDto {
   address: AddressDto;
   initialFee: MembershipFeeDto;
 }
-

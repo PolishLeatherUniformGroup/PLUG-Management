@@ -1,4 +1,4 @@
-import { CardNumber } from 'src/shared/card-number';
+import { CardNumber } from '../../../shared/card-number';
 
 export class Recommendation {
   private _id: string;

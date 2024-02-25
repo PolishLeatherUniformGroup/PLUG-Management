@@ -1,4 +1,4 @@
-import { DomainEvent } from 'src/core/domain';
+import { DomainEvent } from '../../../core/domain/models/domain-event';
 
 export class ApplicantRejectionAppealRejected implements DomainEvent {
   constructor(

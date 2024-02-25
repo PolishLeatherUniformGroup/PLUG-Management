@@ -8,7 +8,7 @@ import { MemberStatus } from 'src/membership/domain/model/member-status';
 import { MemberCardNumber } from '../model/member-card.entity';
 import { MemberCard } from 'src/membership/domain/model/member-card';
 import { AssignCardNumberCommand } from 'src/membership/application/command/assign-card-number.command';
-import { MemberId } from 'src/membership/domain/model/member-id';
+import { MemberId } from '../../domain/model/member-id';
 import { MemberType } from 'src/membership/domain/model/member-type';
 import e from 'express';
 
@@ -22,13 +22,12 @@ export class MemberCreatedProjection implements IEventHandler<MemberCreated> {
     @InjectRepository(MemberCardNumber)
     private memberCardRepository: Repository<MemberCardNumber>,
     private readonly commandBus: CommandBus,
-  ) { }
+  ) {}
   async handle(event: MemberCreated) {
     try {
-      
-        const card = await this.memberCardRepository.findOne({
-          where: { prefix: 'PLUG' },
-        });
+      const card = await this.memberCardRepository.findOne({
+        where: { prefix: 'PLUG' },
+      });
       console.log('MemberCreatedProjection', event);
       const member = new MemberView();
       member.id = event.id;
@@ -52,8 +51,11 @@ export class MemberCreatedProjection implements IEventHandler<MemberCreated> {
         await this.commandBus.execute(command);
         card.nextCard++;
         this.memberCardRepository.save(card);
-      }else if(card && event.card){
-        member.cardNumber = MemberCard.create(card.prefix, event.card).toString();
+      } else if (card && event.card) {
+        member.cardNumber = MemberCard.create(
+          card.prefix,
+          event.card,
+        ).toString();
       }
       member.memberType = MemberType.Regular;
       await this.memberRepository.save(member);
