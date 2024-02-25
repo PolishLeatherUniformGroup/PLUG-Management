@@ -62,7 +62,7 @@ export default function Header() {
                     }} description={<Link href="/members/me" size="sm">
                         {user?.nickname}
                     </Link>} />
-                    <Avatar size="sm" className="hidden md:flex"
+                    <Avatar size="sm" className="flex md:hidden"
                         getInitials={(name) => name.split(" ").map((n) => n[0]).join("")}
                         classNames={{
                             base: "bg-gradient-to-br from-secondary-500 to-secondary-600/50",
