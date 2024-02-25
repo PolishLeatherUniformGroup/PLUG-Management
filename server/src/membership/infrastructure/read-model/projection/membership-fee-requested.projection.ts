@@ -24,7 +24,7 @@ export class MembershipFeeRequestedProjection
       throw new Error('Member not found');
     }
     const membershipFee = new MembershipFeeView();
-    membershipFee.id = `${event.id}-${event.year}`;
+    membershipFee.feeId = `${event.id}-${event.year}`;
     membershipFee.year = event.year;
     membershipFee.dueAmount = event.amount.amount;
     membershipFee.dueDate = event.dueDate;

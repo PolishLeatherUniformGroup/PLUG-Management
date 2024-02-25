@@ -1,5 +1,8 @@
-export interface FeeDto {
-    requiredFee: number;
-    paidFee?: number;
-    currency: string;
+export interface FeeItemDto {
+    id: string;
+    year: string;
+    requiredFee: string;
+    paidFee?: string;
+    requiredFeeDate: string;
+    paidFeeDate?: string;
 }

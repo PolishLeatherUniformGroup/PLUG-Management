@@ -18,10 +18,9 @@ import { EmailModule } from 'src/email/email.module';
 import { Member } from 'src/membership/domain/model/member';
 import { MembersModule } from 'src/membership/members.module';
 import { VerificationService } from 'src/membership/application/service/verification.service';
-import { GetMemberByCardQuery } from 'src/membership/infrastructure/query/get-member-by-card.query';
-import { GetMemberByCardHandler } from 'src/membership/infrastructure/query/handler';
 import { MemberView } from 'src/membership/infrastructure/read-model/model/member.entity';
 import { ApplyService } from './application/service/apply.service';
+import { GetMemberHandler } from 'src/membership/infrastructure/query/handler/get-member.handler';
 
 @Module({
   imports: [
@@ -39,7 +38,7 @@ import { ApplyService } from './application/service/apply.service';
     ...NotificationHandlers,
     ...QueryHandlers,
     VerificationService,
-    GetMemberByCardHandler,
+    GetMemberHandler,
     ApplyService
   ]
 })

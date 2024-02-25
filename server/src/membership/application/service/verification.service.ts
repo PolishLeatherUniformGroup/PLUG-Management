@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { QueryBus } from "@nestjs/cqrs";
-import { GetMemberByCardQuery } from "src/membership/infrastructure/query/get-member-by-card.query";
+import { GetMemberQuery } from "src/membership/infrastructure/query/get-member.query";
 import { MemberView } from "src/membership/infrastructure/read-model/model/member.entity";
 
 @Injectable()
@@ -18,7 +18,7 @@ export class VerificationService{
         return locatedMembers;
     }
     async verifyCardNumber(cardNumber:string):Promise<MemberView|null> {
-        const query = new GetMemberByCardQuery(cardNumber);
+        const query = new GetMemberQuery(cardNumber);
         const memeber = await this.queryBus.execute(query);
         return memeber;
     }

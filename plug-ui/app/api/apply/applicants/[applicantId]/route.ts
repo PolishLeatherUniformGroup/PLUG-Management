@@ -1,3 +1,4 @@
+import { FeeItemDto } from "@/app/models/FeeDto";
 import { ApplicantDetails } from "@/app/models/applicant-details.dto";
 import { getAccessToken } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
@@ -43,11 +44,7 @@ export const GET = async function getApplications(
                 state: applicantData.address.state
             },
             recommendations: (await recommendationRequests.json()).data,
-            fee: {
-                requiredFee: applicantData.requiredFeeAmount,
-                paidFee: applicantData.feeePaidAmount == null ? 0 : applicantData.feeePaidAmount,
-                currency: applicantData.feeCurrency
-            }
+            fee: {} as FeeItemDto
         }
         return Response.json(applicant);
     } catch (error) {

@@ -4,7 +4,7 @@ import { MemberView } from './member.entity';
 @Entity('membership_fee')
 export class MembershipFeeView {
   @PrimaryColumn()
-  public id: string;
+  public feeId: string;
   @Column()
   public year: number;
   @Column({ type: 'decimal', precision: 5, scale: 2 })

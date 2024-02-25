@@ -11,8 +11,12 @@ export class GetMemberHandler implements IQueryHandler<GetMemberQuery, MemberVie
   
     async execute(query: GetMemberQuery): Promise<MemberView|null> {
         const memberId = query.id;
-        const member = await this.memberRepository.findOne({where:{id: memberId}});      
-        
-        return member;
+        const result = memberId.match(/PLUG-\d{4}/);
+        const isCard = result !== null && result.length > 0;
+        if(isCard){
+            return await this.memberRepository.findOne({where:{cardNumber: memberId}});
+        }else{
+            return await this.memberRepository.findOne({where:{id: memberId}});   ;
+        }
     }
 }

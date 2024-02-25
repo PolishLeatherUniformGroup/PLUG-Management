@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, NotFoundException, Param, Res, UseGuards, } from "@nestjs/common";
+import { Controller, Get, NotFoundException, Param, UseGuards, } from "@nestjs/common";
 import { QueryBus } from "@nestjs/cqrs";
 import { ApiOperation, ApiResponse, ApiTags, ApiParam, ApiBearerAuth } from "@nestjs/swagger";
 import { MembersDto } from "../dto/members.dto";
@@ -12,9 +12,7 @@ import { GetMemberFeesQuery } from "../query/get-member-fees.query";
 import { MembershipFeeView } from "../read-model/model/membership-fee.entity";
 import { MembershipFeeDto } from "../dto/membership-fee.dto";
 import { MoneyDto } from "src/shared/dto/money.dto";
-import { GetMemberByCardQuery } from "../query/get-member-by-card.query";
 import { JwtGuard } from "src/auth/jwt.guard";
-import { AllowAnonymous } from "src/auth/allow-anonymous.decorator";
 
 
 @Controller('membership')
@@ -62,13 +60,29 @@ export class QueryController {
     @ApiResponse({ status: 200, description: 'Member' })
     @ApiParam({ name: 'cardOrId', required: true, description: 'Member id or card number', type: 'string' })
     async getMember(@Param() cardOrId: string): Promise<MemberDto | null> {
-        const result = cardOrId['cardOrId'].match(/PLUG-\d{4}/);
-        const isCard = result !== null && result.length > 0;
-        if (isCard) {
-            return await this.readMemberByCard(cardOrId['cardOrId']);
-        } else {
-            return await this.readMemberById(cardOrId['cardOrId']);
+        const query = new GetMemberQuery(cardOrId['cardOrId']);
+        const member: MemberView | null = await this.queryBus.execute(query);
+        if (member == null || member === undefined) {
+            throw new NotFoundException();
         }
+        return {
+            id: member.id,
+            firstName: member.firstName,
+            lastName: member.lastName,
+            email: member.email,
+            phoneNumber: member.phoneNumber,
+            birthDate: member.birthDate,
+            joinedDate: member.joinDate,
+            status: member.status,
+            address: {
+                country: member.addressCountry,
+                city: member.addressCity,
+                street: member.addressStreet,
+                postalCode: member.addressPostalCode,
+                state: member.addressState,
+            } as AddressDto,
+            card: member.cardNumber,
+        } as MemberDto;
     }
 
     @Get('members/:id/fees')
@@ -95,60 +109,5 @@ export class QueryController {
                 } as MembershipFeeDto
             })
         }
-    }
-
-    private async readMemberByCard(card: string): Promise<MemberDto | null> {
-        const query = new GetMemberByCardQuery(card);
-        const member: MemberView | null = await this.queryBus.execute(query);
-        if (member == null || member === undefined) {
-            throw new NotFoundException();
-        }
-        console.log(member);
-        return {
-            id: member.id,
-            firstName: member.firstName,
-            lastName: member.lastName,
-            email: member.email,
-            phoneNumber: member.phoneNumber,
-            birthDate: member.birthDate,
-            joinedDate: member.joinDate,
-            status: member.status,
-            address: {
-                country: member.addressCountry,
-                city: member.addressCity,
-                street: member.addressStreet,
-                postalCode: member.addressPostalCode,
-                state: member.addressState,
-            } as AddressDto,
-            card: member.cardNumber,
-        } as MemberDto;
-
-    }
-
-    private async readMemberById(id: string): Promise<MemberDto | null> {
-        const query = new GetMemberQuery(id);
-        const member: MemberView | null = await this.queryBus.execute(query);
-        if (member == null || member === undefined) {
-            throw new NotFoundException();
-        }
-        return {
-            id: member.id,
-            firstName: member.firstName,
-            lastName: member.lastName,
-            email: member.email,
-            phoneNumber: member.phoneNumber,
-            birthDate: member.birthDate,
-            joinedDate: member.joinDate,
-            status: member.status,
-            address: {
-                country: member.addressCountry,
-                city: member.addressCity,
-                street: member.addressStreet,
-                postalCode: member.addressPostalCode,
-                state: member.addressState,
-            } as AddressDto,
-            card: member.cardNumber,
-        } as MemberDto;
-
     }
 }

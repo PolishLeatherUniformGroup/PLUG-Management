@@ -59,7 +59,7 @@ export class MemberCreatedProjection implements IEventHandler<MemberCreated> {
       await this.memberRepository.save(member);
 
       const membershipFee = new MembershipFeeView();
-      membershipFee.id = event.initialFee.id;
+      membershipFee.feeId = event.initialFee.id;
       membershipFee.year = event.initialFee.year;
       membershipFee.dueAmount = event.initialFee.dueAmount.amount;
       membershipFee.dueDate = event.initialFee.dueDate;

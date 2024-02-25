@@ -14,7 +14,7 @@ import { ApplicationCancelled } from 'src/apply/domain/events/application-cancel
 import { ApplicationReceived } from 'src/apply/domain/events/application-received.event';
 import { TypedEventEmitter } from 'src/event-emitter/typed-event-emmitter';
 import { GetApplicantQuery } from '../query/get-applicant.query';
-import { GetMemberByCardQuery } from 'src/membership/infrastructure/query/get-member-by-card.query';
+import { GetMemberQuery } from 'src/membership/infrastructure/query/get-member.query';
 import { ApplicantView } from '../read-model/model/applicant.entity';
 import { GetApplicantRecommendationsQuery } from '../query/get-applicant-recommendations.query';
 import { RecommendationView } from '../read-model/model/recommendation.entity';
@@ -106,7 +106,7 @@ export class EmailNotification
     const recommendations: RecommendationView[] = await this.queryBus.execute(recommendationsQuery);
 
     recommendations.forEach(async (recommendation) => {
-      const memberQuery = new GetMemberByCardQuery(recommendation.cardNumber);
+      const memberQuery = new GetMemberQuery(recommendation.cardNumber);
       const member: MemberView = await this.queryBus.execute(memberQuery);
       await this.emitter.emitAsync('apply.request-recomendation', {
         email: member.email,
