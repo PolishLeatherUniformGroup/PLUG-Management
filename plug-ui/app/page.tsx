@@ -13,7 +13,7 @@ export default function Home() {
     if (newWindow) newWindow.opener = null
   }
   return (<div className="w-full lg:w-4/5 grid grid-cols-12 grid-rows-4 gap-1 md:gap-2 mx-auto">
-    <Card className="col-span-12 md:col-start-1 xl:col-start-2 md:col-span-10 md:col-span-12 xl:col-span-7 h-[480px] lg:h-[500px] xl:h-[640px] shadow-xl row-span-4" isBlurred isFooterBlurred={false}>
+    <Card className="col-span-12 md:col-start-1 xl:col-start-2 md:col-span-10 md:col-span-12 xl:col-span-7 h-[480px] lg:h-[500px] xl:h-[640px] shadow-xl" isBlurred isFooterBlurred={false}>
       <Image
         removeWrapper
         alt="Card background"
@@ -31,7 +31,7 @@ export default function Home() {
         <Button radius="full" size="sm" as="a" href="https://plug.org.pl/" target="_blank">Idź do www</Button>
       </CardFooter>
     </Card>
-    <div className="col-span-12 xl:col-span-3 row-span-2 grid grid-cols-subgrid gap-2">
+    <div className="col-span-12 xl:col-span-3 grid grid-cols-subgrid gap-2 items-start justify-start">
       <Card className="col-span-12 md:col-span-8 lg:col-span-6 h-[360px] lg:h-[320px] shadow-xl  row-span-2 md:row-span-3" isBlurred isFooterBlurred={false}>
         <CardHeader className="absolute z-10 top-1 flex-col !items-start">
           <p className="text-small text-white/60 uppercase font-bold">Dołącz do nas</p>
