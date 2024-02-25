@@ -7,6 +7,7 @@ import {
     NavbarItem,
     NavbarBrand,
     User,
+    Avatar,
 } from "@nextui-org/react";
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { siteConfig } from "@/config/site";
@@ -59,8 +60,13 @@ export default function Header() {
                             base: "bg-gradient-to-br from-secondary-500 to-secondary-600/50",
                         }
                     }} description={<Link href="/members/me" size="sm">
-                        @{user?.nickname}
+                        {user?.nickname}
                     </Link>} />
+                    <Avatar size="sm" className="hidden md:flex"
+                        getInitials={(name) => name.split(" ").map((n) => n[0]).join("")}
+                        classNames={{
+                            base: "bg-gradient-to-br from-secondary-500 to-secondary-600/50",
+                        }} />
                 </NavbarItem>
                 }
                 {user != undefined && (<NavbarItem>
