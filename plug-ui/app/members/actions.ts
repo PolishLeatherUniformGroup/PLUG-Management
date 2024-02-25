@@ -31,3 +31,23 @@ export async function createMember(onSuccess: () => void, formData: FormData) {
     })
     onSuccess();
 };
+
+export async function approveRecommendation(applicantId:string, recommendationId: string) {
+    console.log(applicantId, recommendationId);
+    await fetch(`/api/members/me/recommendations/approve`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({applicantId, recommendationId})
+    })
+}
+export async function refuseRecommendation(applicantId:string, recommendationId: string) {
+    fetch(`/api/members/me/recommendations/refuse`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({applicantId, recommendationId})
+    })
+}

@@ -11,6 +11,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { JwtGuard } from 'src/auth/jwt.guard';
 import { ApplicantView } from '../read-model/model/applicant.entity';
 import { AddressDto } from 'src/shared/dto/address.dto';
+import { GetRecommendationsQuery } from '../query/get-recommendations.query';
 
 @Controller('apply')
 @ApiTags('apply')
@@ -77,6 +78,30 @@ export class QueryController {
     @Param() id: string,
   ): Promise<RecommendationsDto> {
     const query = new GetApplicantRecommendationsQuery(id);
+    const recommendations = await this.queryBus.execute(query);
+    return { data: recommendations } as RecommendationsDto;
+  }
+
+  @Get('members/:id/recommendations')
+  @ApiTags('apply')
+  @ApiOperation({
+    summary: 'Get Recommendations  by  member Id.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Recommendations',
+    type: RecommendationsDto,
+  })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'Member Id',
+    type: 'string',
+  })
+  async getRecommendations(
+    @Param() id: string,
+  ): Promise<RecommendationsDto> {
+    const query = new GetRecommendationsQuery(id);
     const recommendations = await this.queryBus.execute(query);
     return { data: recommendations } as RecommendationsDto;
   }
