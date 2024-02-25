@@ -26,7 +26,6 @@ export const GET = async function getApplications(
             },
             method: 'GET'
         });
-        console.log(applicantData);
         const applicant: ApplicantDetails = {
             id: applicantData.id,
             firstName: applicantData.firstName,
@@ -50,7 +49,6 @@ export const GET = async function getApplications(
                 currency: applicantData.feeCurrency
             }
         }
-        console.log(applicant);
         return Response.json(applicant);
     } catch (error) {
         console.error(error);

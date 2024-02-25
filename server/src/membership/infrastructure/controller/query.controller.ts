@@ -1,6 +1,6 @@
-import { Controller, Get, HttpStatus, NotFoundException, Param, Res, } from "@nestjs/common";
+import { Controller, Get, HttpStatus, NotFoundException, Param, Res, UseGuards, } from "@nestjs/common";
 import { QueryBus } from "@nestjs/cqrs";
-import { ApiOperation, ApiResponse, ApiTags, ApiParam } from "@nestjs/swagger";
+import { ApiOperation, ApiResponse, ApiTags, ApiParam, ApiBearerAuth } from "@nestjs/swagger";
 import { MembersDto } from "../dto/members.dto";
 import { GetMembersQuery } from "../query/get-members.query";
 import { GetMemberQuery } from "../query/get-member.query";
@@ -12,10 +12,15 @@ import { GetMemberFeesQuery } from "../query/get-member-fees.query";
 import { MembershipFeeView } from "../read-model/model/membership-fee.entity";
 import { MembershipFeeDto } from "../dto/membership-fee.dto";
 import { MoneyDto } from "src/shared/dto/money.dto";
+import { GetMemberByCardQuery } from "../query/get-member-by-card.query";
+import { JwtGuard } from "src/auth/jwt.guard";
+import { AllowAnonymous } from "src/auth/allow-anonymous.decorator";
 
 
 @Controller('membership')
 @ApiTags('membership')
+@ApiBearerAuth()
+@UseGuards(JwtGuard)
 export class QueryController {
     constructor(
         private readonly queryBus: QueryBus
@@ -52,37 +57,24 @@ export class QueryController {
         } as MembersDto;
     }
 
-    @Get('members/:id')
+    @Get('members/:cardOrId')
     @ApiOperation({ summary: 'Gets member' })
     @ApiResponse({ status: 200, description: 'Member' })
-    @ApiParam({ name: 'id', required: true, description: 'Member id' , type: 'string'})
-
-    async getMember(@Param() id: string, @Res() res): Promise<MemberDto> {
-        const query = new GetMemberQuery(id);
-        const member: MemberView | null = await this.queryBus.execute(query);
-        if (member == null || member === undefined) {
-            throw new NotFoundException();
+    @ApiParam({ name: 'cardOrId', required: true, description: 'Member id or card number', type: 'string' })
+    async getMember(@Param() cardOrId: string): Promise<MemberDto | null> {
+        const result = cardOrId['cardOrId'].match(/PLUG-\d{4}/);
+        const isCard = result !== null && result.length > 0;
+        if (isCard) {
+            return await this.readMemberByCard(cardOrId['cardOrId']);
+        } else {
+            return await this.readMemberById(cardOrId['cardOrId']);
         }
-        const memberDto = {
-            ...member,
-            address: {
-                country: member.addressCountry,
-                city: member.addressCity,
-                street: member.addressStreet,
-                postalCode: member.addressPostalCode,
-                state: member.addressState,
-            } as AddressDto,
-            type: member.memberType,
-            card: member.cardNumber,
-        } as MemberDto;
-        return memberDto;
-
     }
 
     @Get('members/:id/fees')
     @ApiOperation({ summary: 'Gets member fees' })
     @ApiResponse({ status: 200, description: 'Member fees' })
-    @ApiParam({ name: 'id', required: true, description: 'Member id', type: 'string'})
+    @ApiParam({ name: 'id', required: true, description: 'Member id', type: 'string' })
 
     async getMemberFees(@Param() id: string): Promise<MembershipFeesDto> {
         const query = new GetMemberFeesQuery(id);
@@ -96,13 +88,67 @@ export class QueryController {
                         amount: fee.dueAmount,
                         currency: fee.currency,
                     } as MoneyDto,
-                    paidAmount: fee.paidAmount &&{
+                    paidAmount: fee.paidAmount && {
                         amount: fee.paidAmount,
                         currency: fee.currency,
-                    } as MoneyDto,                    
+                    } as MoneyDto,
                 } as MembershipFeeDto
             })
         }
     }
 
+    private async readMemberByCard(card: string): Promise<MemberDto | null> {
+        const query = new GetMemberByCardQuery(card);
+        const member: MemberView | null = await this.queryBus.execute(query);
+        if (member == null || member === undefined) {
+            throw new NotFoundException();
+        }
+        console.log(member);
+        return {
+            id: member.id,
+            firstName: member.firstName,
+            lastName: member.lastName,
+            email: member.email,
+            phoneNumber: member.phoneNumber,
+            birthDate: member.birthDate,
+            joinedDate: member.joinDate,
+            status: member.status,
+            address: {
+                country: member.addressCountry,
+                city: member.addressCity,
+                street: member.addressStreet,
+                postalCode: member.addressPostalCode,
+                state: member.addressState,
+            } as AddressDto,
+            card: member.cardNumber,
+        } as MemberDto;
+
+    }
+
+    private async readMemberById(id: string): Promise<MemberDto | null> {
+        const query = new GetMemberQuery(id);
+        const member: MemberView | null = await this.queryBus.execute(query);
+        if (member == null || member === undefined) {
+            throw new NotFoundException();
+        }
+        return {
+            id: member.id,
+            firstName: member.firstName,
+            lastName: member.lastName,
+            email: member.email,
+            phoneNumber: member.phoneNumber,
+            birthDate: member.birthDate,
+            joinedDate: member.joinDate,
+            status: member.status,
+            address: {
+                country: member.addressCountry,
+                city: member.addressCity,
+                street: member.addressStreet,
+                postalCode: member.addressPostalCode,
+                state: member.addressState,
+            } as AddressDto,
+            card: member.cardNumber,
+        } as MemberDto;
+
+    }
 }

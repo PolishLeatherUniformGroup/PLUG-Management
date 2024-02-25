@@ -2,7 +2,8 @@
 import { faCheck, faFileArrowDown, faFileInvoiceDollar, faQuestion, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, ButtonGroup, Chip, Input, Accordion, AccordionItem, TableHeader, TableColumn, TableBody, Table } from "@nextui-org/react";
-import { ApplicantDetails, Recommendation } from "../models/applicant-details.dto";
+import { ApplicantDetails } from "../models/applicant-details.dto";
+import { Recommendation } from "../models/Recommendation";
 import { useEffect, useState } from "react";
 import { Address } from "./address";
 import { Fee } from "./fee";

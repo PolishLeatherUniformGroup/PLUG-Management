@@ -8,5 +8,7 @@ export class MemberDto {
   public email: string;
   public phoneNumber: string;
   public address: AddressDto;
+  public joinedDate: Date;
+  public birthDate: Date;
   public status: number;
 }

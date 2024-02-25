@@ -1,36 +1,32 @@
 'use client';
 import { withPageAuthRequired } from "@auth0/nextjs-auth0/client";
-import { Button, Card, CardBody, CardHeader, Input, Tab, Tabs } from "@nextui-org/react";
-import { useState } from "react";
+import { Progress, Tab, Tabs } from "@nextui-org/react";
+import { useEffect, useState } from "react";
 import MyData from "./my-data";
+import { MemberDto } from "@/app/models/member.dto";
 
 export default withPageAuthRequired(function Me() {
-    let tabs = [
-        {
-            id: "my-data",
-            label: "Moje Dane",
-            content: <MyData />
-        },
-        {
-            id: "my-fees",
-            label: "Składki",
-            content: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-        },
-        {
-            id: "my-recommendations",
-            label: "Moje Rekomendacje",
-            content: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-        }
 
-    ];
+    const [me, setMe] = useState({ loading: true, data: {} as MemberDto });
+    useEffect(() => {
+        fetch(`/api/members/me`)
+            .then((res) => res.json())
+            .then((data) => {
+                setMe({ loading: false, data });
+            });
+    }, []);
     return (<>
         <div className="w-full gap-2">
-            <Tabs aria-label="Me" items={tabs}>
-                {(item) => (
-                    <Tab key={item.id} title={item.label}>
-                        {item.content}
-                    </Tab>
-                )}
+            <Tabs aria-label="Me">
+                <Tab id="my-data" title="Moje Dane">
+                    {me.loading && <Progress
+                        size="sm"
+                        isIndeterminate
+                        aria-label="Loading..."
+                        className="max-w-full"
+                    />}
+                    {!me.loading && <MyData member={me.data} />}
+                </Tab>
             </Tabs>
         </div>
 

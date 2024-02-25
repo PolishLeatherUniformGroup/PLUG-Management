@@ -1,3 +1,7 @@
+import { AddressDto } from "./AddressDto";
+import { FeeDto } from "./FeeDto";
+import { Recommendation } from "./Recommendation";
+
 export interface ApplicantDetails {
     id:string;
     firstName: string;
@@ -11,19 +15,4 @@ export interface ApplicantDetails {
     fee: FeeDto;
     recommendations: Recommendation[];
 }
-export interface AddressDto{
-    street: string;
-    city: string;
-    postalCode: string;
-    country: string;
-    state?: string;
-}
-export interface Recommendation{
-    cardNumber:string;
-    status?:boolean
-}
-export interface FeeDto{
-    requiredFee: number;
-    paidFee?: number;
-    currency: string;
-}
+

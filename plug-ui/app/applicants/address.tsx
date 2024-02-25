@@ -1,5 +1,5 @@
 import { Input } from "@nextui-org/react";
-import { AddressDto } from "../models/applicant-details.dto";
+import { AddressDto } from "../models/AddressDto";
 
 export function Address({address}: {address?:AddressDto}) {
     return (<div className="grid grid-cols-4 gap-2">
