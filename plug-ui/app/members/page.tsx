@@ -12,12 +12,15 @@ import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { MemberDto } from "../models/member.dto";
 import React from "react";
+import { isMac } from "@react-aria/utils";
 
 export default withPageAuthRequired(function Members() {
     const { isOpen: isAddMemberOpen, onOpen: onAddMemberOpen, onClose: onAddMemberClose } = useDisclosure();
     const { isOpen: isImportMembersOpen, onOpen: onImportMembersOpen, onClose: onImportMembersClose } = useDisclosure();
-    useHotkeys("ctrl+a", () => onAddMemberOpen(), { preventDefault: true });
-    useHotkeys("ctrl+i", () => onImportMembersOpen(), { preventDefault: true });
+
+    useHotkeys("mod+a", () => onAddMemberOpen(), { preventDefault: true });
+    useHotkeys("mod+i", () => onImportMembersOpen(), { preventDefault: true });
+
 
     const [members, setMembers] = useState({ loading: true, rows: [] as any[] });
 
@@ -62,7 +65,6 @@ export default withPageAuthRequired(function Members() {
         const cellValue = user[columnKey];
         return cellValue;
     }, []);
-
     return (
         <div className="w-full gap-2">
             <div className="flex flex-col gap-4 py-2">
@@ -73,7 +75,7 @@ export default withPageAuthRequired(function Members() {
                             <div className="px-1 py-2 min-w-24 max-w-48">
                                 <div className="font-bold flex py-1">
                                     <span className="text-lg flex-1">Dodaj członka  </span>
-                                    <Kbd keys={["command"]} className="flex-none text-lg bg-primary-200 text-primary-800 ">A</Kbd>
+                                    {isMac() ? <Kbd keys={["command"]} className="flex-none text-lg bg-primary-200 text-primary-800 ">A</Kbd> : <Kbd keys={["ctrl"]} className="flex-none text-lg bg-primary-200 text-primary-800 ">A</Kbd>}
 
                                 </div>
                                 <Divider />
@@ -85,7 +87,7 @@ export default withPageAuthRequired(function Members() {
                         <Tooltip content={<div className="px-1 py-1 min-w-24 max-w-48">
                             <div className="font-bold flex py-1">
                                 <span className="text-lg flex-1">Import członków </span>
-                                <Kbd keys={["command"]} className="flex-none text-lg bg-primary-200 text-primary-800">I</Kbd>
+                                {isMac() ? <Kbd keys={["command"]} className="flex-none text-lg bg-primary-200 text-primary-800">I</Kbd> : <Kbd keys={["ctrl"]} className="flex-none text-lg bg-primary-200 text-primary-800">I</Kbd>}
 
                             </div>
                             <Divider />
