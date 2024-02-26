@@ -16,7 +16,7 @@ export class MembershipExpiredProjection
 
   async handle(event: MembershipExpired) {
     const member = await this.memberRepository.findOne({
-      where: { id: event.id },
+      where: { memberId: event.id },
     });
     if (member) {
       member.status = MemberStatus.Expired;

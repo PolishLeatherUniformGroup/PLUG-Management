@@ -17,7 +17,7 @@ export class MemberSuspendedProjection
   ) {}
   async handle(event: MemberSuspended) {
     const member = await this.memberViewRepository.findOne({
-      where: { id: event.id },
+      where: { memberId: event.id },
     });
     if (!member) {
       throw new Error('Member not found');

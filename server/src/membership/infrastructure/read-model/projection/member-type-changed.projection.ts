@@ -15,7 +15,7 @@ export class MemberTypeChangedProjection
   async handle(event: MemberTypeChanged) {
     try {
       const member = await this.memberRepository.findOne({
-        where: { id: event.id },
+        where: { memberId: event.id },
       });
       if (member) {
         member.memberType = event.type;

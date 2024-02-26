@@ -1,9 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { ConfirmRecommendationCommand } from '../command/confirm-recommendation.command';
-import { Inject } from '@nestjs/common';
-import { APPLICANTS, Applicants } from '../../domain/repository';
 import { ApplicantIdNotFound } from '../../domain/exception/applicant-id-not-found.error';
-import { AggregateRepository } from '../../../eventstore/aggregate-repository';
 import { StoreEventPublisher } from '../../../eventstore/store-event-publisher';
 import { Applicant } from '../../domain/model';
 import { ApplicantAggregateRepository } from '../../infrastructure/repository/applicant-aggregate-repository';

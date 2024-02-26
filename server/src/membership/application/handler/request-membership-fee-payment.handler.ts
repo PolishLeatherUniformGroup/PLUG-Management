@@ -19,7 +19,7 @@ export class RequestMembershipFeePaymentHandler
     const query = new GetActiveMembersQuery();
     const members: MemberView[] = await this.queryBus.execute(query);
     members.forEach(async (m) => {
-      const member =this.publisher.mergeObjectContext( await this.members.getById(Member,MemberId.fromString(m.id).value));
+      const member =this.publisher.mergeObjectContext( await this.members.getById(Member,MemberId.fromString(m.memberId).value));
       if (member) {
         member.requestMembershipFeePayment(
           command.year,

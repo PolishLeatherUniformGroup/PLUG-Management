@@ -1,11 +1,9 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { SendApplicationCommand } from '../command/send-application.command';
-import { APPLICANTS, Applicants } from '../../domain/repository/applicants';
-import { Inject, Logger } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { Applicant, ApplicantId } from '../../domain/model';
 import { randomUUID } from 'crypto';
 import { StoreEventPublisher } from '../../../eventstore/store-event-publisher';
-import { DomainEvent } from '../../../core/domain';
 
 @CommandHandler(SendApplicationCommand)
 export class SendApplicationHandler

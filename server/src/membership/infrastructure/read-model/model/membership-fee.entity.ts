@@ -23,6 +23,6 @@ export class MembershipFeeView {
   public paidDate?: Date;
   @Column({ type: 'varchar', length: 3 })
   public currency: string;
-  @ManyToOne(() => MemberView, (member) => member.id)
+  @ManyToOne(() => MemberView, (member) => member.memberId)
   member: MemberView;
 }

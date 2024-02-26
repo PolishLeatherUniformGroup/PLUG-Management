@@ -14,7 +14,7 @@ export class MemberCardAssignedProjection
   ) {}
   async handle(event: MemberCardAssigned) {
     const member = await this.memberRepository.findOne({
-      where: { id: event.id },
+      where: { memberId: event.id },
     });
     if (!member) {
       throw new Error('Member not found');

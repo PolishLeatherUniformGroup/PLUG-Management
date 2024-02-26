@@ -18,7 +18,7 @@ export class MemberExpulsionAppealCancelledProjection
 
   async handle(event: MemberExpulsionAppealCancelled) {
     const member = await this.memberViewRepository.findOne({
-      where: { id: event.id },
+      where: { memberId: event.id },
     });
     if (member) {
       const expulsion = await this.memberSuspensionRepository.findOne({

@@ -18,7 +18,7 @@ export class ApplicantRecommendedProjection
   async handle(event: ApplicantRecommended) {
     try {
       const applicant = await this.applicantRepository.findOne({
-        where: { id: event.id },
+        where: { applicantId: event.id },
       });
       if (!applicant)
         throw ApplicantIdNotFound.withApplicantId(

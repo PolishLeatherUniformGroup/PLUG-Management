@@ -28,7 +28,7 @@ export class MemberCreatedProjection implements IEventHandler<MemberCreated> {
         where: { prefix: 'PLUG' },
       });
       const member = new MemberView();
-      member.id = event.id;
+      member.memberId = event.id;
       member.firstName = event.firstName;
       member.lastName = event.lastName;
       member.email = event.email;
@@ -43,7 +43,7 @@ export class MemberCreatedProjection implements IEventHandler<MemberCreated> {
       member.status = MemberStatus.Active;
       if (event.notify && card) {
         const command = new AssignCardNumberCommand(
-          MemberId.fromString(member.id),
+          MemberId.fromString(member.memberId),
           MemberCard.create(card.prefix, card.nextCard),
         );
         await this.commandBus.execute(command);

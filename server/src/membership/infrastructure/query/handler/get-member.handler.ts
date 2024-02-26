@@ -22,7 +22,7 @@ export class GetMemberHandler
         where: { cardNumber: memberId },
       });
     } else {
-      return await this.memberRepository.findOne({ where: { id: memberId } });
+      return await this.memberRepository.findOne({ where: { memberId: memberId } });
     }
   }
 }

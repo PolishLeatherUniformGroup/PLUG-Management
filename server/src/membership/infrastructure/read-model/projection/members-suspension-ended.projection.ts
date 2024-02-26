@@ -16,7 +16,7 @@ export class MemberSuspensionEndedProjection
 
   async handle(event: MemberSuspensionEnded) {
     const member = await this.memberViewRepository.findOne({
-      where: { id: event.id },
+      where: { memberId: event.id },
     });
     if (member) {
       member.status = MemberStatus.Active;

@@ -18,7 +18,7 @@ export class ApplicantRejectionAppealRejectedProjection
 
   public async handle(event: ApplicantRejectionAppealRejected): Promise<void> {
     const application = await this.repository.findOne({
-      where: { id: event.id },
+      where: { applicantId: event.id },
     });
     if (!application)
       throw ApplicantIdNotFound.withApplicantId(

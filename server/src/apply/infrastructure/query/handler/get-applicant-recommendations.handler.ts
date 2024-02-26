@@ -16,20 +16,12 @@ export class GetApplicantRecommendationsHandler
 
   async execute(
     query: GetApplicantRecommendationsQuery,
-  ): Promise<RecommendationDto[]> {
+  ): Promise<RecommendationView[]> {
     const q = JSON.parse(JSON.stringify(query.id));
     const recommendations = await this.repository.find({
-      where: { applicant: { id: q.id } },
+      where: { applicant: { applicantId: q.id } },
     });
 
-    return recommendations.map((recommendation) => {
-      return {
-        id: recommendation.id,
-        cardNumber: recommendation.cardNumber,
-        requestDate: recommendation.requestDate,
-        isConfirmed: recommendation.status === true,
-        isRefused: recommendation.status === false,
-      } as RecommendationDto;
-    });
+    return recommendations;
   }
 }

@@ -24,6 +24,9 @@ import { JwtGuard } from 'src/auth/jwt.guard';
 import { ApplicantView } from '../read-model/model/applicant.entity';
 import { AddressDto } from 'src/shared/dto/address.dto';
 import { GetRecommendationsQuery } from '../query/get-recommendations.query';
+import { RecommendationDto } from '../dto/recommendation.dto';
+import { MemberRecommendationDto } from '../dto/member-recommendation.dto';
+import { MemberRecommendationsDto } from '../dto/member-recommendataions.dto';
 
 @Controller('apply')
 @ApiTags('apply')
@@ -60,6 +63,7 @@ export class QueryController {
     }
     return {
       ...applicant,
+      id: applicant.applicantId,
       address: {
         country: applicant.addressCountry,
         city: applicant.addressCity,
@@ -90,7 +94,13 @@ export class QueryController {
   ): Promise<RecommendationsDto> {
     const query = new GetApplicantRecommendationsQuery(id);
     const recommendations = await this.queryBus.execute(query);
-    return { data: recommendations } as RecommendationsDto;
+    return { data: recommendations.map((r)=>({
+      id: r.recommendationId,
+      cardNumber: r.cardNumber,
+      requestDate: r.requestDate,
+      isConfirmed: r.status === true,
+      isRefused: r.status === false,
+    }as RecommendationDto)) } as RecommendationsDto;
   }
 
   @Get('members/:id/recommendations')
@@ -109,9 +119,16 @@ export class QueryController {
     description: 'Member Id',
     type: 'string',
   })
-  async getRecommendations(@Param() id: string): Promise<RecommendationsDto> {
+  async getRecommendations(@Param() id: string): Promise<MemberRecommendationsDto> {
     const query = new GetRecommendationsQuery(id);
     const recommendations = await this.queryBus.execute(query);
-    return { data: recommendations } as RecommendationsDto;
+    return { data: recommendations.map((r)=>({
+      recommendationId: r.recommendationId,
+      applicantId: r.applicantId,
+      firstName: r.applicant.firstName,
+      lastName: r.applicant.lastName,
+      applyDate: r.applicant.applyDate,
+      status: r.status,
+    }as MemberRecommendationDto)) } as MemberRecommendationsDto;
   }
 }

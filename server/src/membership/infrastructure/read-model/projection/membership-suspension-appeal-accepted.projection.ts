@@ -19,7 +19,7 @@ export class MembershipSuspensionAppealAcceptedProjection
 
   async handle(event: MembershipSuspensionAppealAccepted) {
     const member = await this.memberRepository.findOne({
-      where: { id: event.id },
+      where: { memberId: event.id },
     });
     if (member) {
       const suspension = await this.memberSuspensionRepository.findOne({

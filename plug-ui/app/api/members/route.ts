@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { redirect } from 'next/navigation'
+import { RedirectType, redirect } from 'next/navigation'
 import { getAccessToken } from "@auth0/nextjs-auth0";
 
 export const POST = async function sendApplication(req:NextRequest){
@@ -15,7 +15,7 @@ export const POST = async function sendApplication(req:NextRequest){
         },
         body: JSON.stringify(payload)
     });
-    redirect('/members');
+    redirect('/members', RedirectType.push );
 }
 
 export const GET = async function getApplications(req:NextRequest){

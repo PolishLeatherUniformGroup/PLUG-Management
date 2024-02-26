@@ -19,7 +19,7 @@ export class ApplicantPaidFeeProjection
   async handle(event: ApplicantPaidFee) {
     try {
       const applicant = await this.applicantRepository.findOne({
-        where: { id: event.id },
+        where: { applicantId: event.id },
       });
       if (!applicant)
         throw ApplicantIdNotFound.withApplicantId(

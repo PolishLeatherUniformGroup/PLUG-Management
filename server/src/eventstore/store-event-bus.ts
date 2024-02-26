@@ -12,7 +12,6 @@ export class StoreEventBus implements IEventBus {
     @InjectRepository(StorableEvent)
     private readonly eventStore: Repository<StorableEvent>,
   ) {
-    console.log('StoreEventBus created');
   }
 
   publish<T extends IEvent>(event: T): void {

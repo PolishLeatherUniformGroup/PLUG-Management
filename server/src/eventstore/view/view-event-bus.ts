@@ -11,7 +11,6 @@ export class ViewEventBus implements IEventBus {
   ) { }
 
   publish<T extends IEvent>(event: T): void {
-    console.log('Publishing view  event', event.constructor.name);
     this.viewUpdater
       .run(event)
       .then(() => this.eventBus.publish(event))

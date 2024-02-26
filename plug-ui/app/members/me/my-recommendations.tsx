@@ -25,7 +25,6 @@ export default function MyRecommendations({ recommendations }: { recommendations
             return format(cellValue, "dd-MM-yyyy");
         }
         if (columnKey === 'actions') {
-            console.log(user.recommendationId, user.applicantId);
             return <>
                 <Button color="success" onPress={() => approveRecommendation(user['applicantId'], user['recommendationId'])}>Potwierdź</Button>
                 <Button color="danger" onPress={() => refuseRecommendation(user['applicantId'], user['recommendationId'])}>Wycofaj</Button></>

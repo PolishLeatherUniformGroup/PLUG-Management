@@ -4,13 +4,13 @@ import { ApplicantView } from './applicant.entity';
 @Entity('recommendation')
 export class RecommendationView {
   @PrimaryColumn()
-  id: string;
+  recommendationId: string;
   @Column()
   cardNumber: string;
   @Column()
   requestDate?: Date;
   @Column({ nullable: true, default: false })
   status?: boolean;
-  @ManyToOne(() => ApplicantView, (applicant) => applicant.id)
+  @ManyToOne(() => ApplicantView, (applicant) => applicant.applicantId)
   applicant: ApplicantView;
 }

@@ -28,7 +28,7 @@ export class GetMemberFeesHandler
       });
     } else {
       fees = await this.memberFeeRepository.find({
-        where: { member: { id: memberId['id'] } },
+        where: { member: { memberId: memberId['id'] } },
         order: { year: 'DESC' },
         relations: {
           member: false,

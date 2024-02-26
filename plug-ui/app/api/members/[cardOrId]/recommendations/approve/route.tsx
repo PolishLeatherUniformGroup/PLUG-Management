@@ -4,7 +4,6 @@ export const POST = async  function confirmRecommendation(req: NextRequest){
 
     let id: string;
     const requestBody = await req.json();
-    console.log(requestBody);
     let res = new NextResponse();
     const session = await getSession(req, res);
     id = session?.user.nickname;

@@ -25,7 +25,7 @@ export class ApplicationReceivedProjection
     try {
       this.logger.log(`1. Received application ${event.id}`);
       const entity = new ApplicantView();
-      entity.id = event.id;
+      entity.applicantId = event.id;
       entity.firstName = event.firstName;
       entity.lastName = event.lastName;
       entity.email = event.email;
@@ -43,17 +43,16 @@ export class ApplicationReceivedProjection
 
       event.recommendations.forEach(async (r) => {
         const rec = new RecommendationView();
-        rec.id = r.id;
+        rec.recommendationId = r.id;
         rec.cardNumber = r.cardNumber;
 
         rec.applicant = entity;
         await this.recommendationRepository.save(rec);
         this.logger.log(`3. Recommendation View ${r.id} saved`);
-
-        await this.emitter.emitAsync('apply.application-received', {
-          email: event.email,
-          name: event.firstName,
-        });
+      });
+      await this.emitter.emitAsync('apply.application-received', {
+        email: event.email,
+        name: event.firstName,
       });
       await this.emitter.emitAsync('apply.verify-application', {
         id: event.id,

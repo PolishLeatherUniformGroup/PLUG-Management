@@ -16,7 +16,7 @@ export class MembershipCancelledProjection
 
   async handle(event: MembershipCancelled) {
     const member = await this.memberRepository.findOne({
-      where: { id: event.id },
+      where: { memberId: event.id },
     });
     if (member) {
       member.status = MemberStatus.Cancelled;

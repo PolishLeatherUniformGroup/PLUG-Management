@@ -19,6 +19,7 @@ export class GetApplicantsHandler implements IQueryHandler<GetApplicantsQuery> {
     return applicants.map((applicant) => {
       return {
         ...applicant,
+        id: applicant.applicantId,
         address: {
           country: applicant.addressCountry,
           city: applicant.addressCity,

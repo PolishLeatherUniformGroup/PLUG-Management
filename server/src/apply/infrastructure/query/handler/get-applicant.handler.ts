@@ -16,7 +16,7 @@ export class GetApplicantHandler
   async execute(query: GetApplicantQuery): Promise<ApplicantView | null> {
     const q = JSON.parse(JSON.stringify(query.id));
     const applicant = await this.applicantRepository.findOne({
-      where: { id: q.id },
+      where: { applicantId: q.id },
     });
     return applicant;
   }

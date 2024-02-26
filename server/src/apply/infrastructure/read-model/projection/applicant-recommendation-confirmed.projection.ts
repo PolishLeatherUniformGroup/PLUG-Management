@@ -25,14 +25,14 @@ export class ApplicantRecommendationConfirmedProjection
   async handle(event: ApplicantRecommendationConfirmed) {
     try {
       const applicant = await this.applicantRepository.findOne({
-        where: { id: event.id },
+        where: { applicantId: event.id },
       });
       if (!applicant)
         throw ApplicantIdNotFound.withApplicantId(
           ApplicantId.fromString(event.id),
         );
       const recommendation = await this.recommendationRepository.findOne({
-        where: { id: event.recommendationId },
+        where: { recommendationId: event.recommendationId },
       });
       if (!recommendation)
         throw RecommendationIdNotFound.withApplicantIdAndRecommendationId(

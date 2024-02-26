@@ -42,7 +42,7 @@ export class QueryController {
     return {
       data: queryresult.map((member) => {
         return {
-          id: member.id,
+          id: member.memberId,
           card: member.cardNumber,
           firstName: member.firstName,
           lastName: member.lastName,
@@ -80,7 +80,7 @@ export class QueryController {
       throw new NotFoundException();
     }
     return {
-      id: member.id,
+      id: member.memberId,
       firstName: member.firstName,
       lastName: member.lastName,
       email: member.email,

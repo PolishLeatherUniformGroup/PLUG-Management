@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryColumn } from 'typeorm';
 @Entity('applicant')
 export class ApplicantView {
   @PrimaryColumn()
-  public id: string;
+  public applicantId: string;
   @Column()
   public firstName: string;
   @Column()

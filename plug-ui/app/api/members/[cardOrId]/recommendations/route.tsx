@@ -26,12 +26,10 @@ export const GET = async function getMemberFees(req: NextRequest,
         }
     });
     const recommendationsResponse = await response.json();
+
     const mapped = recommendationsResponse.data.map((recommendation: any) => ({
-        applicantId: recommendation.applicant.id,
-        firstName: recommendation.applicant.firstName,
-        lastName: recommendation.applicant.lastName,
-        applyDate: recommendation.applicant.applyDate,
-        recommendationId: recommendation.id
+        ...recommendation
     } as RecommendationItemDto));
+    console.log(mapped);
     return NextResponse.json(mapped);
 }

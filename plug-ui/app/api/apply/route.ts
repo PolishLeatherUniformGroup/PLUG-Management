@@ -20,7 +20,7 @@ export const POST = async function sendApplication(req:NextRequest){
         },
         recommendersCards: [formData.get('card1'), formData.get('card2')]
     };
-    console.log(payload);
+  
     const response = await fetch(endpoint, {
         method: 'POST',
         headers: {

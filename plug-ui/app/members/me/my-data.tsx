@@ -5,7 +5,6 @@ import { useState } from "react";
 
 export default function MyData({ member }: { member: MemberDto }) {
     const [isEditable, setIsEditable] = useState(false);
-    console.log(new Date(member.birthDate), new Date(member.joinedDate));
     return (<Card className="col-span-12">
         <CardHeader>
             <h1 className="text-2xl font-bold text-left">Twoje dane</h1>

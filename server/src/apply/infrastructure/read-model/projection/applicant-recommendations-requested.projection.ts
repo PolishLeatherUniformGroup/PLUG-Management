@@ -33,7 +33,7 @@ export class ApplicantRecommendationsRequestedProjection
       this.logger.log(`Handling event: ${event.constructor.name}`);
       this.logger.log(`Locating Applicant for update: ${event.id}`);
       const applicant = await this.applicantRepository.findOne({
-        where: { id: event.id },
+        where: { applicantId: event.id },
       });
 
       if (!applicant) {
@@ -47,17 +47,17 @@ export class ApplicantRecommendationsRequestedProjection
       applicant.feeCurrency = event.requiredFee.currency;
 
       const recommendations = await this.recommendationRepository.find({
-        where: { applicant: { id: event.id } },
+        where: { applicant: { applicantId: event.id } },
       });
 
       this.logger.log(
         `Updating ${recommendations.length} recommendations for applicant: ${event.id}`,
       );
       recommendations.forEach((r) => {
-        this.logger.log(`Updating recommendation: ${r.id}`);
+        this.logger.log(`Updating recommendation: ${r.recommendationId}`);
         r.requestDate = event.requestDate;
         this.recommendationRepository.save(r);
-        this.logger.log(`Recommendation ${r.id} updated`);
+        this.logger.log(`Recommendation ${r.recommendationId} updated`);
       });
       this.applicantRepository.save(applicant);
       this.logger.log(`Applicant ${event.id} updated`);

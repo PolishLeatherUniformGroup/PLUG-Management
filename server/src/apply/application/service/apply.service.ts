@@ -26,6 +26,7 @@ export class ApplyService {
   @OnEvent('apply.verify-application')
   async verifyApplication(data: EventPayloads['apply.verify-application']) {
     const valid = await this.verifyRecommendations(data.id);
+    
     if (valid.length == data.rcomendationsCount) {
       this.logger.log(`1. Application ${data.id.toString()} is valid`);
       const applicantId = ApplicantId.fromString(data.id);
@@ -52,10 +53,13 @@ export class ApplyService {
   ): Promise<MemberView[]> {
     this.logger.log(`X. Verifying application ${applicationId}`);
     const recommendations = await this.recommendationsRepository.find({
-      where: { applicant: { id: applicationId } },
+      where: { applicant: { applicantId: applicationId } },
     });
-
-    const cards: string[] = recommendations.map((rec) => rec.cardNumber);
+    console.log('recommendations', recommendations);
+    const cards: string[] = recommendations.map((rec) =>{ 
+      console.log('checking member', rec.cardNumber);
+      return rec.cardNumber});
+    
     const valid = await this.verificationService.verifyCardNumbers(
       cards.map((card) => card.toString()),
     );

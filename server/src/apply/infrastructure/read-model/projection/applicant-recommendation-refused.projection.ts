@@ -25,7 +25,7 @@ export class ApplicantRecommendationRefusedProjection
   async handle(event: ApplicantRecommendationRefused) {
     try {
       const applicant = await this.applicantRepository.findOne({
-        where: { id: event.id },
+        where: { applicantId: event.id },
         loadEagerRelations: true,
       });
       if (!applicant)
@@ -33,7 +33,7 @@ export class ApplicantRecommendationRefusedProjection
           ApplicantId.fromString(event.id),
         );
       const recommendation = await this.recommendationRepository.findOne({
-        where: { id: event.recommendationId },
+        where: { recommendationId: event.recommendationId },
       });
       if (!recommendation)
         throw RecommendationIdNotFound.withApplicantIdAndRecommendationId(
