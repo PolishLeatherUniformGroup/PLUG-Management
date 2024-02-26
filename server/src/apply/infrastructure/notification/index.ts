@@ -1,4 +1,3 @@
-
 import { EmailNotification } from './email.notification';
 
 export * from './email.notification';

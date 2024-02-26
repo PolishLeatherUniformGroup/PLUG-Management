@@ -10,12 +10,13 @@ import { Logger } from '@nestjs/common';
 import { TypedEventEmitter } from '../../../../event-emitter/typed-event-emmitter';
 import { MemberView } from '../../../../membership/infrastructure/read-model/model/member.entity';
 
-
 @EventsHandler(ApplicantRecommendationsRequested)
 export class ApplicantRecommendationsRequestedProjection
   implements IEventHandler<ApplicantRecommendationsRequested>
 {
-  private readonly logger = new Logger(ApplicantRecommendationsRequestedProjection.name);
+  private readonly logger = new Logger(
+    ApplicantRecommendationsRequestedProjection.name,
+  );
   constructor(
     @InjectRepository(ApplicantView)
     private readonly applicantRepository: Repository<ApplicantView>,
@@ -24,7 +25,7 @@ export class ApplicantRecommendationsRequestedProjection
     private readonly emitter: TypedEventEmitter,
     @InjectRepository(MemberView)
     private readonly memberRepository: Repository<MemberView>,
-  ) { }
+  ) {}
 
   async handle(event: ApplicantRecommendationsRequested) {
     try {
@@ -34,19 +35,23 @@ export class ApplicantRecommendationsRequestedProjection
         where: { id: event.id },
       });
 
-      if (!applicant)
+      if (!applicant) {
         throw ApplicantIdNotFound.withApplicantId(
           ApplicantId.fromString(event.id),
         );
+      }
       this.logger.log(`Applicant ${event.id} found.`);
       applicant.status = ApplicantStatus.InRecommendation;
       applicant.requiredFeeAmount = event.requiredFee.amount;
       applicant.feeCurrency = event.requiredFee.currency;
 
-      this.logger.log(`Updating recommendations for applicant: ${event.id}`);
       const recommendations = await this.recommendationRepository.find({
         where: { applicant: { id: event.id } },
       });
+
+      this.logger.log(
+        `Updating ${recommendations.length} recommendations for applicant: ${event.id}`,
+      );
       recommendations.forEach((r) => {
         this.logger.log(`Updating recommendation: ${r.id}`);
         r.requestDate = event.requestDate;
@@ -64,7 +69,9 @@ export class ApplicantRecommendationsRequestedProjection
       });
 
       recommendations.forEach(async (r) => {
-        const member = await this.memberRepository.findOne({ where: { cardNumber: r.cardNumber } });
+        const member = await this.memberRepository.findOne({
+          where: { cardNumber: r.cardNumber },
+        });
         if (member) {
           await this.emitter.emitAsync('apply.request-recomendation', {
             email: member.email,
@@ -72,7 +79,6 @@ export class ApplicantRecommendationsRequestedProjection
           });
         }
       });
-
     } catch (error) {
       this.logger.error(`Error handling event: ${event.constructor.name}`);
     }

@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
-export class Event {
+@Entity('events')
+export class StorableEvent {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()

@@ -4,19 +4,19 @@ import { APPLICANTS, Applicants } from '../../domain/repository/applicants';
 import { Inject, Logger } from '@nestjs/common';
 import { Applicant, ApplicantId } from '../../domain/model';
 import { randomUUID } from 'crypto';
+import { StoreEventPublisher } from '../../../eventstore/store-event-publisher';
 
 @CommandHandler(SendApplicationCommand)
 export class SendApplicationHandler
   implements ICommandHandler<SendApplicationCommand>
 {
-  private readonly logger = new Logger(SendApplicationHandler.name)
+  private readonly logger = new Logger(SendApplicationHandler.name);
 
-  constructor(@Inject(APPLICANTS) private readonly applicants: Applicants
-  ) { }
+  constructor(private readonly publisher: StoreEventPublisher) {}
   async execute(command: SendApplicationCommand) {
     try {
       const applicantId = ApplicantId.fromUUID(randomUUID());
-      this.logger.log(`Generated applicationId: ${applicantId.value}`);
+      this.logger.log(`1. Generated applicationId: ${applicantId.value}`);
       const applicant = Applicant.register(
         applicantId,
         command.firstName,
@@ -28,11 +28,12 @@ export class SendApplicationHandler
         command.address,
         command.recommendersCards,
       );
-      this.logger.log(`Applicant ${applicantId.value} Created`);
-      this.applicants.save(applicant);
-      this.logger.log(`Applicant ${applicantId.value} Saved`);
+      this.logger.log(`2. Applicant ${applicantId.value} Created`);
+      this.publisher.mergeObjectContext(applicant);
+      applicant.commit();
+      this.logger.log(`3. Applicant ${applicantId.value} Saved`);
     } catch (error) {
-      this.logger.error(error)
+      this.logger.error(error);
     }
   }
 }

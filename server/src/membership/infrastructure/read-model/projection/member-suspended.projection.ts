@@ -5,7 +5,6 @@ import { MemberSuspended } from '../../../domain/events';
 import { MemberSuspensionView } from '../model/member-suspension.entity';
 import { MemberView } from '../model/member.entity';
 
-
 @EventsHandler(MemberSuspended)
 export class MemberSuspendedProjection
   implements IEventHandler<MemberSuspended>

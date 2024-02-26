@@ -12,6 +12,6 @@ export class ApplicationReceived implements DomainEvent {
     public readonly applyDate: Date,
     public readonly birthDate: Date,
     public readonly address: Address,
-    public readonly recommendations: {id:string, cardNumber}[],
+    public readonly recommendations: { id: string; cardNumber }[],
   ) {}
 }

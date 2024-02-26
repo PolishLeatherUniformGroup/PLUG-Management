@@ -28,7 +28,7 @@ export class ApplicantPaidFeeProjection
       applicant.feePaidDate = event.paidDate;
       this.applicantRepository.save(applicant);
     } catch (error) {
-      console.trace( error);
+      console.trace(error);
     }
   }
 }

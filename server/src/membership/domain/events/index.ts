@@ -93,13 +93,13 @@ export const MembersEvents = {
   MembershipFeeRequested: (
     id: string,
     year: number,
-    amount: {amount:number, currency:string},
+    amount: { amount: number; currency: string },
     dueDate: Date,
   ) => new MembershipFeeRequested(id, year, amount, dueDate),
   MembershipFeePaid: (
     id: string,
     feeId: string,
-    amount: {amount:number, currency:string},
+    amount: { amount: number; currency: string },
     paidDate: Date,
   ) => new MembershipFeePaid(id, feeId, amount, paidDate),
   MemberTypeChanged: (id: string, type: MemberType) =>

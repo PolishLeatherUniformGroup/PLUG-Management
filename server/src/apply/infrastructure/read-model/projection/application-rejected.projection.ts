@@ -6,7 +6,6 @@ import { ApplicantRejected } from '../../../domain/events';
 import { ApplicantIdNotFound } from '../../../domain/exception/applicant-id-not-found.error';
 import { ApplicantId, ApplicantStatus } from '../../../domain/model';
 
-
 export class ApplicationRejectedProjection
   implements IEventHandler<ApplicantRejected>
 {

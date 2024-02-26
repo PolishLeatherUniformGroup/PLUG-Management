@@ -1,36 +1,44 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { RequestRecommendations } from '../command/request-recommendations.command';
+import { RequestRecommendationsCommand } from '../command/request-recommendations.command';
 import { APPLICANTS, Applicants } from '../../domain/repository';
 import { Inject, Logger } from '@nestjs/common';
 import { ApplicantIdNotFound } from '../../domain/exception/applicant-id-not-found.error';
 import { Applicant } from '../../domain/model';
+import { AggregateRepository } from '../../../eventstore/aggregate-repository';
+import { StoreEventPublisher } from '../../../eventstore/store-event-publisher';
 
-@CommandHandler(RequestRecommendations)
+@CommandHandler(RequestRecommendationsCommand)
 export class RequestRecommendationsHandler
-  implements ICommandHandler<RequestRecommendations>
+  implements ICommandHandler<RequestRecommendationsCommand>
 {
   private readonly logger = new Logger(RequestRecommendationsHandler.name);
-  constructor(@Inject(APPLICANTS) private readonly applicants: Applicants) {}
+  constructor(
+    private readonly repository: AggregateRepository,
+    private readonly publisher: StoreEventPublisher,
+  ) {}
 
-  async execute(command: RequestRecommendations): Promise<any> {
+  async execute(command: RequestRecommendationsCommand): Promise<any> {
     try {
-      this.logger.log(`Locating application: ${command.applicantId.value}`)
-      const applicant: Applicant | null = await this.applicants.get(
-        command.applicantId,
+      const applicant = this.publisher.mergeObjectContext(
+        await this.repository.getById<Applicant>(
+          Applicant,
+          command.applicantId.value,
+        ),
       );
-      if (!applicant){
+
+      if (!applicant) {
         throw ApplicantIdNotFound.withApplicantId(command.applicantId);
       }
-      this.logger.log(`Application ${command.applicantId.value} found.`);
+      this.logger.log(`2. Application ${command.applicantId.value} found.`);
+      this.logger.log(
+        `3. Application has some events: ${applicant.getUncommittedEvents().length}`,
+      );
 
       (applicant as Applicant).requestRecommendations(
         command.requestDate,
         command.requiredFee,
-        command.recommendersEmails,
-        command.recommendersNames,
       );
-      this.applicants.save(applicant);
-      this.logger.log(`Recommendations requested for application: ${command.applicantId.value}`);
+      applicant.commit();
     } catch (error) {
       this.logger.error(error.message);
       throw new Error(error.message);

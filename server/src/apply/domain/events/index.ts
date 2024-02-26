@@ -56,7 +56,7 @@ export const ApplyEvents = {
     applyDate: Date,
     birthDate: Date,
     address: Address,
-    recommendations: {id:string,cardNumber:string}[],
+    recommendations: { id: string; cardNumber: string }[],
   ) =>
     new ApplicationReceived(
       id,
@@ -67,16 +67,19 @@ export const ApplyEvents = {
       applyDate,
       birthDate,
       address,
-      recommendations
+      recommendations,
     ),
   ApplicantRecommendationsRequested: (
     id: string,
     requestedDate: Date,
-    requiredFee: {amount:number, currency:string},
+    requiredFee: { amount: number; currency: string },
   ) => new ApplicantRecommendationsRequested(id, requestedDate, requiredFee),
   ApplicationCancelled: (id: string) => new ApplicationCancelled(id),
-  ApplicantPaidFee: (id: string, paymentDate: Date, fee: {amount:number,currency:string}) =>
-    new ApplicantPaidFee(id, paymentDate, fee),
+  ApplicantPaidFee: (
+    id: string,
+    paymentDate: Date,
+    fee: { amount: number; currency: string },
+  ) => new ApplicantPaidFee(id, paymentDate, fee),
   ApplicantRecommendationConfirmed: (id: string, recommendationId: string) =>
     new ApplicantRecommendationConfirmed(id, recommendationId),
   ApplicantRecommendationRefused: (id: string, recommendationId: string) =>

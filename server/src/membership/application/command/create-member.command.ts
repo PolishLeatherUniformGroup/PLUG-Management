@@ -3,7 +3,6 @@ import { MemberId } from '../../domain/model/member-id';
 import { Address } from '../../../shared/address';
 import { MembershipFee } from '../../domain/model/membership-fee';
 
-
 export class CreateMemberCommand implements ICommand {
   constructor(
     public readonly memberId: MemberId,

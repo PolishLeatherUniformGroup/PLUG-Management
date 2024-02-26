@@ -3,20 +3,28 @@ import { ConfirmRecommendationCommand } from '../command/confirm-recommendation.
 import { Inject } from '@nestjs/common';
 import { APPLICANTS, Applicants } from '../../domain/repository';
 import { ApplicantIdNotFound } from '../../domain/exception/applicant-id-not-found.error';
+import { AggregateRepository } from '../../../eventstore/aggregate-repository';
+import { StoreEventPublisher } from '../../../eventstore/store-event-publisher';
+import { Applicant } from '../../domain/model';
 
 @CommandHandler(ConfirmRecommendationCommand)
 export class ConfirmRecommendationHandler
   implements ICommandHandler<ConfirmRecommendationCommand>
 {
-  constructor(@Inject(APPLICANTS) private readonly applicants: Applicants) {}
+  constructor(
+    private readonly applicants: AggregateRepository,
+    private readonly publisher: StoreEventPublisher,
+  ) {}
 
   async execute(command: ConfirmRecommendationCommand): Promise<any> {
     try {
-      const applicant = await this.applicants.get(command.applicantId);
+      const applicant = this.publisher.mergeObjectContext(
+        await this.applicants.getById(Applicant, command.applicantId.value),
+      );
       if (!applicant)
         throw ApplicantIdNotFound.withApplicantId(command.applicantId);
       applicant.confirmRecommendation(command.recommendationId);
-      this.applicants.save(applicant);
+      applicant.commit();
     } catch (error) {
       console.trace(error);
     }

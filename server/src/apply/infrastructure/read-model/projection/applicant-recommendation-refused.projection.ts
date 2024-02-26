@@ -3,10 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ApplicantView } from '../model/applicant.entity';
 import { ApplicantRecommendationRefused } from '../../../domain/events';
-import { ApplicantIdNotFound, RecommendationIdNotFound } from '../../../domain/exception/applicant-id-not-found.error';
+import {
+  ApplicantIdNotFound,
+  RecommendationIdNotFound,
+} from '../../../domain/exception/applicant-id-not-found.error';
 import { ApplicantId, ApplicantStatus } from '../../../domain/model';
 import { RecommendationView } from '../model/recommendation.entity';
-
 
 @EventsHandler(ApplicantRecommendationRefused)
 export class ApplicantRecommendationRefusedProjection

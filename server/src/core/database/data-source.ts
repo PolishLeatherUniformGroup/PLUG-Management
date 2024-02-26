@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
-import { Event } from '../eventstore/event.entity';
 import { ApplicantView } from '../../apply/infrastructure/read-model/model/applicant.entity';
+import { StorableEvent } from '../../eventstore/interfaces/storable-event';
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
@@ -10,5 +10,5 @@ export const AppDataSource = new DataSource({
   password: 'nijfos-tUqfyr-picva5',
   database: 'srv58017_plug_app',
   synchronize: true,
-  entities: [ApplicantView, Event],
+  entities: [ApplicantView, StorableEvent],
 });

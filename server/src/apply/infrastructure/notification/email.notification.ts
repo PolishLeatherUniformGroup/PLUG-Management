@@ -1,15 +1,25 @@
-import { EventsHandler, IEventHandler, QueryBus, IEvent } from "@nestjs/cqrs";
-import { format } from "date-fns";
-import { GetMemberQuery } from "../../../membership/infrastructure/query/get-member.query";
-import { MemberView } from "../../../membership/infrastructure/read-model/model/member.entity";
-import { ApplicationReceived, ApplicantRecommendationsRequested, ApplicationCancelled, ApplicantRecommendationRefused, ApplicantAccepted, ApplicantRejected, ApplicantRejectionAppealReceived, ApplicantRejectionAppealCancelled, ApplicantRejectionAppealAccepted, ApplicantRejectionAppealRejected } from "../../domain/events";
-import { GetApplicantRecommendationsQuery } from "../query/get-applicant-recommendations.query";
-import { GetApplicantQuery } from "../query/get-applicant.query";
-import { ApplicantView } from "../read-model/model/applicant.entity";
-import { RecommendationView } from "../read-model/model/recommendation.entity";
-import { TypedEventEmitter } from "../../../event-emitter/typed-event-emmitter";
-import { Logger } from "@nestjs/common";
-
+import { EventsHandler, IEventHandler, QueryBus, IEvent } from '@nestjs/cqrs';
+import { format } from 'date-fns';
+import { GetMemberQuery } from '../../../membership/infrastructure/query/get-member.query';
+import { MemberView } from '../../../membership/infrastructure/read-model/model/member.entity';
+import {
+  ApplicationReceived,
+  ApplicantRecommendationsRequested,
+  ApplicationCancelled,
+  ApplicantRecommendationRefused,
+  ApplicantAccepted,
+  ApplicantRejected,
+  ApplicantRejectionAppealReceived,
+  ApplicantRejectionAppealCancelled,
+  ApplicantRejectionAppealAccepted,
+  ApplicantRejectionAppealRejected,
+} from '../../domain/events';
+import { GetApplicantRecommendationsQuery } from '../query/get-applicant-recommendations.query';
+import { GetApplicantQuery } from '../query/get-applicant.query';
+import { ApplicantView } from '../read-model/model/applicant.entity';
+import { RecommendationView } from '../read-model/model/recommendation.entity';
+import { TypedEventEmitter } from '../../../event-emitter/typed-event-emmitter';
+import { Logger } from '@nestjs/common';
 
 @EventsHandler(
   ApplicationCancelled,
@@ -33,16 +43,13 @@ export class EmailNotification
     IEventHandler<ApplicantRejectionAppealRejected>
 {
   private readonly logger = new Logger(EmailNotification.name);
-  
+
   constructor(
     private readonly emitter: TypedEventEmitter,
     private readonly queryBus: QueryBus,
   ) {}
 
   async handle(event: IEvent) {
-    if (event instanceof ApplicationReceived) {
-      this.handleApplicationReceived(event);
-    }
     if (event instanceof ApplicationCancelled) {
       this.handleApplicationCancelled(event);
     }
@@ -68,13 +75,6 @@ export class EmailNotification
       this.handleApplicantRejectionAppealRejected(event);
     }
   }
-
-  async handleApplicationReceived(event: ApplicationReceived) {
-    this.logger.log(`Handling Application received event:'${event.id}`);
-   
-  }
-
- 
 
   async handleApplicationCancelled(event: ApplicationCancelled) {
     const query = new GetApplicantQuery(event.id);

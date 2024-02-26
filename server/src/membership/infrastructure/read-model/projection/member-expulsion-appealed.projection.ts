@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { MemberExpulsionAppealed } from '../../../domain/events';
 import { MemberExpulsionView } from '../model/member-expulsion.entity';
 
-
 @EventsHandler(MemberExpulsionAppealed)
 export class MemberExpulsionAppealedProjection
   implements IEventHandler<MemberExpulsionAppealed>

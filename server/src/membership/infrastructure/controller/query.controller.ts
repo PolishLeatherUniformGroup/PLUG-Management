@@ -1,19 +1,30 @@
-import { Controller, UseGuards, Get, Param, NotFoundException } from "@nestjs/common";
-import { QueryBus } from "@nestjs/cqrs";
-import { ApiTags, ApiBearerAuth, ApiOperation, ApiResponse, ApiParam } from "@nestjs/swagger";
-import { JwtGuard } from "../../../auth/jwt.guard";
-import { AddressDto } from "../../../shared/dto/address.dto";
-import { MoneyDto } from "../../../shared/dto/money.dto";
-import { MemberDto } from "../dto/member.dto";
-import { MembersDto } from "../dto/members.dto";
-import { MembershipFeeDto } from "../dto/membership-fee.dto";
-import { MembershipFeesDto } from "../dto/membership-fees.dto";
-import { GetMemberFeesQuery } from "../query/get-member-fees.query";
-import { GetMemberQuery } from "../query/get-member.query";
-import { GetMembersQuery } from "../query/get-members.query";
-import { MemberView } from "../read-model/model/member.entity";
-import { MembershipFeeView } from "../read-model/model/membership-fee.entity";
-
+import {
+  Controller,
+  UseGuards,
+  Get,
+  Param,
+  NotFoundException,
+} from '@nestjs/common';
+import { QueryBus } from '@nestjs/cqrs';
+import {
+  ApiTags,
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+} from '@nestjs/swagger';
+import { JwtGuard } from '../../../auth/jwt.guard';
+import { AddressDto } from '../../../shared/dto/address.dto';
+import { MoneyDto } from '../../../shared/dto/money.dto';
+import { MemberDto } from '../dto/member.dto';
+import { MembersDto } from '../dto/members.dto';
+import { MembershipFeeDto } from '../dto/membership-fee.dto';
+import { MembershipFeesDto } from '../dto/membership-fees.dto';
+import { GetMemberFeesQuery } from '../query/get-member-fees.query';
+import { GetMemberQuery } from '../query/get-member.query';
+import { GetMembersQuery } from '../query/get-members.query';
+import { MemberView } from '../read-model/model/member.entity';
+import { MembershipFeeView } from '../read-model/model/membership-fee.entity';
 
 @Controller('membership')
 @ApiTags('membership')

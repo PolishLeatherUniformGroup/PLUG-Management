@@ -6,7 +6,6 @@ import { ApplicantIdNotFound } from '../../../domain/exception/applicant-id-not-
 import { ApplicantId, ApplicantStatus } from '../../../domain/model';
 import { ApplicantView } from '../model/applicant.entity';
 
-
 export class ApplicantRecommendedProjection
   implements IEventHandler<ApplicantRecommended>
 {

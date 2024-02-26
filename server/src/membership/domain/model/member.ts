@@ -1,15 +1,33 @@
-import { AggregateRoot } from "../../../core/domain";
-import { Address } from "../../../shared/address";
-import { Money } from "../../../shared/money";
-import { MemberCreated, MemberCardAssigned, MembershipFeeRequested, MembershipFeePaid, MemberTypeChanged, MembershipExpired, MembershipCancelled, MemberSuspended, MembershipSuspensionAppealed, MembershipSuspensionAppealCancelled, MembershipSuspensionAppealAccepted, MembershipSuspensionAppealRejected, MemberSuspensionEnded, MemberExpelled, MemberExpulsionAppealed, MemberExpulsionAppealCancelled, MemberExpulsionAppealAccepted, MemberExpulsionAppealRejected } from "../events";
-import { MemberCard } from "./member-card";
-import { MemberExpulsion } from "./member-expulsion";
-import { MemberId } from "./member-id";
-import { MemberStatus } from "./member-status";
-import { MemberSuspension } from "./member-suspension";
-import { MemberType } from "./member-type";
-import { MembershipFee } from "./membership-fee";
-
+import { AggregateRoot } from '../../../core/domain';
+import { Address } from '../../../shared/address';
+import { Money } from '../../../shared/money';
+import {
+  MemberCreated,
+  MemberCardAssigned,
+  MembershipFeeRequested,
+  MembershipFeePaid,
+  MemberTypeChanged,
+  MembershipExpired,
+  MembershipCancelled,
+  MemberSuspended,
+  MembershipSuspensionAppealed,
+  MembershipSuspensionAppealCancelled,
+  MembershipSuspensionAppealAccepted,
+  MembershipSuspensionAppealRejected,
+  MemberSuspensionEnded,
+  MemberExpelled,
+  MemberExpulsionAppealed,
+  MemberExpulsionAppealCancelled,
+  MemberExpulsionAppealAccepted,
+  MemberExpulsionAppealRejected,
+} from '../events';
+import { MemberCard } from './member-card';
+import { MemberExpulsion } from './member-expulsion';
+import { MemberId } from './member-id';
+import { MemberStatus } from './member-status';
+import { MemberSuspension } from './member-suspension';
+import { MemberType } from './member-type';
+import { MembershipFee } from './membership-fee';
 
 export class Member extends AggregateRoot {
   private _memberId: MemberId;
@@ -98,7 +116,9 @@ export class Member extends AggregateRoot {
   }
 
   public assignCardNumber(cardNumber: MemberCard) {
-    this.apply(new MemberCardAssigned(this._memberId.value, cardNumber.toString()));
+    this.apply(
+      new MemberCardAssigned(this._memberId.value, cardNumber.toString()),
+    );
   }
 
   public requestMembershipFeePayment(
@@ -107,7 +127,12 @@ export class Member extends AggregateRoot {
     dueDate: Date,
   ) {
     this.apply(
-      new MembershipFeeRequested(this._memberId.value, year, {amount: amount.amount, currency:amount.currency}, dueDate),
+      new MembershipFeeRequested(
+        this._memberId.value,
+        year,
+        { amount: amount.amount, currency: amount.currency },
+        dueDate,
+      ),
     );
   }
 
@@ -117,7 +142,12 @@ export class Member extends AggregateRoot {
     paidDate: Date,
   ) {
     this.apply(
-      new MembershipFeePaid(this._memberId.value, feeId, {amount: amount.amount, currency:amount.currency}, paidDate),
+      new MembershipFeePaid(
+        this._memberId.value,
+        feeId,
+        { amount: amount.amount, currency: amount.currency },
+        paidDate,
+      ),
     );
   }
 
@@ -320,7 +350,10 @@ export class Member extends AggregateRoot {
   private onMembershipFeePaid(event: MembershipFeePaid) {
     const fee = this._membershipFees.find((fee) => fee.id === event.feeId);
     if (fee) {
-      fee.pay(Money.create(event.amount.amount,event.amount.currency), event.paidDate);
+      fee.pay(
+        Money.create(event.amount.amount, event.amount.currency),
+        event.paidDate,
+      );
     }
   }
 

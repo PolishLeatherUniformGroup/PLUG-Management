@@ -3,12 +3,14 @@ import { CreateMemberCommand } from '../command/create-member.command';
 import { MEMBERS, Members } from '../..//domain/repository/members';
 import { Inject } from '@nestjs/common';
 import { Member } from '../../domain/model/member';
+import { AggregateRepository } from '../../../eventstore/aggregate-repository';
+import { StoreEventPublisher } from '../../../eventstore/store-event-publisher';
 
 @CommandHandler(CreateMemberCommand)
 export class CreateMemberHandler
   implements ICommandHandler<CreateMemberCommand>
 {
-  constructor(@Inject(MEMBERS) private readonly members: Members) {}
+  constructor(private readonly members:AggregateRepository, private readonly publisher:StoreEventPublisher) {}
 
   async execute(command: CreateMemberCommand): Promise<void> {
     try {
@@ -23,7 +25,8 @@ export class CreateMemberHandler
         command.address,
         command.initialFee,
       );
-      this.members.save(member);
+      this.publisher.mergeObjectContext(member);
+      member.commit();
     } catch (error) {
       console.trace(error);
     }

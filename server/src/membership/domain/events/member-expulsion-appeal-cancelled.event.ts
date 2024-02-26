@@ -1,4 +1,4 @@
-import { DomainEvent } from "../../../core/domain";
+import { DomainEvent } from '../../../core/domain';
 
 export class MemberExpulsionAppealCancelled implements DomainEvent {
   constructor(

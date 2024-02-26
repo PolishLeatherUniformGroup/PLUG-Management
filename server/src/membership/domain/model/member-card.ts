@@ -1,4 +1,4 @@
-import { ValueObject } from "../../../core/domain";
+import { ValueObject } from '../../../core/domain';
 
 interface Props {
   prefix: string;
@@ -18,7 +18,7 @@ export class MemberCard extends ValueObject<Props> {
     return `${this.props.prefix}-${this.props.number.toString().padStart(4, '0')}`;
   }
 
-  public static fromString(card:string): MemberCard {
+  public static fromString(card: string): MemberCard {
     const [prefix, number] = card.split('-');
     return new MemberCard({ prefix, number: parseInt(number) });
   }

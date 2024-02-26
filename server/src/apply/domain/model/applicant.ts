@@ -20,7 +20,6 @@ import { ApplicantRejectionAppealAccepted } from '../events/applicant-rejection-
 import { ApplicantRejectionAppealRejected } from '../events/applicant-rejection-appeal-rejected.event';
 import { AggregateRoot } from '../../../core/domain';
 
-
 export class Applicant extends AggregateRoot {
   private _applicantId: ApplicantId;
 
@@ -71,7 +70,7 @@ export class Applicant extends AggregateRoot {
     const applicant = new Applicant();
     const recommendations = recommenders.map((r, i) => {
       return {
-        id:`${applicantId.value}-rec-${applicant._recommendations.length + i}`,
+        id: `${applicantId.value}-rec-${applicant._recommendations.length + i}`,
         cardNumber: r,
       };
     });
@@ -96,18 +95,9 @@ export class Applicant extends AggregateRoot {
     this.apply(new ApplicationCancelled(this._applicantId.value));
   }
 
-  public requestRecommendations(
-    requestDate: Date,
-    requiredFee: Money,
-    recommendersEmails: string[],
-    recommendersNames: string[],
-  ) {
-    const recomendations: { email: string; name: string }[] = [];
-    for (let i = 0; i < recommendersEmails.length; i++) {
-      recomendations.push({
-        email: recommendersEmails[i],
-        name: recommendersNames[i],
-      });
+  public requestRecommendations(requestDate: Date, requiredFee: Money) {
+    if (this._status !== ApplicantStatus.Received) {
+      throw new Error('Application has wrong status');
     }
     this.apply(
       new ApplicantRecommendationsRequested(
@@ -245,7 +235,10 @@ export class Applicant extends AggregateRoot {
   private onApplicantRecommendationsRequested(
     event: ApplicantRecommendationsRequested,
   ) {
-    this._requiredFee =  Money.create(event.requiredFee.amount, event.requiredFee.currency);
+    this._requiredFee = Money.create(
+      event.requiredFee.amount,
+      event.requiredFee.currency,
+    );
     this._status = ApplicantStatus.InRecommendation;
     this._recommendations.forEach((r) => {
       r.requestRecommendation(event.requestDate);

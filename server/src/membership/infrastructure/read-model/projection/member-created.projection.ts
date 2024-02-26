@@ -11,7 +11,6 @@ import { AssignCardNumberCommand } from 'src/membership/application/command/assi
 import { MemberType } from 'src/membership/domain/model/member-type';
 import { MemberId } from '../../../domain/model/member-id';
 
-
 @EventsHandler(MemberCreated)
 export class MemberCreatedProjection implements IEventHandler<MemberCreated> {
   constructor(

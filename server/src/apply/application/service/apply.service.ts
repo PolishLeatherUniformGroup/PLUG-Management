@@ -3,13 +3,14 @@ import { ApplicantId } from '../../domain/model';
 import { VerificationService } from 'src/membership/application/service/verification.service';
 import { Money } from 'src/shared/money';
 import { CancelApplicationCommand } from '../command/cancel-application.command';
-import { RequestRecommendations } from '../command/request-recommendations.command';
+import { RequestRecommendationsCommand } from '../command/request-recommendations.command';
 import { OnEvent } from '@nestjs/event-emitter';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RecommendationView } from '../../infrastructure/read-model/model/recommendation.entity';
 import { Injectable, Logger } from '@nestjs/common';
 import { EventPayloads } from '../../../event-emitter/event-payloads';
+import { MemberView } from '../../../membership/infrastructure/read-model/model/member.entity';
 
 @Injectable()
 export class ApplyService {
@@ -20,34 +21,23 @@ export class ApplyService {
     @InjectRepository(RecommendationView)
     private readonly recommendationsRepository: Repository<RecommendationView>,
     private readonly commandBus: CommandBus,
-  ) { }
+  ) {}
 
   @OnEvent('apply.verify-application')
   async verifyApplication(data: EventPayloads['apply.verify-application']) {
-    this.logger.log(`Verifying application ${data.id.toString()}`);
-    const recommendations = await this.recommendationsRepository.find({
-      where: { applicant: { id: data.id } },
-    });
-
-    const cards: string[] = recommendations.map((rec) => rec.cardNumber);
-    const valid = await this.verificationService.verifyCardNumbers(
-      cards.map((card) => card.toString()),
-    );
-    if (
-      valid.length == recommendations.length &&
-      valid.length == data.rcomendationsCount
-    ) {
-      this.logger.log(`Application ${data.id.toString()} is valid`);
+    const valid = await this.verifyRecommendations(data.id);
+    if (valid.length == data.rcomendationsCount) {
+      this.logger.log(`1. Application ${data.id.toString()} is valid`);
       const applicantId = ApplicantId.fromString(data.id);
-      const currentAmount = 120*((13-(new Date()).getMonth())/12);
-      const command = new RequestRecommendations(
+      const currentAmount = 120 * ((13 - new Date().getMonth()) / 12);
+      const command = new RequestRecommendationsCommand(
         applicantId,
         new Date(Date.now()),
         Money.create(currentAmount, 'PLN'),
-        valid.map((member) => member.email),
-        valid.map((member) => member.firstName),
       );
-      this.logger.log(`Requesting recommendations for ${command.applicantId.value}`);
+      this.logger.log(
+        `2. Requesting recommendations for ${command.applicantId.value}`,
+      );
       this.commandBus.execute(command);
     } else {
       const command = new CancelApplicationCommand(
@@ -55,5 +45,20 @@ export class ApplyService {
       );
       this.commandBus.execute(command);
     }
+  }
+
+  private async verifyRecommendations(
+    applicationId: string,
+  ): Promise<MemberView[]> {
+    this.logger.log(`X. Verifying application ${applicationId}`);
+    const recommendations = await this.recommendationsRepository.find({
+      where: { applicant: { id: applicationId } },
+    });
+
+    const cards: string[] = recommendations.map((rec) => rec.cardNumber);
+    const valid = await this.verificationService.verifyCardNumbers(
+      cards.map((card) => card.toString()),
+    );
+    return valid;
   }
 }

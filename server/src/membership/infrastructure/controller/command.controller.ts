@@ -1,43 +1,48 @@
-import { Controller, UseGuards, Post, Body } from "@nestjs/common";
-import { CommandBus } from "@nestjs/cqrs";
-import { ApiTags, ApiBearerAuth, ApiOperation, ApiResponse } from "@nestjs/swagger";
-import { randomUUID } from "crypto";
-import { RegisterFeePaymentCommand } from "../../../apply/application/command/register-fee-payment.command";
-import { RegisterFeePaymentRequestDto } from "../../../apply/infrastructure/dto/register-fee-payment-request.dto";
-import { JwtGuard } from "../../../auth/jwt.guard";
-import { Address } from "../../../shared/address";
-import { Money } from "../../../shared/money";
-import { AcceptMemberExpulsionAppealCommand } from "../../application/command/accept-member-expulsion-appeal.command";
-import { AcceptMemberSuspensionAppealCommand } from "../../application/command/accept-member-suspension-appeal.command";
-import { AddMemberCommand } from "../../application/command/add-member.command";
-import { AppealMemberExpulsionCommand } from "../../application/command/appeal-member-expulsion.command";
-import { AppealMembershipSuspensionCommand } from "../../application/command/appeal-membership-suspension.command";
-import { CancelMembershipCommand } from "../../application/command/cancel-membership.command";
-import { EndMemberSuspensionCommand } from "../../application/command/end-member-suspension.command";
-import { ExpelMemberCommand } from "../../application/command/expel-member.command";
-import { ExpireMembershipCommand } from "../../application/command/expire-membership.command";
-import { MakeMemberHonoraryCommand } from "../../application/command/make-member-honorary.command";
-import { MakeMemberRegularCommand } from "../../application/command/make-member-regular.command";
-import { RejectMemberExpulsionAppealCommand } from "../../application/command/reject-member-expulsion-appeal.command";
-import { RejectMemberSuspensionAppealCommand } from "../../application/command/reject-member-suspension-appeal.command";
-import { RequestMembershipFeePaymentCommand } from "../../application/command/request-membership-fee-payment.command";
-import { SuspendMemberCommand } from "../../application/command/suspend-member.command";
-import { MemberId } from "../../domain/model/member-id";
-import { MembershipFee } from "../../domain/model/membership-fee";
-import { AcceptSuspensionAppealRequestDto } from "../dto/accept-suspension-appeal-request.dto";
-import { AddMemberRequestDto } from "../dto/add-member-request.dto";
-import { AppealExpulsionRequestDto } from "../dto/appeal-expulsion-request.dto";
-import { AppealSuspensionRequestDto } from "../dto/appeal-suspension-request.dto";
-import { CancelMembershipRequestDto } from "../dto/cancel-membership-request.dto";
-import { EndSuspensionRequestDto } from "../dto/end-suspension-request.dto";
-import { ExpelMemberRequestDto } from "../dto/expel-member-request.dto";
-import { ExpireMembershipRequestDto } from "../dto/expire-membership-request.dto";
-import { MakeMemberHonoraryRequestDto } from "../dto/make-member-honorary-request.dto";
-import { MakeMemberRegularRequestDto } from "../dto/make-member-regular-request.dto";
-import { RejectExpulsionAppealRequestDto } from "../dto/reject-expulsion-appeal-request.dto";
-import { RejectSuspensionAppealRequestDto } from "../dto/reject-suspension-appeal-request.dto";
-import { RequestMembershipFeePaymentDto } from "../dto/request-membership-fee-payment-dto";
-import { SuspendMemberRequestDto } from "../dto/suspend-member-request.dto";
+import { Controller, UseGuards, Post, Body } from '@nestjs/common';
+import { CommandBus } from '@nestjs/cqrs';
+import {
+  ApiTags,
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+} from '@nestjs/swagger';
+import { randomUUID } from 'crypto';
+import { RegisterFeePaymentCommand } from '../../../apply/application/command/register-fee-payment.command';
+import { RegisterFeePaymentRequestDto } from '../../../apply/infrastructure/dto/register-fee-payment-request.dto';
+import { JwtGuard } from '../../../auth/jwt.guard';
+import { Address } from '../../../shared/address';
+import { Money } from '../../../shared/money';
+import { AcceptMemberExpulsionAppealCommand } from '../../application/command/accept-member-expulsion-appeal.command';
+import { AcceptMemberSuspensionAppealCommand } from '../../application/command/accept-member-suspension-appeal.command';
+import { AddMemberCommand } from '../../application/command/add-member.command';
+import { AppealMemberExpulsionCommand } from '../../application/command/appeal-member-expulsion.command';
+import { AppealMembershipSuspensionCommand } from '../../application/command/appeal-membership-suspension.command';
+import { CancelMembershipCommand } from '../../application/command/cancel-membership.command';
+import { EndMemberSuspensionCommand } from '../../application/command/end-member-suspension.command';
+import { ExpelMemberCommand } from '../../application/command/expel-member.command';
+import { ExpireMembershipCommand } from '../../application/command/expire-membership.command';
+import { MakeMemberHonoraryCommand } from '../../application/command/make-member-honorary.command';
+import { MakeMemberRegularCommand } from '../../application/command/make-member-regular.command';
+import { RejectMemberExpulsionAppealCommand } from '../../application/command/reject-member-expulsion-appeal.command';
+import { RejectMemberSuspensionAppealCommand } from '../../application/command/reject-member-suspension-appeal.command';
+import { RequestMembershipFeePaymentCommand } from '../../application/command/request-membership-fee-payment.command';
+import { SuspendMemberCommand } from '../../application/command/suspend-member.command';
+import { MemberId } from '../../domain/model/member-id';
+import { MembershipFee } from '../../domain/model/membership-fee';
+import { AcceptSuspensionAppealRequestDto } from '../dto/accept-suspension-appeal-request.dto';
+import { AddMemberRequestDto } from '../dto/add-member-request.dto';
+import { AppealExpulsionRequestDto } from '../dto/appeal-expulsion-request.dto';
+import { AppealSuspensionRequestDto } from '../dto/appeal-suspension-request.dto';
+import { CancelMembershipRequestDto } from '../dto/cancel-membership-request.dto';
+import { EndSuspensionRequestDto } from '../dto/end-suspension-request.dto';
+import { ExpelMemberRequestDto } from '../dto/expel-member-request.dto';
+import { ExpireMembershipRequestDto } from '../dto/expire-membership-request.dto';
+import { MakeMemberHonoraryRequestDto } from '../dto/make-member-honorary-request.dto';
+import { MakeMemberRegularRequestDto } from '../dto/make-member-regular-request.dto';
+import { RejectExpulsionAppealRequestDto } from '../dto/reject-expulsion-appeal-request.dto';
+import { RejectSuspensionAppealRequestDto } from '../dto/reject-suspension-appeal-request.dto';
+import { RequestMembershipFeePaymentDto } from '../dto/request-membership-fee-payment-dto';
+import { SuspendMemberRequestDto } from '../dto/suspend-member-request.dto';
 
 @Controller('membership/commands')
 @ApiTags('membership')

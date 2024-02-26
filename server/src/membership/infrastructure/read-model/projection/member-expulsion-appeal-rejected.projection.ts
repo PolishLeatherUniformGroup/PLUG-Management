@@ -6,7 +6,6 @@ import { MemberStatus } from '../../../domain/model/member-status';
 import { MemberExpulsionView } from '../model/member-expulsion.entity';
 import { MemberView } from '../model/member.entity';
 
-
 @EventsHandler(MemberExpulsionAppealRejected)
 export class MemberExpulsionAppealRejectedProjection
   implements IEventHandler<MemberExpulsionAppealRejected>

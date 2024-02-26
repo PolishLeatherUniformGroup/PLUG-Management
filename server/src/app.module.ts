@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ApplyModule } from './apply/apply.module';
-import { EventStoreModule } from './core/eventstore/eventstore.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MembersModule } from './membership/members.module';
 import { GatheringsModule } from './gatherings/gatherings.module';
@@ -10,11 +9,12 @@ import { AuthModule } from './auth/auth.module';
 import { EmailModule } from './email/email.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { TypedEventEmitterModule } from './event-emitter/event-emitter.module';
+import { EventStoreModule } from './eventstore/eventstore.module';
 
 @Module({
   imports: [
     ApplyModule,
-    EventStoreModule,
+    EventStoreModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'h27.seohost.pl',

@@ -1,4 +1,3 @@
-
 import { DomainEvent } from '../../../core/domain';
 import { Address } from '../../../shared/address';
 import { MembershipFee } from '../model/membership-fee';
