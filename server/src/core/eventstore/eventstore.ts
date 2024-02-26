@@ -19,7 +19,6 @@ export class EventStore implements IEventPublisher, IMessageSource {
   private _eventHandlers: [];
 
   publish<TEvent extends IEvent>(event: TEvent, context?: unknown) {
-    console.log('publishing event', context, event);
     if ('id' in event === false) {
       throw new Error('Not a DomainEvent');
     }
@@ -50,20 +49,16 @@ export class EventStore implements IEventPublisher, IMessageSource {
     id: string,
   ): Promise<T | null> {
     const streamName = `${id}`;
-    console.log('reading stream', streamName);
     try {
       const entity = Reflect.construct(aggregate, []);
-      console.log('entity', entity);
       // read stream
       const eventStream: Event[] = await this.eventRepository.find({
         where: { streamId: streamName },
         order: { timestamp: 'ASC' },
       });
-      console.log('eventStream', eventStream);
       const events = eventStream.map((event) => {
         const eventType = event.eventType;
         const data = JSON.parse(event.data);
-        console.log('eventHandlers', this._eventHandlers);
         return this._eventHandlers[eventType](...Object.values(data));
       });
 

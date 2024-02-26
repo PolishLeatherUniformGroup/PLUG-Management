@@ -18,7 +18,8 @@ import { ApplicantRejectionAppealCancelled } from '../events/applicant-rejection
 import { ApplicantRejectionAppealReceived } from '../events/applicant-rejection-appeal-received.event';
 import { ApplicantRejectionAppealAccepted } from '../events/applicant-rejection-appeal-accepted.event';
 import { ApplicantRejectionAppealRejected } from '../events/applicant-rejection-appeal-rejected.event';
-import { AggregateRoot } from 'src/core/domain/models/aggregate-root';
+import { AggregateRoot } from '../../../core/domain';
+
 
 export class Applicant extends AggregateRoot {
   private _applicantId: ApplicantId;
@@ -52,6 +53,10 @@ export class Applicant extends AggregateRoot {
     this._recommendations = [];
   }
 
+  public get recommendations(): Recommendation[] {
+    return this._recommendations;
+  }
+
   public static register(
     applicantId: ApplicantId,
     firstName: string,
@@ -65,10 +70,10 @@ export class Applicant extends AggregateRoot {
   ): Applicant {
     const applicant = new Applicant();
     const recommendations = recommenders.map((r, i) => {
-      return Recommendation.create(
-        `${applicantId.value}-rec-${applicant._recommendations.length + i}`,
-        CardNumber.fromString(r),
-      );
+      return {
+        id:`${applicantId.value}-rec-${applicant._recommendations.length + i}`,
+        cardNumber: r,
+      };
     });
 
     applicant.apply(
@@ -221,7 +226,14 @@ export class Applicant extends AggregateRoot {
     this._applyDate = event.applyDate;
     this._birthDate = event.birthDate;
     this._address = event.address;
-    this._recommendations = event.recommendations;
+    event.recommendations.forEach((r) => {
+      this._recommendations.push(
+        new Recommendation({
+          _id: r.id,
+          _cardNumber: CardNumber.fromString(r.cardNumber),
+        }),
+      );
+    });
     this._status = ApplicantStatus.Received;
   }
 
@@ -236,9 +248,7 @@ export class Applicant extends AggregateRoot {
     this._requiredFee = event.requiredFee;
     this._status = ApplicantStatus.InRecommendation;
     this._recommendations.forEach((r) => {
-      const recommendation = new Recommendation(JSON.stringify(r));
-      recommendation.requestRecommendation(event.requestDate);
-      r = recommendation;
+      r.requestRecommendation(event.requestDate);
     });
   }
 
@@ -259,12 +269,10 @@ export class Applicant extends AggregateRoot {
   }
 
   private onApplicantRecommended(event: ApplicantRecommended) {
-    console.log(event.id);
     this._status = ApplicantStatus.AwaitsDecision;
   }
 
   private onApplicationNotRecommended(event: ApplicationNotRecommended) {
-    console.log(event.id);
     this._status = ApplicantStatus.Rejected;
   }
 

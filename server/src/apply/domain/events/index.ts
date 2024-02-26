@@ -56,7 +56,7 @@ export const ApplyEvents = {
     applyDate: Date,
     birthDate: Date,
     address: Address,
-    recommendations: Recommendation[],
+    recommendations: {id:string,cardNumber:string}[],
   ) =>
     new ApplicationReceived(
       id,
@@ -67,7 +67,7 @@ export const ApplyEvents = {
       applyDate,
       birthDate,
       address,
-      recommendations,
+      recommendations
     ),
   ApplicantRecommendationsRequested: (
     id: string,
