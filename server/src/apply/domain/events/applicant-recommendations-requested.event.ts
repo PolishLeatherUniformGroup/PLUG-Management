@@ -6,6 +6,6 @@ export class ApplicantRecommendationsRequested implements DomainEvent {
   public constructor(
     public readonly id: string,
     public readonly requestDate: Date,
-    public readonly requiredFee: Money,
+    public readonly requiredFee: {amount:number, currency:string},
   ) {}
 }

@@ -6,6 +6,6 @@ export class ApplicantPaidFee implements DomainEvent {
   public constructor(
     public readonly id: string,
     public readonly paidDate: Date,
-    public readonly amount: Money,
+    public readonly amount: {amount: number, currency: string},
   ) {}
 }

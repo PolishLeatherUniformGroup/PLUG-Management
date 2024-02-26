@@ -113,7 +113,7 @@ export class Applicant extends AggregateRoot {
       new ApplicantRecommendationsRequested(
         this._applicantId.value,
         requestDate,
-        requiredFee,
+        { amount: requiredFee.amount, currency: requiredFee.currency },
       ),
     );
   }
@@ -245,7 +245,7 @@ export class Applicant extends AggregateRoot {
   private onApplicantRecommendationsRequested(
     event: ApplicantRecommendationsRequested,
   ) {
-    this._requiredFee = event.requiredFee;
+    this._requiredFee =  Money.create(event.requiredFee.amount, event.requiredFee.currency);
     this._status = ApplicantStatus.InRecommendation;
     this._recommendations.forEach((r) => {
       r.requestRecommendation(event.requestDate);
@@ -253,7 +253,7 @@ export class Applicant extends AggregateRoot {
   }
 
   private onApplicantPaidFee(event: ApplicantPaidFee) {
-    this._paidFee = event.amount;
+    this._paidFee = Money.create(event.amount.amount, event.amount.currency);
     this._paidDate = event.paidDate;
   }
 
