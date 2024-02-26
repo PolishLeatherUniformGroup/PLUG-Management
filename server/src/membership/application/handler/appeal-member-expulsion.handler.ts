@@ -1,16 +1,14 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { MEMBERS, Members } from '../..//domain/repository/members';
-import { Inject } from '@nestjs/common';
 import { AppealMemberExpulsionCommand } from '../command/appeal-member-expulsion.command';
-import { AggregateRepository } from '../../../eventstore/aggregate-repository';
 import { StoreEventPublisher } from '../../../eventstore/store-event-publisher';
 import { Member } from '../../domain/model/member';
+import { MemberAggregateRepository } from '../../infrastructure/repository/member-aggregate-repository';
 
 @CommandHandler(AppealMemberExpulsionCommand)
 export class AppealMemberExpulsionHandler
   implements ICommandHandler<AppealMemberExpulsionCommand>
 {
-  constructor(private readonly members:AggregateRepository, private readonly publisher:StoreEventPublisher) {}
+  constructor(private readonly members: MemberAggregateRepository, private readonly publisher: StoreEventPublisher) { }
 
   async execute(command: AppealMemberExpulsionCommand) {
     const member = await this.members.getById(Member, command.id.value);

@@ -6,13 +6,14 @@ import { ApplicantIdNotFound } from '../../domain/exception/applicant-id-not-fou
 import { Applicant } from '../../domain/model';
 import { AggregateRepository } from '../../../eventstore/aggregate-repository';
 import { StoreEventPublisher } from '../../../eventstore/store-event-publisher';
+import { ApplicantAggregateRepository } from '../../infrastructure/repository/applicant-aggregate-repository';
 
 @CommandHandler(CancelApplicationCommand)
 export class CancelApplicationHandler
   implements ICommandHandler<CancelApplicationCommand>
 {
   constructor(
-    private readonly applicants: AggregateRepository,
+    private readonly applicants: ApplicantAggregateRepository,
     private readonly publisher: StoreEventPublisher,
   ) {}
 
@@ -23,6 +24,7 @@ export class CancelApplicationHandler
       );
       if (!applicant)
         throw ApplicantIdNotFound.withApplicantId(command.applicantId);
+      console.log('Applicant found', applicant);
       applicant.cancelApplication();
       applicant.commit();
     } catch (error) {

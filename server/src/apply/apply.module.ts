@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { ApplyController } from './infrastructure/controller/apply.controller';
 import { CommandHandlers } from './application/handler';
 import { Projections } from './infrastructure/read-model/projection';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -16,6 +15,7 @@ import { MemberView } from '../membership/infrastructure/read-model/model/member
 import { ApplyService } from './application/service/apply.service';
 import { GetMemberHandler } from '../membership/infrastructure/query/handler/get-member.handler';
 import { EventStoreModule } from '../eventstore/eventstore.module';
+import { ApplicantAggregateRepository } from './infrastructure/repository/applicant-aggregate-repository';
 
 @Module({
   imports: [
@@ -25,7 +25,7 @@ import { EventStoreModule } from '../eventstore/eventstore.module';
     EmailModule,
     MembersModule,
   ],
-  controllers: [ApplyController, QueryController, CommandController],
+  controllers: [ QueryController, CommandController],
   providers: [
     ...CommandHandlers,
     ...Projections,
@@ -33,6 +33,7 @@ import { EventStoreModule } from '../eventstore/eventstore.module';
     VerificationService,
     GetMemberHandler,
     ApplyService,
+    ApplicantAggregateRepository,
   ],
 })
 export class ApplyModule {}

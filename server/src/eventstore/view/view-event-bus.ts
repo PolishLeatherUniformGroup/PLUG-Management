@@ -8,9 +8,10 @@ export class ViewEventBus implements IEventBus {
   constructor(
     private readonly eventBus: EventBus,
     private viewUpdater: ViewUpdater,
-  ) {}
+  ) { }
 
   publish<T extends IEvent>(event: T): void {
+    console.log('Publishing view  event', event.constructor.name);
     this.viewUpdater
       .run(event)
       .then(() => this.eventBus.publish(event))

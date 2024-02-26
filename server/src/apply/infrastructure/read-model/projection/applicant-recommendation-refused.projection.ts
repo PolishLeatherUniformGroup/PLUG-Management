@@ -9,10 +9,11 @@ import {
 } from '../../../domain/exception/applicant-id-not-found.error';
 import { ApplicantId, ApplicantStatus } from '../../../domain/model';
 import { RecommendationView } from '../model/recommendation.entity';
+import { IViewUpdater } from '../../../../eventstore/view/interfaces/view-updater';
 
 @EventsHandler(ApplicantRecommendationRefused)
 export class ApplicantRecommendationRefusedProjection
-  implements IEventHandler<ApplicantRecommendationRefused>
+  implements IViewUpdater<ApplicantRecommendationRefused>
 {
   constructor(
     @InjectRepository(ApplicantView)

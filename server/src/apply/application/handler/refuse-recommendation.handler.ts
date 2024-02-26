@@ -6,13 +6,14 @@ import { RefuseRecommendationCommand } from '../command/refuse-recommendation.co
 import { AggregateRepository } from '../../../eventstore/aggregate-repository';
 import { Applicant } from '../../domain/model';
 import { StoreEventPublisher } from '../../../eventstore/store-event-publisher';
+import { ApplicantAggregateRepository } from '../../infrastructure/repository/applicant-aggregate-repository';
 
 @CommandHandler(RefuseRecommendationCommand)
 export class RefuseRecommendationHandler
   implements ICommandHandler<RefuseRecommendationCommand>
 {
   constructor(
-    private readonly applicants: AggregateRepository,
+    private readonly applicants: ApplicantAggregateRepository,
     private readonly publisher: StoreEventPublisher,
   ) {}
 

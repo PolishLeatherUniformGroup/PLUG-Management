@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IEvent, IEventBus } from '@nestjs/cqrs/dist/interfaces';
-import { StorableEvent } from './interfaces/storable-event';
+import { StorableEvent } from './interfaces/storable-event.entity';
 import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ViewEventBus } from './view/view-event-bus';
@@ -11,7 +11,9 @@ export class StoreEventBus implements IEventBus {
     private readonly eventBus: ViewEventBus,
     @InjectRepository(StorableEvent)
     private readonly eventStore: Repository<StorableEvent>,
-  ) {}
+  ) {
+    console.log('StoreEventBus created');
+  }
 
   publish<T extends IEvent>(event: T): void {
     if ('id' in event === false) {

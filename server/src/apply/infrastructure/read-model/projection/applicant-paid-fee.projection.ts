@@ -5,10 +5,11 @@ import { ApplicantView } from '../model/applicant.entity';
 import { Repository } from 'typeorm';
 import { ApplicantIdNotFound } from '../../../domain/exception/applicant-id-not-found.error';
 import { ApplicantId } from '../../../domain/model';
+import { IViewUpdater } from '../../../../eventstore/view/interfaces/view-updater';
 
 @EventsHandler(ApplicantPaidFee)
 export class ApplicantPaidFeeProjection
-  implements IEventHandler<ApplicantPaidFee>
+  implements IViewUpdater<ApplicantPaidFee>
 {
   constructor(
     @InjectRepository(ApplicantView)

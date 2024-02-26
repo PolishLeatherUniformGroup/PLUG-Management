@@ -4,10 +4,11 @@ import { Repository } from 'typeorm';
 import { ApplicationCancelled } from '../../../domain/events';
 import { ApplicantStatus } from '../../../domain/model';
 import { ApplicantView } from '../model/applicant.entity';
+import { IViewUpdater } from '../../../../eventstore/view/interfaces/view-updater';
 
 @EventsHandler(ApplicationCancelled)
 export class ApplicationCancelledProjection
-  implements IEventHandler<ApplicationCancelled>
+  implements IViewUpdater<ApplicationCancelled>
 {
   constructor(
     @InjectRepository(ApplicantView)

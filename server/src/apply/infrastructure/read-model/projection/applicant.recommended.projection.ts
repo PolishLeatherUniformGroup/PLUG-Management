@@ -5,9 +5,10 @@ import { ApplicantRecommended } from '../../../domain/events';
 import { ApplicantIdNotFound } from '../../../domain/exception/applicant-id-not-found.error';
 import { ApplicantId, ApplicantStatus } from '../../../domain/model';
 import { ApplicantView } from '../model/applicant.entity';
+import { IViewUpdater } from '../../../../eventstore/view/interfaces/view-updater';
 
 export class ApplicantRecommendedProjection
-  implements IEventHandler<ApplicantRecommended>
+  implements IViewUpdater<ApplicantRecommended>
 {
   constructor(
     @InjectRepository(ApplicantView)

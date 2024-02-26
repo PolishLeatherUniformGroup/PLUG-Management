@@ -9,10 +9,11 @@ import { RecommendationView } from '../model/recommendation.entity';
 import { Logger } from '@nestjs/common';
 import { TypedEventEmitter } from '../../../../event-emitter/typed-event-emmitter';
 import { MemberView } from '../../../../membership/infrastructure/read-model/model/member.entity';
+import { IViewUpdater } from '../../../../eventstore/view/interfaces/view-updater';
 
 @EventsHandler(ApplicantRecommendationsRequested)
 export class ApplicantRecommendationsRequestedProjection
-  implements IEventHandler<ApplicantRecommendationsRequested>
+  implements IViewUpdater<ApplicantRecommendationsRequested>
 {
   private readonly logger = new Logger(
     ApplicantRecommendationsRequestedProjection.name,

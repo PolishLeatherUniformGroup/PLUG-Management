@@ -6,13 +6,14 @@ import { AcceptApplicationCommand } from '../command/accept-application.command'
 import { AggregateRepository } from '../../../eventstore/aggregate-repository';
 import { StoreEventPublisher } from '../../../eventstore/store-event-publisher';
 import { Applicant } from '../../domain/model';
+import { ApplicantAggregateRepository } from '../../infrastructure/repository/applicant-aggregate-repository';
 
 @CommandHandler(AcceptApplicationCommand)
 export class AcceptApplicationHandler
   implements ICommandHandler<AcceptApplicationCommand>
 {
   constructor(
-    private readonly applicants: AggregateRepository,
+    private readonly applicants: ApplicantAggregateRepository,
     private readonly publisher: StoreEventPublisher,
   ) {}
 

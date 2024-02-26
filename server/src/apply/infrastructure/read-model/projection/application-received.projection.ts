@@ -7,10 +7,11 @@ import { ApplicantView } from '../model/applicant.entity';
 import { RecommendationView } from '../model/recommendation.entity';
 import { Logger } from '@nestjs/common';
 import { TypedEventEmitter } from '../../../../event-emitter/typed-event-emmitter';
+import { IViewUpdater } from '../../../../eventstore/view/interfaces/view-updater';
 
 @EventsHandler(ApplicationReceived)
 export class ApplicationReceivedProjection
-  implements IEventHandler<ApplicationReceived>
+  implements IViewUpdater<ApplicationReceived>
 {
   private readonly logger = new Logger(ApplicationReceivedProjection.name);
   constructor(
@@ -53,11 +54,10 @@ export class ApplicationReceivedProjection
           email: event.email,
           name: event.firstName,
         });
-
-        await this.emitter.emitAsync('apply.verify-application', {
-          id: event.id,
-          rcomendationsCount: event.recommendations.length,
-        });
+      });
+      await this.emitter.emitAsync('apply.verify-application', {
+        id: event.id,
+        rcomendationsCount: event.recommendations.length,
       });
     } catch (error) {
       this.logger.error(error);

@@ -27,6 +27,10 @@ import { RejectApplicationRejectionAppealCommand } from '../../application/comma
 import { AcceptApplicationRejectionAppealRequestDto } from '../dto/accept-application-rejection-appeal-request.dto';
 import { RejectApplicationRejectionAppealRequestDto } from '../dto/reject-application-rejection-appeal-request.dto';
 import { JwtGuard } from '../../../auth/jwt.guard';
+import { SendApplicationCommand } from '../../application/command/send-application.command';
+import { Address } from '../../../shared/address';
+import { ApplyRequestDto } from '../dto/apply-request.dto';
+import { AllowAnonymous } from '../../../auth/allow-anonymous.decorator';
 
 @Controller('apply')
 @ApiTags('apply')
@@ -34,6 +38,28 @@ import { JwtGuard } from '../../../auth/jwt.guard';
 @UseGuards(JwtGuard)
 export class CommandController {
   constructor(private readonly commandBus: CommandBus) {}
+
+  @Post('commands/send-application')
+  @ApiOperation({ summary: 'Send application' })
+  @ApiResponse({ status: 204, description: 'Create Applicant.' })
+  @AllowAnonymous()
+  async sendApplication(@Body() payload: ApplyRequestDto) {
+    try {
+      const command: SendApplicationCommand = new SendApplicationCommand(
+        payload.firstName,
+        payload.lastName,
+        payload.email,
+        payload.phoneNumber,
+        payload.applyDate,
+        payload.birthDate,
+        Address.fromDto(payload.address),
+        payload.recommendersCards,
+      );
+      await this.commandBus.execute(command);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   @Post('commands/cancel-application')
   @ApiOperation({ summary: 'Cancel application' })

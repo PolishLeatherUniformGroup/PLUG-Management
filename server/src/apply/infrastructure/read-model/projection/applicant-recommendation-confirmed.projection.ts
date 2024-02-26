@@ -9,10 +9,11 @@ import {
 import { ApplicantId } from '../../../domain/model';
 import { ApplicantView } from '../model/applicant.entity';
 import { RecommendationView } from '../model/recommendation.entity';
+import { IViewUpdater } from '../../../../eventstore/view/interfaces/view-updater';
 
 @EventsHandler(ApplicantRecommendationConfirmed)
 export class ApplicantRecommendationConfirmedProjection
-  implements IEventHandler<ApplicantRecommendationConfirmed>
+  implements IViewUpdater<ApplicantRecommendationConfirmed>
 {
   constructor(
     @InjectRepository(ApplicantView)

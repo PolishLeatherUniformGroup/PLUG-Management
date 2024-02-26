@@ -1,16 +1,14 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Inject } from '@nestjs/common';
 import { AcceptMemberExpulsionAppealCommand } from '../command/accept-member-expulsion-appeal.command';
-import { MEMBERS, Members } from '../../domain/repository/members';
-import { AggregateRepository } from '../../../eventstore/aggregate-repository';
 import { Member } from '../../domain/model/member';
 import { StoreEventPublisher } from '../../../eventstore/store-event-publisher';
+import { MemberAggregateRepository } from '../../infrastructure/repository/member-aggregate-repository';
 
 @CommandHandler(AcceptMemberExpulsionAppealCommand)
 export class AcceptMemberExpulsionAppealHandler
   implements ICommandHandler<AcceptMemberExpulsionAppealCommand>
 {
-  constructor(private readonly members:AggregateRepository, 
+  constructor(private readonly members:MemberAggregateRepository, 
     private readonly publisher:StoreEventPublisher) {}
 
   async execute(command: AcceptMemberExpulsionAppealCommand) {

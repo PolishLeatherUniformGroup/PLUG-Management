@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 import { ApplicantView } from '../../apply/infrastructure/read-model/model/applicant.entity';
-import { StorableEvent } from '../../eventstore/interfaces/storable-event';
+import { StorableEvent } from '../../eventstore/interfaces/storable-event.entity';
 
 export const AppDataSource = new DataSource({
   type: 'mysql',

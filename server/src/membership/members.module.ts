@@ -13,6 +13,7 @@ import { MemberView } from './infrastructure/read-model/model/member.entity';
 import { MembershipFeeView } from './infrastructure/read-model/model/membership-fee.entity';
 import { Projections } from './infrastructure/read-model/projection';
 import { EventStoreModule } from '../eventstore/eventstore.module';
+import { MemberAggregateRepository } from './infrastructure/repository/member-aggregate-repository';
 
 @Global()
 @Module({
@@ -32,6 +33,7 @@ import { EventStoreModule } from '../eventstore/eventstore.module';
     ...CommandHandlers,
     ...Projections,
     ...QueryHandlers,
+    MemberAggregateRepository,
   ],
   exports: [...QueryHandlers],
 })

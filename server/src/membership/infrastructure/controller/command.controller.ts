@@ -56,6 +56,8 @@ export class CommandController {
   @ApiResponse({ status: 204, description: 'Member created.' })
   async createMember(@Body() payload: AddMemberRequestDto) {
     try {
+      console.log('Creating member');
+      console.log(payload);
       const newId = MemberId.fromUUID(randomUUID());
       const command: AddMemberCommand = new AddMemberCommand(
         newId,

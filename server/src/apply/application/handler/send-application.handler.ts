@@ -5,6 +5,7 @@ import { Inject, Logger } from '@nestjs/common';
 import { Applicant, ApplicantId } from '../../domain/model';
 import { randomUUID } from 'crypto';
 import { StoreEventPublisher } from '../../../eventstore/store-event-publisher';
+import { DomainEvent } from '../../../core/domain';
 
 @CommandHandler(SendApplicationCommand)
 export class SendApplicationHandler

@@ -6,12 +6,13 @@ import { ApplicantIdNotFound } from '../../domain/exception/applicant-id-not-fou
 import { AggregateRepository } from '../../../eventstore/aggregate-repository';
 import { StoreEventPublisher } from '../../../eventstore/store-event-publisher';
 import { Applicant } from '../../domain/model';
+import { ApplicantAggregateRepository } from '../../infrastructure/repository/applicant-aggregate-repository';
 
 export class RegisterFeePaymentHandler
   implements ICommandHandler<RegisterFeePaymentCommand>
 {
   constructor(
-    private readonly applicants: AggregateRepository,
+    private readonly applicants: ApplicantAggregateRepository,
     private readonly publisher: StoreEventPublisher,
   ) {}
 

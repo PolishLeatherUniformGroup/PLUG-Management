@@ -5,10 +5,11 @@ import { Repository } from 'typeorm';
 import { ApplicantRejectionAppealReceived } from '../../../domain/events';
 import { ApplicantIdNotFound } from '../../../domain/exception/applicant-id-not-found.error';
 import { ApplicantId, ApplicantStatus } from '../../../domain/model';
+import { IViewUpdater } from '../../../../eventstore/view/interfaces/view-updater';
 
 @EventsHandler(ApplicantRejectionAppealReceived)
 export class ApplicantRejectionAppealReceivedProjection
-  implements IEventHandler<ApplicantRejectionAppealReceived>
+  implements IViewUpdater<ApplicantRejectionAppealReceived>
 {
   constructor(
     @InjectRepository(ApplicantView)

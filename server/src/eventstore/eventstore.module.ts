@@ -1,17 +1,22 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { DynamicModule, Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { createEventSourcingProviders } from './eventstore.providers';
 import { CqrsModule } from '@nestjs/cqrs';
-import { StorableEvent } from './interfaces/storable-event';
+import { StorableEvent } from './interfaces/storable-event.entity';
 
-@Module({})
+@Global()
+@Module({
+  imports: [TypeOrmModule.forFeature([StorableEvent]), CqrsModule],
+  providers: [],
+  exports: [TypeOrmModule],
+})
 export class EventStoreModule {
   static forRoot(): DynamicModule {
     return {
       module: EventStoreModule,
       imports: [TypeOrmModule.forFeature([StorableEvent]), CqrsModule],
       providers: [],
-      exports: [TypeOrmModule],
+      exports: [TypeOrmModule,],
       global: true,
     };
   }

@@ -1,12 +1,12 @@
 import { AddressDto } from '../../../shared/dto/address.dto';
 
 export class ApplyRequestDto {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
-  applyDate: Date;
-  birthDate: Date;
-  address: AddressDto;
-  recommendersCards: string[];
+  public firstName: string;
+  public lastName: string;
+  public email: string;
+  public phoneNumber: string;
+  public applyDate: Date;
+  public birthDate: Date;
+  public address: AddressDto;
+  public recommendersCards: string[];
 }

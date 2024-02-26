@@ -6,6 +6,7 @@ import { ApplicantIdNotFound } from '../../domain/exception/applicant-id-not-fou
 import { Applicant } from '../../domain/model';
 import { AggregateRepository } from '../../../eventstore/aggregate-repository';
 import { StoreEventPublisher } from '../../../eventstore/store-event-publisher';
+import { ApplicantAggregateRepository } from '../../infrastructure/repository/applicant-aggregate-repository';
 
 @CommandHandler(RequestRecommendationsCommand)
 export class RequestRecommendationsHandler
@@ -13,7 +14,7 @@ export class RequestRecommendationsHandler
 {
   private readonly logger = new Logger(RequestRecommendationsHandler.name);
   constructor(
-    private readonly repository: AggregateRepository,
+    private readonly repository: ApplicantAggregateRepository,
     private readonly publisher: StoreEventPublisher,
   ) {}
 
