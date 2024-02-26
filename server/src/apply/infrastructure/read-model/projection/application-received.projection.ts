@@ -5,20 +5,25 @@ import { ApplicationReceived } from '../../../domain/events';
 import { ApplicantStatus } from '../../../domain/model';
 import { ApplicantView } from '../model/applicant.entity';
 import { RecommendationView } from '../model/recommendation.entity';
+import { Logger } from '@nestjs/common';
+import { TypedEventEmitter } from '../../../../event-emitter/typed-event-emmitter';
 
 
 @EventsHandler(ApplicationReceived)
 export class ApplicationReceivedProjection
   implements IEventHandler<ApplicationReceived>
 {
+  private readonly logger = new Logger(ApplicationReceivedProjection.name);
   constructor(
     @InjectRepository(ApplicantView)
     private readonly applicantRepository: Repository<ApplicantView>,
     @InjectRepository(RecommendationView)
     private readonly recommendationRepository: Repository<RecommendationView>,
+    private readonly emitter: TypedEventEmitter
   ) {}
   async handle(event: ApplicationReceived) {
     try {
+      this.logger.log(`Received application ${event.id}`);
       const entity = new ApplicantView();
       entity.id = event.id;
       entity.firstName = event.firstName;
@@ -34,17 +39,29 @@ export class ApplicationReceivedProjection
       entity.addressState = event.address.state;
       entity.status = ApplicantStatus.Received;
       await this.applicantRepository.save(entity);
+      this.logger.log(`Application view ${event.id} saved`);
 
-      event.recommendations.forEach((r) => {
+      event.recommendations.forEach(async (r) => {
         const rec = new RecommendationView();
         rec.id = r.id;
-        rec.cardNumber = r.cardNumber.value;
+        rec.cardNumber = r.cardNumber;
 
         rec.applicant = entity;
-        this.recommendationRepository.save(rec);
+        await this.recommendationRepository.save(rec);
+        this.logger.log(`Recommendation View ${r.id} saved`);
+
+        await this.emitter.emitAsync('apply.application-received', {
+          email: event.email,
+          name: event.firstName,
+        });
+        
+        await this.emitter.emitAsync('apply.verify-application', {
+          id: event.id,
+          rcomendationsCount: event.recommendations.length,
+        });
       });
-    } catch (e) {
-      console.log('error: ', e);
+    } catch (error) {
+      this.logger.error(error);
     }
   }
 }

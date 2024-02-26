@@ -2,9 +2,9 @@ import { RecommendationItemDto } from "@/app/models/recommendation-items";
 import { Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 import { format } from "date-fns";
 import React from "react";
-import { approveRecommendation } from "../actions";
+import { approveRecommendation, refuseRecommendation } from "../actions";
 
-export default function MyRecommendations({ recommendations}:{recommendations: RecommendationItemDto[]}) {
+export default function MyRecommendations({ recommendations }: { recommendations: RecommendationItemDto[] }) {
     const columns = [{
         key: 'firstName',
         label: 'Imię'
@@ -22,11 +22,13 @@ export default function MyRecommendations({ recommendations}:{recommendations: R
     const renderCell = React.useCallback((user: any, columnKey: any) => {
         const cellValue = user[columnKey];
         if (columnKey === 'applyDate') {
-            return format(cellValue,"dd-MM-yyyy");
+            return format(cellValue, "dd-MM-yyyy");
         }
         if (columnKey === 'actions') {
             console.log(user.recommendationId, user.applicantId);
-            return <Button color="success" onPress={()=>approveRecommendation(user['applicantId'],user['recommendationId'])}>Potwierdź</Button>
+            return <>
+                <Button color="success" onPress={() => approveRecommendation(user['applicantId'], user['recommendationId'])}>Potwierdź</Button>
+                <Button color="danger" onPress={() => refuseRecommendation(user['applicantId'], user['recommendationId'])}>Wycofaj</Button></>
         }
         return cellValue;
     }, []);
@@ -40,7 +42,7 @@ export default function MyRecommendations({ recommendations}:{recommendations: R
                 )}
             </TableHeader>
             <TableBody emptyContent="Brak" items={recommendations}>
-            {(item) => (<TableRow key={item.recommendationId}>
+                {(item) => (<TableRow key={item.recommendationId}>
                     {(columnKey) => <TableCell>{
                         renderCell(item, columnKey)}</TableCell>}
                 </TableRow>)}

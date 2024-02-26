@@ -28,7 +28,6 @@ export class MemberCreatedProjection implements IEventHandler<MemberCreated> {
       const card = await this.memberCardRepository.findOne({
         where: { prefix: 'PLUG' },
       });
-      console.log('MemberCreatedProjection', event);
       const member = new MemberView();
       member.id = event.id;
       member.firstName = event.firstName;

@@ -1,13 +1,14 @@
 import { IEvent, IEventPublisher, IMessageSource } from '@nestjs/cqrs';
 import { Subject } from 'rxjs';
 import { AggregateRoot } from '../domain';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Event } from './event.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class EventStore implements IEventPublisher, IMessageSource {
+  private readonly logger = new Logger(EventStore.name);
   constructor(
     @InjectRepository(Event)
     private readonly eventRepository: Repository<Event>,
@@ -20,6 +21,7 @@ export class EventStore implements IEventPublisher, IMessageSource {
 
   publish<TEvent extends IEvent>(event: TEvent, context?: unknown) {
     if ('id' in event === false) {
+      this.logger.error(`Event is not domain event.`);
       throw new Error('Not a DomainEvent');
     }
     const message = JSON.stringify(event);
@@ -36,6 +38,7 @@ export class EventStore implements IEventPublisher, IMessageSource {
       this.eventRepository.save(entity);
     } catch (err) {
       // tslint:disable-next-line:no-console
+      this.logger.error(err);
       console.trace(err);
     }
   }

@@ -18,7 +18,7 @@ export class RefuseRecommendationHandler
       applicant.refuseRecommendation(command.recommendationId);
       this.applicants.save(applicant);
     } catch (error) {
-      console.log(error);
+      console.trace(error);
     }
   }
 }

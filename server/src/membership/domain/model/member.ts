@@ -393,7 +393,6 @@ export class Member extends AggregateRoot {
   }
 
   private onMemberSuspensionEnded(event: MemberSuspensionEnded) {
-    console.log(event);
     this._status = MemberStatus.Active;
   }
 

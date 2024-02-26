@@ -25,7 +25,7 @@ export class AddMemberHandler implements ICommandHandler<AddMemberCommand> {
       );
       this.members.save(member);
     } catch (error) {
-      console.log(error);
+      console.trace(error);
     }
   }
 }

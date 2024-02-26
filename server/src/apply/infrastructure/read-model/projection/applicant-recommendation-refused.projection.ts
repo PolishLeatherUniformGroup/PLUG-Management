@@ -42,7 +42,7 @@ export class ApplicantRecommendationRefusedProjection
       applicant.status = ApplicantStatus.Rejected;
       this.applicantRepository.save(applicant);
     } catch (error) {
-      console.log(error);
+      console.trace(error);
     }
   }
 }

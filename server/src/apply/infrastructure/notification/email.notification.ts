@@ -8,11 +8,10 @@ import { GetApplicantQuery } from "../query/get-applicant.query";
 import { ApplicantView } from "../read-model/model/applicant.entity";
 import { RecommendationView } from "../read-model/model/recommendation.entity";
 import { TypedEventEmitter } from "../../../event-emitter/typed-event-emmitter";
+import { Logger } from "@nestjs/common";
 
 
 @EventsHandler(
-  ApplicationReceived,
-  ApplicantRecommendationsRequested,
   ApplicationCancelled,
   ApplicantRecommendationRefused,
   ApplicantAccepted,
@@ -24,8 +23,6 @@ import { TypedEventEmitter } from "../../../event-emitter/typed-event-emmitter";
 )
 export class EmailNotification
   implements
-    IEventHandler<ApplicationReceived>,
-    IEventHandler<ApplicantRecommendationsRequested>,
     IEventHandler<ApplicationCancelled>,
     IEventHandler<ApplicantRecommendationRefused>,
     IEventHandler<ApplicantAccepted>,
@@ -35,6 +32,8 @@ export class EmailNotification
     IEventHandler<ApplicantRejectionAppealAccepted>,
     IEventHandler<ApplicantRejectionAppealRejected>
 {
+  private readonly logger = new Logger(EmailNotification.name);
+  
   constructor(
     private readonly emitter: TypedEventEmitter,
     private readonly queryBus: QueryBus,
@@ -43,9 +42,6 @@ export class EmailNotification
   async handle(event: IEvent) {
     if (event instanceof ApplicationReceived) {
       this.handleApplicationReceived(event);
-    }
-    if (event instanceof ApplicantRecommendationsRequested) {
-      this.handleRecommendationsRequested(event);
     }
     if (event instanceof ApplicationCancelled) {
       this.handleApplicationCancelled(event);
@@ -74,45 +70,11 @@ export class EmailNotification
   }
 
   async handleApplicationReceived(event: ApplicationReceived) {
-    console.log('Application received:', event.id);
-    await this.emitter.emitAsync('apply.application-received', {
-      email: event.email,
-      name: event.firstName,
-    });
-    await this.emitter.emitAsync('apply.verify-application', {
-      id: event.id,
-      rcomendationsCount: event.recommendations.length,
-    });
+    this.logger.log(`Handling Application received event:'${event.id}`);
+   
   }
 
-  async handleRecommendationsRequested(
-    event: ApplicantRecommendationsRequested,
-  ) {
-    const applicantQuery = new GetApplicantQuery(event.id);
-    const applicant: ApplicantView =
-      await this.queryBus.execute(applicantQuery);
-    await this.emitter.emitAsync('apply.request-fee-payment', {
-      email: applicant.email,
-      name: applicant.firstName,
-      feeAmount: event.requiredFee.amount,
-      feeCurrency: event.requiredFee.currency,
-    });
-
-    const recommendationsQuery = new GetApplicantRecommendationsQuery(
-      applicant.id,
-    );
-    const recommendations: RecommendationView[] =
-      await this.queryBus.execute(recommendationsQuery);
-
-    recommendations.forEach(async (recommendation) => {
-      const memberQuery = new GetMemberQuery(recommendation.cardNumber);
-      const member: MemberView = await this.queryBus.execute(memberQuery);
-      await this.emitter.emitAsync('apply.request-recomendation', {
-        email: member.email,
-        name: member.firstName,
-      });
-    });
-  }
+ 
 
   async handleApplicationCancelled(event: ApplicationCancelled) {
     const query = new GetApplicantQuery(event.id);

@@ -27,7 +27,7 @@ export class ApplicantRecommendedProjection
       applicant.status = ApplicantStatus.AwaitsDecision;
       this.applicantRepository.save(applicant);
     } catch (error) {
-      console.log(error);
+      console.trace(error);
     }
   }
 }

@@ -18,7 +18,7 @@ export class ConfirmRecommendationHandler
       applicant.confirmRecommendation(command.recommendationId);
       this.applicants.save(applicant);
     } catch (error) {
-      console.log(error);
+      console.trace(error);
     }
   }
 }

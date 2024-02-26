@@ -39,7 +39,7 @@ export class ApplicantRecommendationConfirmedProjection
       recommendation.status = true;
       this.recommendationRepository.save(recommendation);
     } catch (error) {
-      console.log(error);
+      console.trace(error);
     }
   }
 }

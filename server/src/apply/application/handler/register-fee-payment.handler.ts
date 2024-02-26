@@ -17,7 +17,7 @@ export class RegisterFeePaymentHandler
       applicant.registerFeePayment(command.paidFee, command.paymentDate);
       this.applicants.save(applicant);
     } catch (error) {
-      console.log('error: ', error);
+      console.trace( error);
     }
   }
 }

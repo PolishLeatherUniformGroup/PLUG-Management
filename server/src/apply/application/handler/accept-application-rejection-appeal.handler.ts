@@ -22,7 +22,7 @@ export class AcceptApplicationRejectionAppealHandler
       );
       this.applicants.save(applicant);
     } catch (error) {
-      console.log(error);
+      console.trace(error);
     }
   }
 }

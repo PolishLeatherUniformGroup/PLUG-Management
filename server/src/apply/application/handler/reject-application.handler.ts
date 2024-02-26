@@ -21,7 +21,7 @@ export class RejectApplicationHandler
       );
       this.applicants.save(applicant);
     } catch (error) {
-      console.log(error);
+      console.trace(error);
     }
   }
 }

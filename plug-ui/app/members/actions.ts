@@ -33,7 +33,6 @@ export async function createMember(onSuccess: () => void, formData: FormData) {
 };
 
 export async function approveRecommendation(applicantId:string, recommendationId: string) {
-    console.log(applicantId, recommendationId);
     await fetch(`/api/members/me/recommendations/approve`, {
         method: 'POST',
         headers: {

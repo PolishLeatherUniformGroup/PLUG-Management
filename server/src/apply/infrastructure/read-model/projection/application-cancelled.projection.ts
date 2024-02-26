@@ -23,8 +23,8 @@ export class ApplicationCancelledProjection
         applicant.status = ApplicantStatus.Cancelled;
         await this.applicantRepository.save(applicant);
       }
-    } catch (e) {
-      console.log('error: ', e);
+    } catch (error) {
+      console.trace(error);
     }
   }
 }
