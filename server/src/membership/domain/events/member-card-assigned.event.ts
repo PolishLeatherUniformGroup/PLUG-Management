@@ -4,6 +4,6 @@ import { MemberCard } from '../model/member-card';
 export class MemberCardAssigned implements DomainEvent {
   constructor(
     public readonly id: string,
-    public readonly cardNumber: MemberCard,
+    public readonly cardNumber: string,
   ) {}
 }

@@ -5,7 +5,7 @@ export class MembershipFeePaid implements DomainEvent {
   constructor(
     public readonly id: string,
     public readonly feeId: string,
-    public readonly amount: Money,
+    public readonly amount: {amount:number, currency:string},
     public readonly paidDate: Date,
   ) {}
 }

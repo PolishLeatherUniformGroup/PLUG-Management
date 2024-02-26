@@ -88,18 +88,18 @@ export const MembersEvents = {
       notify,
       card,
     ),
-  MemberCardAssigned: (id: string, cardNumber: MemberCard) =>
+  MemberCardAssigned: (id: string, cardNumber: string) =>
     new MemberCardAssigned(id, cardNumber),
   MembershipFeeRequested: (
     id: string,
     year: number,
-    amount: Money,
+    amount: {amount:number, currency:string},
     dueDate: Date,
   ) => new MembershipFeeRequested(id, year, amount, dueDate),
   MembershipFeePaid: (
     id: string,
     feeId: string,
-    amount: Money,
+    amount: {amount:number, currency:string},
     paidDate: Date,
   ) => new MembershipFeePaid(id, feeId, amount, paidDate),
   MemberTypeChanged: (id: string, type: MemberType) =>

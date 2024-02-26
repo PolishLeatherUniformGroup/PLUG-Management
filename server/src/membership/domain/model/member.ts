@@ -98,7 +98,7 @@ export class Member extends AggregateRoot {
   }
 
   public assignCardNumber(cardNumber: MemberCard) {
-    this.apply(new MemberCardAssigned(this._memberId.value, cardNumber));
+    this.apply(new MemberCardAssigned(this._memberId.value, cardNumber.toString()));
   }
 
   public requestMembershipFeePayment(
@@ -107,7 +107,7 @@ export class Member extends AggregateRoot {
     dueDate: Date,
   ) {
     this.apply(
-      new MembershipFeeRequested(this._memberId.value, year, amount, dueDate),
+      new MembershipFeeRequested(this._memberId.value, year, {amount: amount.amount, currency:amount.currency}, dueDate),
     );
   }
 
@@ -117,7 +117,7 @@ export class Member extends AggregateRoot {
     paidDate: Date,
   ) {
     this.apply(
-      new MembershipFeePaid(this._memberId.value, feeId, amount, paidDate),
+      new MembershipFeePaid(this._memberId.value, feeId, {amount: amount.amount, currency:amount.currency}, paidDate),
     );
   }
 
@@ -304,14 +304,14 @@ export class Member extends AggregateRoot {
   }
 
   private onMemberCardAssigned(event: MemberCardAssigned) {
-    this._memberCard = event.cardNumber;
+    this._memberCard = MemberCard.fromString(event.cardNumber);
   }
 
   private onMembershipFeeRequested(event: MembershipFeeRequested) {
     const membershipFee = MembershipFee.create(
       this._memberId,
       event.year,
-      event.amount,
+      Money.create(event.amount.amount, event.amount.currency),
       event.dueDate,
     );
     this._membershipFees.push(membershipFee);
@@ -320,7 +320,7 @@ export class Member extends AggregateRoot {
   private onMembershipFeePaid(event: MembershipFeePaid) {
     const fee = this._membershipFees.find((fee) => fee.id === event.feeId);
     if (fee) {
-      fee.pay(event.amount, event.paidDate);
+      fee.pay(Money.create(event.amount.amount,event.amount.currency), event.paidDate);
     }
   }
 
