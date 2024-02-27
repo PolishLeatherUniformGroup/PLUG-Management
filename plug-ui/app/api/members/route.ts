@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { RedirectType, redirect } from 'next/navigation'
 import { getAccessToken } from "@auth0/nextjs-auth0";
 
-export const POST = async function sendApplication(req:NextRequest){
+export const POST = async function addMember(req:NextRequest){
     const endpoint = `${process.env.PLUG_API_URL}membership/commands/create-member`;
     const payload= await req.json();
     const res = new NextResponse();
@@ -18,7 +18,7 @@ export const POST = async function sendApplication(req:NextRequest){
     redirect('/members', RedirectType.push );
 }
 
-export const GET = async function getApplications(req:NextRequest){
+export const GET = async function getMembers(req:NextRequest){
     const endpoint = `${process.env.PLUG_API_URL}membership/members`;
     const res = new NextResponse();
     const {accessToken} = await getAccessToken(req, res);
@@ -31,5 +31,6 @@ export const GET = async function getApplications(req:NextRequest){
     });
   
     const members = await response.json();
+    console.log(members);
     return NextResponse.json(members.data);
 }

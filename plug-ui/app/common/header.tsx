@@ -8,6 +8,10 @@ import {
     NavbarBrand,
     User,
     Avatar,
+    Dropdown,
+    DropdownTrigger,
+    DropdownMenu,
+    DropdownItem,
 } from "@nextui-org/react";
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { siteConfig } from "@/config/site";
@@ -16,6 +20,8 @@ import Image from "next/image";
 
 import { usePathname } from "next/navigation";
 import ThemeSwitcher from "./theme-switcher";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Header() {
     const { user, error, isLoading } = useUser();
@@ -34,7 +40,28 @@ export default function Header() {
                     if (item.isProtected && user === undefined) {
                         return null;
                     } else {
-                        if (item.role === undefined || (item.role !== undefined && (user as any)?.plug_roles?.includes(item.role) === true)) {
+                        if (item.href === undefined && item.children !== undefined) {
+                            return (
+                                <Dropdown>
+                                    <NavbarItem>
+                                        <DropdownTrigger>
+                                            <Button disableRipple className="p-0 bg-transparent data-[hover=true]:bg-transparent" endContent={<FontAwesomeIcon icon={faChevronDown} />}
+                                                radius="sm"
+                                                variant="light">{item.label}</Button>
+                                        </DropdownTrigger>
+                                    </NavbarItem>
+                                    <DropdownMenu>
+                                        {item.children.map((child) => {                                      
+                                                return (<DropdownItem key={child.label} href={child.href}
+                                                    description={child.description}
+                                                    startContent=""
+                                                >{child.label}</DropdownItem>)                                            
+                                        })}
+                                    </DropdownMenu>
+                                </Dropdown>
+                            );
+                        }
+                        else if (item.role === undefined || (item.role !== undefined && (user as any)?.plug_roles?.includes(item.role) === true)) {
                             return (
                                 <NavbarItem key={item.href} isActive={selected}>
                                     <NextLink

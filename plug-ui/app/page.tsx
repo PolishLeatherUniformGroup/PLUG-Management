@@ -54,7 +54,7 @@ export default function Home() {
       <Card className="bg-gradient-to-tr from-amber-500 to-pink-500 aspect-square m-auto w-full col-span-2 xl:col-span-1"
         isPressable onPress={() => { openInNewTab('https://www.instagram.com/plug.group.official/') }}>
         <CardBody>
-          <FontAwesomeIcon icon={faInstagram} className="text-white fa-3x m-auto " />
+          <FontAwesomeIcon icon={faInstagram} className="text-white fa-3x sm:fa-2x m-auto " />
         </CardBody>
       </Card>
       <Card className="bg-gradient-to-tr from-cyan-500 to-blue-500 aspect-square m-auto w-full col-span-2 xl:col-span-1"

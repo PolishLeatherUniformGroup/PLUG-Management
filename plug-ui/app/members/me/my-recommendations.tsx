@@ -1,11 +1,16 @@
 import { RecommendationItemDto } from "@/app/models/recommendation-items";
-import { Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+import { Button, Chip, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 import { format } from "date-fns";
 import React from "react";
-import { approveRecommendation, refuseRecommendation } from "../actions";
+import { approveRecommendation, refuseRecommendation } from "../../admin/members/actions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleCheck, faCircleQuestion, faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 
 export default function MyRecommendations({ recommendations }: { recommendations: RecommendationItemDto[] }) {
     const columns = [{
+        key: 'status',
+        label: 'Status'
+    }, {
         key: 'firstName',
         label: 'Imię'
 
@@ -24,10 +29,24 @@ export default function MyRecommendations({ recommendations }: { recommendations
         if (columnKey === 'applyDate') {
             return format(cellValue, "dd-MM-yyyy");
         }
+        if (columnKey === 'status') {
+            if (user['status'] === null) {
+                return <FontAwesomeIcon icon={faCircleQuestion} className="fa-xl text-2xl text-default/50" />
+            }
+            if (user['status']) {
+                return <FontAwesomeIcon icon={faCircleCheck} color="fa-xl text-2xl text-success" />
+            }
+            return <FontAwesomeIcon icon={faCircleXmark} color="fa-xl text-2xl text-danger" />
+        }
         if (columnKey === 'actions') {
-            return <>
-                <Button color="success" onPress={() => approveRecommendation(user['applicantId'], user['recommendationId'])}>Potwierdź</Button>
-                <Button color="danger" onPress={() => refuseRecommendation(user['applicantId'], user['recommendationId'])}>Wycofaj</Button></>
+            if (user['status'] === null) {
+                return <div className="flex gap-2">
+                    <Button color="success" onPress={() => approveRecommendation(user['applicantId'], user['recommendationId'])}>Potwierdź</Button>
+                    <Button color="danger" onPress={() => refuseRecommendation(user['applicantId'], user['recommendationId'])}>Wycofaj</Button>
+                </div>
+            }else{
+                return <Chip size="md" radius="sm">Nie można już wykonać</Chip>
+            }
         }
         return cellValue;
     }, []);

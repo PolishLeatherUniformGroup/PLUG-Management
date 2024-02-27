@@ -1,5 +1,5 @@
 import { Input } from "@nextui-org/react";
-import { FeeItemDto } from "../models/FeeDto";
+import { FeeItemDto } from "../../models/FeeDto";
 
 export function Fee({fee}:{fee?:FeeItemDto|null}) {
 return (<div className="grid grid-cols-4 gap-2">

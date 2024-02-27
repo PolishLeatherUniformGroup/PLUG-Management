@@ -30,6 +30,5 @@ export const GET = async function getMemberFees(req: NextRequest,
     const mapped = recommendationsResponse.data.map((recommendation: any) => ({
         ...recommendation
     } as RecommendationItemDto));
-    console.log(mapped);
     return NextResponse.json(mapped);
 }

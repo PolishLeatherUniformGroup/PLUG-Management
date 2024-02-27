@@ -9,7 +9,7 @@ export class RecommendationView {
   cardNumber: string;
   @Column()
   requestDate?: Date;
-  @Column({ nullable: true, default: false })
+  @Column({ nullable: true, default: null })
   status?: boolean;
   @ManyToOne(() => ApplicantView, (applicant) => applicant.applicantId)
   applicant: ApplicantView;

@@ -11,4 +11,5 @@ export interface MemberDto {
     joinedDate:string;
     birthDate:string;
     address:AddressDto;
+    feeDue?:boolean;
 }
