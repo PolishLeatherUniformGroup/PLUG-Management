@@ -18,4 +18,8 @@ export interface EventPayloads {
   };
   'apply.verify-application': { id: string; rcomendationsCount: number };
   'apply.payment-received': { name: string, email: string };
+  'apply.application-appealed': { name: string, email: string };
+  'apply.application-appeal-rejected': { name: string, email: string, reason: string };
+  'apply.application-appeal-approved': { name: string, email: string };
+  'apply.application-appeal-cancelled': { name: string, email: string };
 }

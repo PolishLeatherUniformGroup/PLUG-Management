@@ -6,6 +6,7 @@ import { ApplicantRejectionAppealReceived } from '../../../domain/events';
 import { ApplicantIdNotFound } from '../../../domain/exception/applicant-id-not-found.error';
 import { ApplicantId, ApplicantStatus } from '../../../domain/model';
 import { IViewUpdater } from '../../../../eventstore/view/interfaces/view-updater';
+import { TypedEventEmitter } from '../../../../event-emitter/typed-event-emmitter';
 
 @EventsHandler(ApplicantRejectionAppealReceived)
 export class ApplicantRejectionAppealReceivedProjection
@@ -14,6 +15,7 @@ export class ApplicantRejectionAppealReceivedProjection
   constructor(
     @InjectRepository(ApplicantView)
     private readonly repository: Repository<ApplicantView>,
+    private readonly emitter: TypedEventEmitter,
   ) {}
 
   public async handle(event: ApplicantRejectionAppealReceived): Promise<void> {
@@ -28,5 +30,9 @@ export class ApplicantRejectionAppealReceivedProjection
     application.appealDate = event.appealDate;
     application.status = ApplicantStatus.Appealed;
     await this.repository.save(application);
+    await this.emitter.emitAsync('apply.application-appealed', {
+      name: application.firstName,
+      email: application.email,
+    });
   }
 }

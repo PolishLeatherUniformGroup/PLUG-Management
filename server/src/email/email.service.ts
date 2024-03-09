@@ -9,7 +9,7 @@ interface Email {
 
 @Injectable()
 export class EmailService {
-  constructor(private readonly mailerService: MailerService) {}
+  constructor(private readonly mailerService: MailerService) { }
 
   @OnEvent('apply.application-received')
   async applyConfirmation(data: EventPayloads['apply.application-received']) {
@@ -125,6 +125,34 @@ export class EmailService {
       to: email,
       subject,
       template: './apply-payment-received',
+      context: {
+        name,
+      },
+    });
+  }
+
+  @OnEvent('apply.application-appealed')
+  async applicationRejectionAppealReceived(data: EventPayloads['apply.application-appealed']) {
+    const { email, name } = data;
+    const subject = `Potwierdzenie  przyjęcia odwołania o odrzuceniu PLUG`;
+    await this.mailerService.sendMail({
+      to: email,
+      subject,
+      template: './apply-rejection-appeal-received',
+      context: {
+        name,
+      },
+    });
+  }
+
+  @OnEvent('apply.application-cancelled')
+  async applicationRejectionAppealCancelled(data: EventPayloads['apply.application-cancelled']) {
+    const { email, name } = data;
+    const subject = `Potwierdzenie  przyjęcia odwołania o odrzuceniu PLUG`;
+    await this.mailerService.sendMail({
+      to: email,
+      subject,
+      template: './apply-rejection-appeal-cancelled',
       context: {
         name,
       },
