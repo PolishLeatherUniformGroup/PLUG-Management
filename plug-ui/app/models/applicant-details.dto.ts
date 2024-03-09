@@ -1,6 +1,7 @@
 import { AddressDto } from "./AddressDto";
 import { FeeItemDto } from "./FeeDto";
 import { Recommendation } from "./Recommendation";
+import { ApplicationFeeDto } from "./application-fee.dto";
 
 export interface ApplicantDetails {
     id:string;
@@ -12,7 +13,7 @@ export interface ApplicantDetails {
     applyDate: Date;
     birthDate: Date;
     address?: AddressDto;
-    fee: FeeItemDto;
+    fee: ApplicationFeeDto;
     recommendations: Recommendation[];
 }
 

@@ -2,8 +2,9 @@ import { FeeItemDto } from "@/app/models/FeeDto";
 import { ApplicantDetails } from "@/app/models/applicant-details.dto";
 import { getAccessToken } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
+import { ApplicationFeeDto } from "../../../../models/application-fee.dto";
 
-export const GET = async function getApplications(
+export const GET = async function getApplication(
     request: NextRequest,
     { params: { applicantId } }: { params: { applicantId: string } }
 ) {
@@ -19,7 +20,10 @@ export const GET = async function getApplications(
             },
             method: 'GET'
         });
+        console.log(accessToken);
+        console.log(response);
         const applicantData = await response.json();
+        console.log(applicantData);
         const recommendationRequests = await fetch(`${process.env.PLUG_API_URL}apply/applicants/${applicantId}/recommendations`, {
             headers: {
                 accept: 'application/json',
@@ -44,7 +48,11 @@ export const GET = async function getApplications(
                 state: applicantData.address.state
             },
             recommendations: (await recommendationRequests.json()).data,
-            fee: {} as FeeItemDto
+            fee: {
+                requiredFee: applicantData.requiredFeeAmount,
+                paidFee: applicantData.paidFeeAmount,
+                currency: applicantData.feeCurrency
+            } as ApplicationFeeDto
         }
         return Response.json(applicant);
     } catch (error) {

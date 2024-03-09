@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { ApplicantIdNotFound } from '../../../domain/exception/applicant-id-not-found.error';
 import { ApplicantId } from '../../../domain/model';
 import { IViewUpdater } from '../../../../eventstore/view/interfaces/view-updater';
+import { TypedEventEmitter } from '../../../../event-emitter/typed-event-emmitter';
 
 @EventsHandler(ApplicantPaidFee)
 export class ApplicantPaidFeeProjection
@@ -14,6 +15,7 @@ export class ApplicantPaidFeeProjection
   constructor(
     @InjectRepository(ApplicantView)
     private readonly applicantRepository: Repository<ApplicantView>,
+    private readonly emitter: TypedEventEmitter
   ) {}
 
   async handle(event: ApplicantPaidFee) {
@@ -28,6 +30,10 @@ export class ApplicantPaidFeeProjection
       applicant.paidFeeAmount = event.amount.amount;
       applicant.feePaidDate = event.paidDate;
       this.applicantRepository.save(applicant);
+      await this.emitter.emitAsync('apply.payment-received', {
+        name: applicant.firstName,
+        email: applicant.email,
+      });
     } catch (error) {
       console.trace(error);
     }

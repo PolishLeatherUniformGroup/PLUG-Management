@@ -10,6 +10,7 @@ import {
 import { ApplicantId, ApplicantStatus } from '../../../domain/model';
 import { RecommendationView } from '../model/recommendation.entity';
 import { IViewUpdater } from '../../../../eventstore/view/interfaces/view-updater';
+import { TypedEventEmitter } from '../../../../event-emitter/typed-event-emmitter';
 
 @EventsHandler(ApplicantRecommendationRefused)
 export class ApplicantRecommendationRefusedProjection
@@ -20,6 +21,7 @@ export class ApplicantRecommendationRefusedProjection
     private readonly applicantRepository: Repository<ApplicantView>,
     @InjectRepository(RecommendationView)
     private readonly recommendationRepository: Repository<RecommendationView>,
+    private readonly emitter: TypedEventEmitter,
   ) {}
 
   async handle(event: ApplicantRecommendationRefused) {
@@ -44,6 +46,10 @@ export class ApplicantRecommendationRefusedProjection
       this.recommendationRepository.save(recommendation);
       applicant.status = ApplicantStatus.Rejected;
       this.applicantRepository.save(applicant);
+      await this.emitter.emitAsync('apply.application-not-recommended', {
+        name: applicant.firstName,
+        email: applicant.email,
+      });
     } catch (error) {
       console.trace(error);
     }

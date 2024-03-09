@@ -94,7 +94,7 @@ export default withPageAuthRequired(function Members() {
                     startContent={<FontAwesomeIcon icon={faEnvelope} className="fa-2xl" />}>{cellValue}</Button></Tooltip>
         }
         if (columnKey === 'actions') {
-            return <Button color="default" size="sm" as={Link} href={`/members/${user['card']}`}
+            return <Button color="default" size="sm" as={Link} href={`/admin/members/${user['card']}`}
                 startContent={<FontAwesomeIcon icon={faEye} className="fa-xl" />}>Zobacz</Button>
         }
         return cellValue;

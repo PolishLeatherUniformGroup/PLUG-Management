@@ -6,6 +6,7 @@ import { ApplicantAccepted } from '../../../domain/events';
 import { ApplicantIdNotFound } from '../../../domain/exception/applicant-id-not-found.error';
 import { ApplicantId, ApplicantStatus } from '../../../domain/model';
 import { IViewUpdater } from '../../../../eventstore/view/interfaces/view-updater';
+import { TypedEventEmitter } from '../../../../event-emitter/typed-event-emmitter';
 
 export class ApplicationAcceptedProjection
   implements IViewUpdater<ApplicantAccepted>
@@ -13,6 +14,7 @@ export class ApplicationAcceptedProjection
   constructor(
     @InjectRepository(ApplicantView)
     private readonly repository: Repository<ApplicantView>,
+    private readonly emitter: TypedEventEmitter,
   ) {}
 
   public async handle(event: ApplicantAccepted): Promise<void> {
@@ -27,5 +29,9 @@ export class ApplicationAcceptedProjection
     application.decision = event.decision;
     application.decisionDate = event.date;
     await this.repository.save(application);
+    await this.emitter.emitAsync('apply.application-approved', {
+      name: application.firstName,
+      email: application.email,
+    });
   }
 }

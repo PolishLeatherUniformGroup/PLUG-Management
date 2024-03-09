@@ -6,6 +6,7 @@ import { ApplicantRejected } from '../../../domain/events';
 import { ApplicantIdNotFound } from '../../../domain/exception/applicant-id-not-found.error';
 import { ApplicantId, ApplicantStatus } from '../../../domain/model';
 import { IViewUpdater } from '../../../../eventstore/view/interfaces/view-updater';
+import { TypedEventEmitter } from '../../../../event-emitter/typed-event-emmitter';
 
 export class ApplicationRejectedProjection
   implements IViewUpdater<ApplicantRejected>
@@ -13,6 +14,7 @@ export class ApplicationRejectedProjection
   constructor(
     @InjectRepository(ApplicantView)
     private readonly repository: Repository<ApplicantView>,
+    private readonly emitter: TypedEventEmitter,
   ) {}
 
   public async handle(event: ApplicantRejected): Promise<void> {
@@ -23,10 +25,16 @@ export class ApplicationRejectedProjection
       throw ApplicantIdNotFound.withApplicantId(
         ApplicantId.fromString(event.id),
       );
-    application.status = ApplicantStatus.Accepted;
+    application.status = ApplicantStatus.Rejected;
     application.decision = event.reason;
     application.decisionDate = event.date;
     application.appealDeadline = event.appealDeadline;
     await this.repository.save(application);
+    await this.emitter.emitAsync('apply.application-rejected', {
+      name: application.firstName,
+      email: application.email,
+      reason: event.reason,
+      deadline: event.appealDeadline.toDateString(),
+    });
   }
 }

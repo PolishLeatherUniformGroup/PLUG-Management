@@ -17,4 +17,5 @@ export interface EventPayloads {
     deadline: string;
   };
   'apply.verify-application': { id: string; rcomendationsCount: number };
+  'apply.payment-received': { name: string, email: string };
 }

@@ -23,7 +23,6 @@ export class ApplicationReceivedProjection
   ) {}
   async handle(event: ApplicationReceived) {
     try {
-      this.logger.log(`1. Received application ${event.id}`);
       const entity = new ApplicantView();
       entity.applicantId = event.id;
       entity.firstName = event.firstName;
@@ -39,7 +38,6 @@ export class ApplicationReceivedProjection
       entity.addressState = event.address.state;
       entity.status = ApplicantStatus.Received;
       await this.applicantRepository.save(entity);
-      this.logger.log(`2. Application view ${event.id} saved`);
 
       event.recommendations.forEach(async (r) => {
         const rec = new RecommendationView();
@@ -48,7 +46,6 @@ export class ApplicationReceivedProjection
 
         rec.applicant = entity;
         await this.recommendationRepository.save(rec);
-        this.logger.log(`3. Recommendation View ${r.id} saved`);
       });
       await this.emitter.emitAsync('apply.application-received', {
         email: event.email,

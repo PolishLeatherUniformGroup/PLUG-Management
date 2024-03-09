@@ -116,4 +116,18 @@ export class EmailService {
       },
     });
   }
+
+  @OnEvent('apply.payment-received')
+  async confirmApplyFeePayment(data: EventPayloads['apply.payment-received']) {
+    const { email, name } = data;
+    const subject = `Potwierdzenie opłacenia wniosku członkowskiego PLUG`;
+    await this.mailerService.sendMail({
+      to: email,
+      subject,
+      template: './apply-payment-received',
+      context: {
+        name,
+      },
+    });
+  }
 }

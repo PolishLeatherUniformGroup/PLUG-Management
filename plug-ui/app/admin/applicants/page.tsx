@@ -1,9 +1,9 @@
 'use client';
 import { Key, useEffect, useState } from "react"
 import { ApplicantDto } from '@/app/models/applicant.dto';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue, Progress, Chip, Button, Modal, useDisclosure, ModalContent, ModalHeader, ModalBody, ButtonGroup, CircularProgress } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue, Progress, Chip, Button, Modal, useDisclosure, ModalContent, ModalHeader, ModalBody, ButtonGroup, CircularProgress, Link } from "@nextui-org/react";
 import { parseISO, format } from 'date-fns';
-import ApplicationPreview from "./application-preview";
+import ApplicationPreview from "./[applicantId]/page";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faEye, faFileArrowDown, faFileInvoiceDollar, faXmark } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
@@ -12,15 +12,11 @@ import { Recommendation } from "../../models/Recommendation";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0/client";
 
 export default withPageAuthRequired(function Applicants() {
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const [applicant, setApplicant] = useState({ loading: true, data: {} as ApplicantDetails });
-    const [recomendations, setRecommendations] = useState({ loading: true, data: [] as Recommendation[] });
-    const handleOpen = (key: Key) => {
-        loadApplicant(key);
-        onOpen();
-    }
-    const [selectedApplicant, setSelectedApplicant] = useState("" as string);
+
     const columns = [{
+        key:'id',
+        label:'ID'
+    },{
         key: 'firstName',
         label: 'Imię'
     }, {
@@ -35,30 +31,12 @@ export default withPageAuthRequired(function Applicants() {
     }, {
         key: 'status',
         label: 'Status'
+    },{
+        key: 'actions',
+        label: 'Akcje'
+    
     }];
 
-    const readyForDecisionActions = () => (
-        <ButtonGroup className="mx-2">
-            <Button color="success"><FontAwesomeIcon icon={faCheck} />Akcetuj</Button>
-            <Button color="warning"><FontAwesomeIcon icon={faXmark} />Odrzuć</Button>
-        </ButtonGroup>
-    );
-    const beforeDecisionActions = () => (
-        <ButtonGroup className="mx-2">
-            <Button color="default"><FontAwesomeIcon icon={faFileInvoiceDollar} />Rejestruj płatność</Button>
-        </ButtonGroup>
-    )
-    const afterDecisionActions = () => (
-        <ButtonGroup className="mx-2">
-            <Button color="default"><FontAwesomeIcon icon={faFileArrowDown} />Przyjmij odwołanie</Button>
-        </ButtonGroup>
-    )
-    const afterAppealActions = () => (
-        <ButtonGroup className="mx-2">
-            <Button color="success"><FontAwesomeIcon icon={faCheck} />Akcetuj odwołanie</Button>
-            <Button color="danger"><FontAwesomeIcon icon={faXmark} />Odrzuć odwołanie</Button>
-        </ButtonGroup>
-    );
 
     const displayStatus = (status: number) => {
         if (status === 1) {
@@ -94,20 +72,19 @@ export default withPageAuthRequired(function Applicants() {
         return '';
     };
 
-    const loadApplicant = (id: Key) => {
-        fetch(`/api/apply/applicants/${id}`)
-            .then(response => response.json())
-            .then((data) => {
-                setApplicant({ data, loading: false });
-            });
-    }
 
     const renderCell = React.useCallback((user: any, columnKey: any) => {
         const cellValue = user[columnKey];
         if (columnKey === 'status') {
             return displayStatus(cellValue);
         }
-
+        if(columnKey ==='id'){
+            return cellValue === null || cellValue === undefined ? '' : (cellValue as string).replaceAll('-', '');
+        }
+        if(columnKey === 'actions'){
+            return <Button color="default" size="sm" as={Link} href={`/admin/applicants/${user['id']}`}
+            startContent={<FontAwesomeIcon icon={faEye} className="fa-xl" />}>Zobacz</Button>
+        }
         else {
             return cellValue;
         }
@@ -123,6 +100,7 @@ export default withPageAuthRequired(function Applicants() {
                     const items = data.map((applicant) => {
                         return {
                             key: applicant.id,
+                            id: applicant.id,
                             firstName: applicant.firstName,
                             lastName: applicant.lastName,
                             email: applicant.email,
@@ -145,7 +123,7 @@ export default withPageAuthRequired(function Applicants() {
                 aria-label="Loading..."
                 className="max-w-full"
             />}
-            <Table radius="sm" selectionMode="single" selectionBehavior="replace" onRowAction={(key) => handleOpen(key)}>
+            <Table radius="sm" selectionMode="single">
                 <TableHeader columns={columns}>
                     {(column) => (
                         <TableColumn key={column.key} align={column.key === "actions" ? "center" : "start"}>
@@ -161,24 +139,5 @@ export default withPageAuthRequired(function Applicants() {
                     )}
                 </TableBody>
             </Table>
-            <Modal backdrop="blur" isOpen={isOpen} onClose={onClose} size="4xl" scrollBehavior="inside">
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="text-2xl">
-                                {!applicant.loading ? `Aplikacja z ${format(applicant.data.applyDate,"dd-MM-yyyy")}`:'Wczytuje ...'}
-                                  
-                            </ModalHeader>
-                            
-                            <ModalBody>
-                                {applicant.loading && <CircularProgress aria-label="Loading..."  size="lg" className="self-center" />}
-                                {!applicant.loading && (
-                                <ApplicationPreview applicant={applicant.data} recommendations={recomendations.data} />
-                                )}
-                            </ModalBody></>
-                    )}
-                </ModalContent>
-            </Modal>
-
         </div>);
 })
