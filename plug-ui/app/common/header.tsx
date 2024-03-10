@@ -43,7 +43,7 @@ export default function Header() {
                     } else {
                         if (item.href === undefined && item.children !== undefined) {
                             return (
-                                <Dropdown>
+                                <Dropdown key={`${item.label}-dd`}>
                                     <NavbarItem key={item.label}>
                                         <DropdownTrigger>
                                             <Button disableRipple className="p-0 bg-transparent data-[hover=true]:bg-transparent" endContent={<FontAwesomeIcon icon={faChevronDown} />}

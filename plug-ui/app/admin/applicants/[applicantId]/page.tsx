@@ -21,7 +21,7 @@ export default function ApplicationPreview({ params }: { params: { applicantId: 
             .then((data) => {
                 setApplicant({ data, loading: false });
             });
-    }, []);
+    }, [params.applicantId]);
     const chooseActions = (status?: number) => {
         if (status === 1 || status === 3) {
             return beforeDecisionActions();

@@ -32,7 +32,7 @@ export default withPageAuthRequired(function Member({ params }: { params: { card
             .then((data) => {
                 setMemberRecommendations({ loading: false, data });
             });
-    }, []);
+    }, [params.card]);
     const card = params.card;
     return (<>
         <div className="w-full gap-2">
