@@ -145,8 +145,8 @@ export class EmailService {
     });
   }
 
-  @OnEvent('apply.application-cancelled')
-  async applicationRejectionAppealCancelled(data: EventPayloads['apply.application-cancelled']) {
+  @OnEvent('apply.application-appeal-cancelled')
+  async applicationRejectionAppealCancelled(data: EventPayloads['apply.application-appeal-cancelled']) {
     const { email, name } = data;
     const subject = `Potwierdzenie  przyjęcia odwołania o odrzuceniu PLUG`;
     await this.mailerService.sendMail({
@@ -158,4 +158,33 @@ export class EmailService {
       },
     });
   }
+
+  @OnEvent('apply.application-appeal-approved')
+  async applicationRejectionAppealApproved(data: EventPayloads['apply.application-appeal-approved']) {
+    const { email, name } = data;
+    const subject = `Informacja o odowłaniu od negatywnej decyzji o przyjęciu do stowarzyszenia PLUG`;
+    await this.mailerService.sendMail({
+      to: email,
+      subject,
+      template: './apply-rejection-appeal-approved',
+      context: {
+        name,
+      },
+    });
+  }
+
+  @OnEvent('apply.application-appeal-rejected')
+  async applicationRejectionAppealRejected(data: EventPayloads['apply.application-appeal-rejected']) {
+    const { email, name } = data;
+    const subject = `Informacja o odowłaniu od negatywnej decyzji o przyjęciu do stowarzyszenia PLUG`;
+    await this.mailerService.sendMail({
+      to: email,
+      subject,
+      template: './apply-rejection-appeal-rejected',
+      context: {
+        name,
+      },
+    });
+  }
+
 }
