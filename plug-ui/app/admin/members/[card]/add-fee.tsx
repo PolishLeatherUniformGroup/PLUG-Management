@@ -12,7 +12,7 @@ export default function AddFee({memberId, onSuccess, onCancel }: { memberId:stri
         <Input label="Waluta" name="feeCurrency" value="PLN" isReadOnly type="text" className="col-span-6" />
         <input type="hidden" name="memberId" value={memberId} />
         <div className="col-span-12">
-            <Button type="submit" color="success">Zapisz</Button>
+            <Button type="submit" color="success" onPress={()=>onSuccess()}>Zapisz</Button>
             <Button type="button" color="danger" onPress={()=>onCancel()}>Anuluj</Button>
         </div>
     </form>);

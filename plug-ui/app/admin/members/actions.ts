@@ -67,7 +67,7 @@ export async function addFee(onSuccess: () => void, formData: FormData) {
         requiredFee: { amount: formData.get('feeAmount'), currency: formData.get('feeCurrency') },
         requiredFeeDate: formData.get('feeDate')
     };
-    fetch('/api/members/me/fees', {
+    fetch(`/api/members/fees`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
