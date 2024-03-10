@@ -1,6 +1,6 @@
 'use client';
 import { withPageAuthRequired } from "@auth0/nextjs-auth0/client";
-import { faMoneyBillTransfer, faSquarePlus, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { faMoneyBillTransfer, faPassport, faSquarePlus, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { faFileImport } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, ButtonGroup, Chip, Divider, Kbd, Modal, ModalBody, ModalContent, ModalHeader, Progress, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip, useDisclosure } from "@nextui-org/react";
@@ -15,6 +15,7 @@ import { isMac } from "@react-aria/utils";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { faAddressCard, faEnvelope, faEye } from "@fortawesome/free-regular-svg-icons";
+import { createAccount } from "./actions";
 
 export default withPageAuthRequired(function Members() {
     const { isOpen: isAddMemberOpen, onOpen: onAddMemberOpen, onClose: onAddMemberClose } = useDisclosure();
@@ -94,8 +95,11 @@ export default withPageAuthRequired(function Members() {
                     startContent={<FontAwesomeIcon icon={faEnvelope} className="fa-2xl" />}>{cellValue}</Button></Tooltip>
         }
         if (columnKey === 'actions') {
-            return <Button color="default" size="sm" as={Link} href={`/admin/members/${user['card']}`}
+            return <ButtonGroup><Button color="default" size="sm" as={Link} href={`/admin/members/${user['card']}`}
                 startContent={<FontAwesomeIcon icon={faEye} className="fa-xl" />}>Zobacz</Button>
+                <Button color="default" size="sm" onPress={()=>createAccount(user['card'])}
+                startContent={<FontAwesomeIcon icon={faPassport} />}>Konto</Button>
+                </ButtonGroup>
         }
         return cellValue;
     }, []);

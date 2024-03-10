@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { MemberCardAssigned } from '../../../domain/events';
 import { IViewUpdater } from '../../../../eventstore/view/interfaces/view-updater';
 import { TypedEventEmitter } from '../../../../event-emitter/typed-event-emmitter';
+import { MembershipAuthService } from '../../../../auth/auth.service';
 
 @EventsHandler(MemberCardAssigned)
 export class MemberCardAssignedProjection
@@ -13,7 +14,8 @@ export class MemberCardAssignedProjection
   constructor(
     @InjectRepository(MemberView)
     private readonly memberRepository: Repository<MemberView>,
-    private readonly emitter: TypedEventEmitter
+    private readonly emitter: TypedEventEmitter,
+    private readonly memberService: MembershipAuthService,
   ) {}
   async handle(event: MemberCardAssigned) {
     const member = await this.memberRepository.findOne({
@@ -29,5 +31,6 @@ export class MemberCardAssignedProjection
       email: member.email,
       cardNumber: member.cardNumber,
     });
+    await this.memberService.createMemberAccount(member.firstName,member.lastName,member.email,member.phoneNumber,member.cardNumber);
   }
 }

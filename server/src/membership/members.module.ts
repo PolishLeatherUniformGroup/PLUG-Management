@@ -14,6 +14,7 @@ import { MembershipFeeView } from './infrastructure/read-model/model/membership-
 import { Projections } from './infrastructure/read-model/projection';
 import { EventStoreModule } from '../eventstore/eventstore.module';
 import { MemberAggregateRepository } from './infrastructure/repository/member-aggregate-repository';
+import { AuthModule } from '../auth/auth.module';
 
 @Global()
 @Module({
@@ -27,6 +28,7 @@ import { MemberAggregateRepository } from './infrastructure/repository/member-ag
       MemberExpulsionView,
     ]),
     EventStoreModule.forFeature(),
+    AuthModule,
   ],
   controllers: [CommandController, QueryController],
   providers: [

@@ -50,3 +50,13 @@ export async function refuseRecommendation(applicantId:string, recommendationId:
         body: JSON.stringify({applicantId, recommendationId})
     })
 }
+
+export async function createAccount(card:string){
+    fetch(`/api/members/${card}/account`,{
+        method: 'POST',
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+    });
+}

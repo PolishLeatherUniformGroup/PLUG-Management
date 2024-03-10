@@ -43,6 +43,8 @@ import { RejectExpulsionAppealRequestDto } from '../dto/reject-expulsion-appeal-
 import { RejectSuspensionAppealRequestDto } from '../dto/reject-suspension-appeal-request.dto';
 import { RequestMembershipFeePaymentDto } from '../dto/request-membership-fee-payment-dto';
 import { SuspendMemberRequestDto } from '../dto/suspend-member-request.dto';
+import { CreateAccountRequestDto } from '../dto/create-account-request.dto';
+import { CreatAccountCommand } from '../../application/command/create-account.command';
 
 @Controller('membership/commands')
 @ApiTags('membership')
@@ -80,6 +82,19 @@ export class CommandController {
           payload.initialFee.paidDate ?? new Date(),
         ),
       );
+
+      await this.commandBus.execute(command);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  @Post('create-account')
+  @ApiOperation({ summary: 'Create member account' })
+  @ApiResponse({ status: 204, description: 'Member account created.' })
+  async createMemberAccount(@Body() payload: CreateAccountRequestDto) {
+    try {
+      const command = new CreatAccountCommand(payload.id);
 
       await this.commandBus.execute(command);
     } catch (error) {
