@@ -20,10 +20,7 @@ export const GET = async function getApplication(
             },
             method: 'GET'
         });
-        console.log(accessToken);
-        console.log(response);
         const applicantData = await response.json();
-        console.log(applicantData);
         const recommendationRequests = await fetch(`${process.env.PLUG_API_URL}apply/applicants/${applicantId}/recommendations`, {
             headers: {
                 accept: 'application/json',

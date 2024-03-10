@@ -21,6 +21,7 @@ import { MemberExpulsionAppealed } from './member-expulsion-appealed.event';
 import { MemberExpulsionAppealCancelled } from './member-expulsion-appeal-cancelled.event';
 import { MemberExpulsionAppealAccepted } from './member-expulsion-appeal-accepted.event';
 import { MemberExpulsionAppealRejected } from './member-expulsion-appeal-rejected.event';
+import { MembershipFeeAdded } from './membership-fee-added.event';
 
 export * from './member-created.event';
 export * from './member-card-assigned.event';
@@ -40,6 +41,7 @@ export * from './member-expulsion-appealed.event';
 export * from './member-expulsion-appeal-cancelled.event';
 export * from './member-expulsion-appeal-accepted.event';
 export * from './member-expulsion-appeal-rejected.event';
+export * from './membership-fee-added.event';
 
 export {
   MemberCreated,
@@ -60,6 +62,7 @@ export {
   MemberExpulsionAppealCancelled,
   MemberExpulsionAppealAccepted,
   MemberExpulsionAppealRejected,
+  MembershipFeeAdded,
 };
 export const MembersEvents = {
   MemberCreated: (

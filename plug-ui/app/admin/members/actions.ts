@@ -15,8 +15,8 @@ export async function createMember(onSuccess: () => void, formData: FormData) {
             street: formData.get('street')
         },
         initialFee: {
-            dueAmount: {amount:formData.get('feeAmount'), currency: formData.get('feeCurrency')},
-            paidAmount: {amount:formData.get('feeAmount'), currency: formData.get('feeCurrency')},
+            dueAmount: { amount: formData.get('feeAmount'), currency: formData.get('feeCurrency') },
+            paidAmount: { amount: formData.get('feeAmount'), currency: formData.get('feeCurrency') },
             paidDate: formData.get('feeDate'),
             dueDate: formData.get('feeDate'),
             year: formData.get('year')
@@ -32,31 +32,47 @@ export async function createMember(onSuccess: () => void, formData: FormData) {
     onSuccess();
 };
 
-export async function approveRecommendation(applicantId:string, recommendationId: string) {
+export async function approveRecommendation(applicantId: string, recommendationId: string) {
     await fetch(`/api/members/me/recommendations/approve`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({applicantId, recommendationId})
+        body: JSON.stringify({ applicantId, recommendationId })
     })
 }
-export async function refuseRecommendation(applicantId:string, recommendationId: string) {
+export async function refuseRecommendation(applicantId: string, recommendationId: string) {
     fetch(`/api/members/me/recommendations/refuse`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({applicantId, recommendationId})
+        body: JSON.stringify({ applicantId, recommendationId })
     })
 }
 
-export async function createAccount(card:string){
-    fetch(`/api/members/${card}/account`,{
+export async function createAccount(card: string) {
+    fetch(`/api/members/${card}/account`, {
         method: 'POST',
-        headers:{
+        headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({})
     });
+}
+
+export async function addFee(onSuccess: () => void, formData: FormData) {
+    const payload = {
+        year: formData.get('year'),
+        requiredFee: { amount: formData.get('feeAmount'), currency: formData.get('feeCurrency') },
+        requiredFeeDate: formData.get('feeDate')
+    };
+    fetch('/api/members/me/fees', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    });
+    onSuccess();
 }

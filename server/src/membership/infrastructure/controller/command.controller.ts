@@ -41,10 +41,11 @@ import { MakeMemberHonoraryRequestDto } from '../dto/make-member-honorary-reques
 import { MakeMemberRegularRequestDto } from '../dto/make-member-regular-request.dto';
 import { RejectExpulsionAppealRequestDto } from '../dto/reject-expulsion-appeal-request.dto';
 import { RejectSuspensionAppealRequestDto } from '../dto/reject-suspension-appeal-request.dto';
-import { RequestMembershipFeePaymentDto } from '../dto/request-membership-fee-payment-dto';
+import { AddMembershipFeePaymentDto, RequestMembershipFeePaymentDto } from '../dto/request-membership-fee-payment-dto';
 import { SuspendMemberRequestDto } from '../dto/suspend-member-request.dto';
 import { CreateAccountRequestDto } from '../dto/create-account-request.dto';
 import { CreatAccountCommand } from '../../application/command/create-account.command';
+import { AddMembershipFeeCommand } from '../../application/command/add-membership-fee.command';
 
 @Controller('membership/commands')
 @ApiTags('membership')
@@ -321,6 +322,23 @@ export class CommandController {
   async requestFeePayment(@Body() payload: RequestMembershipFeePaymentDto) {
     try {
       const command = new RequestMembershipFeePaymentCommand(
+        payload.year,
+        Money.create(payload.amount.amount, payload.amount.currency),
+        payload.dueDate,
+      );
+      await this.commandBus.execute(command);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  @Post('add-fee-payment')
+  @ApiOperation({ summary: 'Request fee payment' })
+  @ApiResponse({ status: 204, description: 'Fee Payment requested.' })
+  async addFeePayment(@Body() payload: AddMembershipFeePaymentDto) {
+    try {
+      const command = new AddMembershipFeeCommand(
+        MemberId.fromString(payload.memberId),
         payload.year,
         Money.create(payload.amount.amount, payload.amount.currency),
         payload.dueDate,

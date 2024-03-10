@@ -17,6 +17,7 @@ import { AcceptMemberExpulsionAppealHandler } from './accept-member-expulsion-ap
 import { RejectMemberExpulsionAppealHandler } from './reject-member-expulsion-appeal.handler';
 import { AddMemberHandler } from './add-member.handler';
 import { CreateAccountHandler } from './create-account.handler';
+import { AddMembershipFeeCommanndHandler } from './add-membership-fee.handler';
 
 export * from './create-member.handler';
 export * from './assign-card-number.handler';
@@ -58,4 +59,5 @@ export const CommandHandlers = [
   RejectMemberExpulsionAppealHandler,
   AddMemberHandler,
   CreateAccountHandler,
+  AddMembershipFeeCommanndHandler
 ];

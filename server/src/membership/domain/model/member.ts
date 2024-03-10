@@ -21,6 +21,7 @@ import {
   MemberExpulsionAppealAccepted,
   MemberExpulsionAppealRejected,
 } from '../events';
+import { MembershipFeeAdded } from '../events/membership-fee-added.event';
 import { MemberCard } from './member-card';
 import { MemberExpulsion } from './member-expulsion';
 import { MemberId } from './member-id';
@@ -128,6 +129,21 @@ export class Member extends AggregateRoot {
   ) {
     this.apply(
       new MembershipFeeRequested(
+        this._memberId.value,
+        year,
+        { amount: amount.amount, currency: amount.currency },
+        dueDate,
+      ),
+    );
+  }
+
+  public addMembershipFee(
+    year: number,
+    amount: Money,
+    dueDate: Date,
+  ) {
+    this.apply(
+      new MembershipFeeAdded(
         this._memberId.value,
         year,
         { amount: amount.amount, currency: amount.currency },
@@ -338,6 +354,16 @@ export class Member extends AggregateRoot {
   }
 
   private onMembershipFeeRequested(event: MembershipFeeRequested) {
+    const membershipFee = MembershipFee.create(
+      this._memberId,
+      event.year,
+      Money.create(event.amount.amount, event.amount.currency),
+      event.dueDate,
+    );
+    this._membershipFees.push(membershipFee);
+  }
+
+  private onMembershipFeeAdded(event: MembershipFeeAdded) {
     const membershipFee = MembershipFee.create(
       this._memberId,
       event.year,

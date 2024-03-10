@@ -1,14 +1,14 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { MembershipFeeRequested } from '../../../domain/events';
+import { MembershipFeeAdded, MembershipFeeRequested } from '../../../domain/events';
 import { MemberView } from '../model/member.entity';
 import { MembershipFeeView } from '../model/membership-fee.entity';
 import { IViewUpdater } from '../../../../eventstore/view/interfaces/view-updater';
 
 @EventsHandler(MembershipFeeRequested)
 export class MembershipFeeRequestedProjection
-  implements IViewUpdater<MembershipFeeRequested>
+  implements IViewUpdater<MembershipFeeAdded>
 {
   constructor(
     @InjectRepository(MemberView)

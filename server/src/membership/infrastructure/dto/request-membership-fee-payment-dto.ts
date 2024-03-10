@@ -5,3 +5,10 @@ export class RequestMembershipFeePaymentDto {
   public year: number;
   public dueDate: Date;
 }
+
+export class AddMembershipFeePaymentDto {
+  public memberId: string;
+  public amount: MoneyDto;
+  public year: number;
+  public dueDate: Date;
+}

@@ -57,7 +57,7 @@ export default withPageAuthRequired(function Member({ params }: { params: { card
                 </Tab>
                 <Tab id="my-fees" title="Składki">
 
-                    {!memberFees.loading && <MemberFees fees={memberFees.data} />}
+                    {!memberFees.loading && <MemberFees fees={memberFees.data} memberId={member.data.id} />}
                 </Tab>
                 <Tab id="my-recommendations" title="Rekomendacje">
                     <MemberRecommendations recommendations={memberRecommendations.data} />
