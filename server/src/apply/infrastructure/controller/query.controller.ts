@@ -94,13 +94,18 @@ export class QueryController {
   ): Promise<RecommendationsDto> {
     const query = new GetApplicantRecommendationsQuery(id);
     const recommendations = await this.queryBus.execute(query);
-    return { data: recommendations.map((r)=>({
-      id: r.recommendationId,
-      cardNumber: r.cardNumber,
-      requestDate: r.requestDate,
-      isConfirmed: r.status === true,
-      isRefused: r.status === false,
-    }as RecommendationDto)) } as RecommendationsDto;
+    return {
+      data: recommendations.map(
+        (r) =>
+          ({
+            id: r.recommendationId,
+            cardNumber: r.cardNumber,
+            requestDate: r.requestDate,
+            isConfirmed: r.status === true,
+            isRefused: r.status === false,
+          }) as RecommendationDto,
+      ),
+    } as RecommendationsDto;
   }
 
   @Get('members/:id/recommendations')
@@ -119,16 +124,23 @@ export class QueryController {
     description: 'Member Id',
     type: 'string',
   })
-  async getRecommendations(@Param() id: string): Promise<MemberRecommendationsDto> {
+  async getRecommendations(
+    @Param() id: string,
+  ): Promise<MemberRecommendationsDto> {
     const query = new GetRecommendationsQuery(id);
     const recommendations = await this.queryBus.execute(query);
-    return { data: recommendations.map((r)=>({
-      recommendationId: r.recommendationId,
-      applicantId: r.applicantId,
-      firstName: r.applicant.firstName,
-      lastName: r.applicant.lastName,
-      applyDate: r.applicant.applyDate,
-      status: r.status,
-    }as MemberRecommendationDto)) } as MemberRecommendationsDto;
+    return {
+      data: recommendations.map(
+        (r) =>
+          ({
+            recommendationId: r.recommendationId,
+            applicantId: r.applicantId,
+            firstName: r.applicant.firstName,
+            lastName: r.applicant.lastName,
+            applyDate: r.applicant.applyDate,
+            status: r.status,
+          }) as MemberRecommendationDto,
+      ),
+    } as MemberRecommendationsDto;
   }
 }

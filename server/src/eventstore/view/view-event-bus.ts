@@ -8,7 +8,7 @@ export class ViewEventBus implements IEventBus {
   constructor(
     private readonly eventBus: EventBus,
     private viewUpdater: ViewUpdater,
-  ) { }
+  ) {}
 
   publish<T extends IEvent>(event: T): void {
     this.viewUpdater

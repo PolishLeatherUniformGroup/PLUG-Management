@@ -10,23 +10,22 @@ import { MemberCard } from 'src/membership/domain/model/member-card';
 import { AssignCardNumberCommand } from 'src/membership/application/command/assign-card-number.command';
 import { MemberType } from 'src/membership/domain/model/member-type';
 import { MemberId } from '../../../domain/model/member-id';
+import { IViewUpdater } from '../../../../eventstore/view/interfaces/view-updater';
+import { TypedEventEmitter } from '../../../../event-emitter/typed-event-emmitter';
 
 @EventsHandler(MemberCreated)
-export class MemberCreatedProjection implements IEventHandler<MemberCreated> {
+export class MemberCreatedProjection implements  IViewUpdater<MemberCreated> {
   constructor(
     @InjectRepository(MemberView)
     private memberRepository: Repository<MemberView>,
     @InjectRepository(MembershipFeeView)
     private membershipFeeRepository: Repository<MembershipFeeView>,
-    @InjectRepository(MemberCardNumber)
-    private memberCardRepository: Repository<MemberCardNumber>,
-    private readonly commandBus: CommandBus,
+    
+    private readonly emmitter: TypedEventEmitter,
   ) {}
   async handle(event: MemberCreated) {
     try {
-      const card = await this.memberCardRepository.findOne({
-        where: { prefix: 'PLUG' },
-      });
+      
       const member = new MemberView();
       member.memberId = event.id;
       member.firstName = event.firstName;
@@ -41,17 +40,9 @@ export class MemberCreatedProjection implements IEventHandler<MemberCreated> {
       member.addressPostalCode = event.address.postalCode;
       member.addressState = event.address.state;
       member.status = MemberStatus.Active;
-      if (event.notify && card) {
-        const command = new AssignCardNumberCommand(
-          MemberId.fromString(member.memberId),
-          MemberCard.create(card.prefix, card.nextCard),
-        );
-        await this.commandBus.execute(command);
-        card.nextCard++;
-        this.memberCardRepository.save(card);
-      } else if (card && event.card) {
+      if (event.card) {
         member.cardNumber = MemberCard.create(
-          card.prefix,
+          'PLUG',
           event.card,
         ).toString();
       }
@@ -68,6 +59,17 @@ export class MemberCreatedProjection implements IEventHandler<MemberCreated> {
       membershipFee.paidDate = event.initialFee.paidDate;
       membershipFee.member = member;
       await this.membershipFeeRepository.save(membershipFee);
+      await this.emmitter.emitAsync('membership.member-created', { memberId: event.id });
+      /*
+      if (event.notify && card) {
+        const command = new AssignCardNumberCommand(
+          MemberId.fromString(member.memberId),
+          MemberCard.create(card.prefix, card.nextCard),
+        );
+        await this.commandBus.execute(command);
+        card.nextCard++;
+        this.memberCardRepository.save(card);
+      } else*/
     } catch (error) {
       console.error(error);
     }

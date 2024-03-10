@@ -25,7 +25,7 @@ import { ApplicantAggregateRepository } from './infrastructure/repository/applic
     EmailModule,
     MembersModule,
   ],
-  controllers: [ QueryController, CommandController],
+  controllers: [QueryController, CommandController],
   providers: [
     ...CommandHandlers,
     ...Projections,

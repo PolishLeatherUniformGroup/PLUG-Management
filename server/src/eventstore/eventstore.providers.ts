@@ -4,10 +4,5 @@ import { ViewUpdater } from './view/view-updater';
 import { ViewEventBus } from './view/view-event-bus';
 
 export function createEventSourcingProviders() {
-  return [
-    ViewUpdater,
-    ViewEventBus,
-    StoreEventBus,
-    StoreEventPublisher,
-  ];
+  return [ViewUpdater, ViewEventBus, StoreEventBus, StoreEventPublisher];
 }

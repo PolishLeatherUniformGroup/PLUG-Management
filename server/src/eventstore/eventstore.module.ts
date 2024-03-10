@@ -16,7 +16,7 @@ export class EventStoreModule {
       module: EventStoreModule,
       imports: [TypeOrmModule.forFeature([StorableEvent]), CqrsModule],
       providers: [],
-      exports: [TypeOrmModule,],
+      exports: [TypeOrmModule],
       global: true,
     };
   }

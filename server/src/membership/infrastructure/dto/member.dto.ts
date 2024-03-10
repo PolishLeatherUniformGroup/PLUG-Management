@@ -11,5 +11,5 @@ export class MemberDto {
   public joinedDate: Date;
   public birthDate: Date;
   public status: number;
-  public feeDue?:boolean;
+  public feeDue?: boolean;
 }

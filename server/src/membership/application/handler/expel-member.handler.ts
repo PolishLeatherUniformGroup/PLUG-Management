@@ -6,9 +6,12 @@ import { MemberAggregateRepository } from '../../infrastructure/repository/membe
 
 @CommandHandler(ExpelMemberCommand)
 export class ExpelMemberHandler implements ICommandHandler<ExpelMemberCommand> {
-  constructor(private readonly members:MemberAggregateRepository, private readonly publisher:StoreEventPublisher) {}
+  constructor(
+    private readonly members: MemberAggregateRepository,
+    private readonly publisher: StoreEventPublisher,
+  ) {}
   async execute(command: ExpelMemberCommand) {
-    const member = await this.members.getById(Member,command.id.value);
+    const member = await this.members.getById(Member, command.id.value);
     if (!member) {
       throw new Error('Member not found');
     }

@@ -28,7 +28,7 @@ export class MemberView {
   public addressState?: string;
   @Column({ type: 'int' })
   public status: number;
-  @Column({ type: 'varchar', length: 10 })
+  @Column({ type: 'varchar', length: 10, nullable: true, default: null, unique: true})
   public cardNumber: string;
   @Column()
   public memberType: number;

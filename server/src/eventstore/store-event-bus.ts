@@ -11,8 +11,7 @@ export class StoreEventBus implements IEventBus {
     private readonly eventBus: ViewEventBus,
     @InjectRepository(StorableEvent)
     private readonly eventStore: Repository<StorableEvent>,
-  ) {
-  }
+  ) {}
 
   publish<T extends IEvent>(event: T): void {
     if ('id' in event === false) {

@@ -8,10 +8,15 @@ import { MemberAggregateRepository } from '../../infrastructure/repository/membe
 export class RejectMemberSuspensionAppealHandler
   implements ICommandHandler<RejectMemberSuspensionAppealCommand>
 {
-  constructor(private readonly members:MemberAggregateRepository, private readonly publisher:StoreEventPublisher) {}
+  constructor(
+    private readonly members: MemberAggregateRepository,
+    private readonly publisher: StoreEventPublisher,
+  ) {}
 
   async execute(command: RejectMemberSuspensionAppealCommand) {
-    const member = this.publisher.mergeObjectContext(await this.members.getById(Member,command.memberId.value));;
+    const member = this.publisher.mergeObjectContext(
+      await this.members.getById(Member, command.memberId.value),
+    );
     if (!member) {
       throw new Error('Member not found');
     }

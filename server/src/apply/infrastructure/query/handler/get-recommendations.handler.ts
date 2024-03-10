@@ -14,9 +14,12 @@ export class GetRecommendationsHandler
     private readonly repository: Repository<RecommendationView>,
   ) {}
   async execute(query): Promise<RecommendationView[]> {
-    var id = query.id;
+    const id = query.id;
     const recommendations = await this.repository.find({
-      where: { cardNumber: id['id'] , applicant:{ status: ApplicantStatus.InRecommendation}},
+      where: {
+        cardNumber: id['id'],
+        applicant: { status: ApplicantStatus.InRecommendation },
+      },
       relations: { applicant: true },
     });
     return recommendations;

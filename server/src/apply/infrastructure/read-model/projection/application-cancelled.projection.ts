@@ -26,11 +26,10 @@ export class ApplicationCancelledProjection
         applicant.status = ApplicantStatus.Cancelled;
         await this.applicantRepository.save(applicant);
         await this.emitter.emitAsync('apply.application-cancelled', {
-          email:applicant.email,
-          name:applicant.firstName
+          email: applicant.email,
+          name: applicant.firstName,
         });
       }
-      
     } catch (error) {
       console.trace(error);
     }

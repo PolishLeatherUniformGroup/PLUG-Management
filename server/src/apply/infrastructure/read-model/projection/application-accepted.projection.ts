@@ -33,5 +33,33 @@ export class ApplicationAcceptedProjection
       name: application.firstName,
       email: application.email,
     });
+    await this.emitter.emitAsync('system.application-approved', {
+      firstName: application.firstName,
+      lastName: application.lastName,
+      email: application.email,
+      phoneNumber: application.phoneNumber,
+      joinDate: application.decisionDate,
+      birthDate: application.birthDate,
+      address: {
+        street: application.addressStreet,
+        city: application.addressCity,
+        postalCode: application.addressPostalCode,
+        country: application.addressCountry,
+        state: application.addressState,
+      },
+      initialFee: {
+        year: application.applyDate.getFullYear(),
+        dueAmount: {
+          ammount: application.requiredFeeAmount,
+          currency: application.feeCurrency,
+        },
+        dueDate: application.feePaidDate,
+        paidAmount: {
+          ammount: application.paidFeeAmount,
+          currency: application.feeCurrency,
+        },
+        paidDate: application.feePaidDate,
+      },
+    });
   }
 }

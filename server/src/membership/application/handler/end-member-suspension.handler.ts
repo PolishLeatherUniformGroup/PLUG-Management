@@ -7,10 +7,15 @@ import { MemberAggregateRepository } from '../../infrastructure/repository/membe
 export class EndMemberSuspensionHandler
   implements ICommandHandler<EndMemberSuspensionCommand>
 {
-  constructor(private readonly members:MemberAggregateRepository, private readonly publisher:StoreEventPublisher) {}
+  constructor(
+    private readonly members: MemberAggregateRepository,
+    private readonly publisher: StoreEventPublisher,
+  ) {}
 
   async execute(command: EndMemberSuspensionCommand) {
-    const member = this.publisher.mergeObjectContext(await this.members.getById(Member,command.memberId.value));;
+    const member = this.publisher.mergeObjectContext(
+      await this.members.getById(Member, command.memberId.value),
+    );
     if (!member) {
       throw new Error('Member not found');
     }

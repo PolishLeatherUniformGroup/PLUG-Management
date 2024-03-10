@@ -6,7 +6,10 @@ import { MemberAggregateRepository } from '../../infrastructure/repository/membe
 
 @CommandHandler(AddMemberCommand)
 export class AddMemberHandler implements ICommandHandler<AddMemberCommand> {
-  constructor(private readonly members:MemberAggregateRepository, private readonly publisher:StoreEventPublisher) {}
+  constructor(
+    private readonly members: MemberAggregateRepository,
+    private readonly publisher: StoreEventPublisher,
+  ) {}
 
   async execute(command: AddMemberCommand): Promise<void> {
     try {

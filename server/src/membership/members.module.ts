@@ -37,5 +37,4 @@ import { MemberAggregateRepository } from './infrastructure/repository/member-ag
   ],
   exports: [...QueryHandlers],
 })
-export class MembersModule{}
-
+export class MembersModule {}

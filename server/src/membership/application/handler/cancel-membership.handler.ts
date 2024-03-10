@@ -9,10 +9,13 @@ import { MemberAggregateRepository } from '../../infrastructure/repository/membe
 export class CancelMembershipHandler
   implements ICommandHandler<CancelMembershipCommand>
 {
-  constructor(private readonly members:MemberAggregateRepository, private readonly publisher:StoreEventPublisher) {}
+  constructor(
+    private readonly members: MemberAggregateRepository,
+    private readonly publisher: StoreEventPublisher,
+  ) {}
 
   async execute(command: ExpireMembershipCommand) {
-    const member = await this.members.getById(Member,command.id.value);
+    const member = await this.members.getById(Member, command.id.value);
     if (!member) {
       throw new Error('Member not found');
     }

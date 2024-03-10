@@ -8,10 +8,15 @@ import { MemberAggregateRepository } from '../../infrastructure/repository/membe
 export class ExpireMembershipHandler
   implements ICommandHandler<ExpireMembershipCommand>
 {
-  constructor(private readonly members:MemberAggregateRepository, private readonly publisher:StoreEventPublisher) {}
+  constructor(
+    private readonly members: MemberAggregateRepository,
+    private readonly publisher: StoreEventPublisher,
+  ) {}
 
   async execute(command: ExpireMembershipCommand) {
-    const member = this.publisher.mergeObjectContext(await this.members.getById(Member,command.id.value));
+    const member = this.publisher.mergeObjectContext(
+      await this.members.getById(Member, command.id.value),
+    );
     if (!member) {
       throw new Error('Member not found');
     }

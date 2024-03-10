@@ -8,7 +8,10 @@ import { MemberAggregateRepository } from '../../infrastructure/repository/membe
 export class AppealMemberExpulsionHandler
   implements ICommandHandler<AppealMemberExpulsionCommand>
 {
-  constructor(private readonly members: MemberAggregateRepository, private readonly publisher: StoreEventPublisher) { }
+  constructor(
+    private readonly members: MemberAggregateRepository,
+    private readonly publisher: StoreEventPublisher,
+  ) {}
 
   async execute(command: AppealMemberExpulsionCommand) {
     const member = await this.members.getById(Member, command.id.value);

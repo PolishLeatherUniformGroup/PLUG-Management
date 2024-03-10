@@ -9,6 +9,9 @@ export class Money extends ValueObject<MoneyProps> {
   private constructor(props: MoneyProps) {
     super(props);
   }
+  public static fromDto(dto: MoneyProps): Money {
+    return new Money(dto);
+  }
 
   public static create(amount: number, currency: string): Money {
     if (amount < 0) {

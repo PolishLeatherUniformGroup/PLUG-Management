@@ -3,14 +3,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { MemberView } from '../model/member.entity';
 import { Repository } from 'typeorm';
 import { MemberCardAssigned } from '../../../domain/events';
+import { IViewUpdater } from '../../../../eventstore/view/interfaces/view-updater';
+import { TypedEventEmitter } from '../../../../event-emitter/typed-event-emmitter';
 
 @EventsHandler(MemberCardAssigned)
 export class MemberCardAssignedProjection
-  implements IEventHandler<MemberCardAssigned>
+  implements IViewUpdater<MemberCardAssigned>
 {
   constructor(
     @InjectRepository(MemberView)
     private readonly memberRepository: Repository<MemberView>,
+    private readonly emitter: TypedEventEmitter
   ) {}
   async handle(event: MemberCardAssigned) {
     const member = await this.memberRepository.findOne({
@@ -21,5 +24,10 @@ export class MemberCardAssignedProjection
     }
     member.cardNumber = event.cardNumber.toString();
     await this.memberRepository.save(member);
+    await this.emitter.emitAsync('membership.member-joined', {
+      name: member.firstName,
+      email: member.email,
+      cardNumber: member.cardNumber,
+    });
   }
 }

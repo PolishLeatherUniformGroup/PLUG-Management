@@ -57,7 +57,7 @@ it('should recreate application', () => {
       { id: 'rec-2', cardNumber: 'recommender-2' },
     ],
   );
-  let serialized0 = JSON.stringify(event0);
+  const serialized0 = JSON.stringify(event0);
   const data0 = JSON.parse(serialized0);
   const event1 = new ApplicantRecommendationsRequested(
     'applicant-id',

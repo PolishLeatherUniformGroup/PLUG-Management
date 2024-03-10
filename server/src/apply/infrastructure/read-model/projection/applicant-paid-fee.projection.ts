@@ -15,7 +15,7 @@ export class ApplicantPaidFeeProjection
   constructor(
     @InjectRepository(ApplicantView)
     private readonly applicantRepository: Repository<ApplicantView>,
-    private readonly emitter: TypedEventEmitter
+    private readonly emitter: TypedEventEmitter,
   ) {}
 
   async handle(event: ApplicantPaidFee) {

@@ -9,8 +9,7 @@ export interface Constructor<T> {
 @Injectable()
 export class StoreEventPublisher {
   private readonly logger = new Logger(StoreEventPublisher.name);
-  constructor(private readonly eventBus: StoreEventBus) {
-  }
+  constructor(private readonly eventBus: StoreEventBus) {}
 
   mergeClassContext<T extends Constructor<AggregateRoot>>(metatype: T): T {
     const eventBus = this.eventBus;
@@ -26,7 +25,7 @@ export class StoreEventPublisher {
       console.log('Object is null');
       return null;
     }
-  
+
     const eventBus = this.eventBus;
     object.commit = () => {
       object.publishAll(object.getUncommittedEvents());
@@ -35,7 +34,7 @@ export class StoreEventPublisher {
       events.forEach((event) => {
         object.publish(event);
       });
-    }
+    };
     object.publish = (event: IEvent) => {
       eventBus.publish(event);
     };
