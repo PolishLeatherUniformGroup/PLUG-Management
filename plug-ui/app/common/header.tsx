@@ -30,7 +30,8 @@ export default function Header() {
         <NextUINavbar maxWidth="2xl" position="sticky" className="shadow-lg">
             <NavbarBrand>
                 <NextLink href="/">
-                    <Image src="/next.svg" alt="logo" height={48} width={48} />
+                    <Image src="/logo_black.svg" alt="logo" height={48} width={48}  className="block dark:hidden"/>
+                    <Image src="/logo_white.svg" alt="logo" height={48} width={48} className="hidden dark:block"/>
                 </NextLink>
             </NavbarBrand>
             <NavbarContent className="hidden sm:flex gap-4" justify="start" >
@@ -43,7 +44,7 @@ export default function Header() {
                         if (item.href === undefined && item.children !== undefined) {
                             return (
                                 <Dropdown>
-                                    <NavbarItem>
+                                    <NavbarItem key={item.label}>
                                         <DropdownTrigger>
                                             <Button disableRipple className="p-0 bg-transparent data-[hover=true]:bg-transparent" endContent={<FontAwesomeIcon icon={faChevronDown} />}
                                                 radius="sm"
