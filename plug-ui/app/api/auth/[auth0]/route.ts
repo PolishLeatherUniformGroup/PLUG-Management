@@ -6,7 +6,7 @@ export const GET = handleAuth({
       authorizationParams: {
         audience: process.env.AUTH0_AUDIENCE, // or AUTH0_AUDIENCE
         // Add the `offline_access` scope to also get a Refresh Token
-        scope: 'openid profile email' // or AUTH0_SCOPE
+        scope: 'openid profile email offline_access' // or AUTH0_SCOPE
       }
     })
   });
