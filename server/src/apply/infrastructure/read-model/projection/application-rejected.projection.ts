@@ -15,26 +15,30 @@ export class ApplicationRejectedProjection
     @InjectRepository(ApplicantView)
     private readonly repository: Repository<ApplicantView>,
     private readonly emitter: TypedEventEmitter,
-  ) {}
+  ) { }
 
   public async handle(event: ApplicantRejected): Promise<void> {
-    const application = await this.repository.findOne({
-      where: { applicantId: event.id },
-    });
-    if (!application)
-      throw ApplicantIdNotFound.withApplicantId(
-        ApplicantId.fromString(event.id),
-      );
-    application.status = ApplicantStatus.Rejected;
-    application.decision = event.reason;
-    application.decisionDate = event.date;
-    application.appealDeadline = event.appealDeadline;
-    await this.repository.save(application);
-    await this.emitter.emitAsync('apply.application-rejected', {
-      name: application.firstName,
-      email: application.email,
-      reason: event.reason,
-      deadline: event.appealDeadline.toDateString(),
-    });
+    try {
+      const application = await this.repository.findOne({
+        where: { applicantId: event.id },
+      });
+      if (!application)
+        throw ApplicantIdNotFound.withApplicantId(
+          ApplicantId.fromString(event.id),
+        );
+      application.status = ApplicantStatus.Rejected;
+      application.decision = event.reason;
+      application.decisionDate = event.date;
+      application.appealDeadline = event.appealDeadline;
+      await this.repository.save(application);
+      await this.emitter.emitAsync('apply.application-rejected', {
+        name: application.firstName,
+        email: application.email,
+        reason: event.reason,
+        deadline: event.appealDeadline.toDateString(),
+      });
+    } catch (error) {
+      console.trace(error);
+    }
   }
 }

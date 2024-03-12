@@ -16,23 +16,27 @@ export class ApplicantRejectionAppealReceivedProjection
     @InjectRepository(ApplicantView)
     private readonly repository: Repository<ApplicantView>,
     private readonly emitter: TypedEventEmitter,
-  ) {}
+  ) { }
 
   public async handle(event: ApplicantRejectionAppealReceived): Promise<void> {
-    const application = await this.repository.findOne({
-      where: { applicantId: event.id },
-    });
-    if (!application)
-      throw ApplicantIdNotFound.withApplicantId(
-        ApplicantId.fromString(event.id),
-      );
-    application.appealJustification = event.justification;
-    application.appealDate = event.appealDate;
-    application.status = ApplicantStatus.Appealed;
-    await this.repository.save(application);
-    await this.emitter.emitAsync('apply.application-appealed', {
-      name: application.firstName,
-      email: application.email,
-    });
+    try {
+      const application = await this.repository.findOne({
+        where: { applicantId: event.id },
+      });
+      if (!application)
+        throw ApplicantIdNotFound.withApplicantId(
+          ApplicantId.fromString(event.id),
+        );
+      application.appealJustification = event.justification;
+      application.appealDate = event.appealDate;
+      application.status = ApplicantStatus.Appealed;
+      await this.repository.save(application);
+      await this.emitter.emitAsync('apply.application-appealed', {
+        name: application.firstName,
+        email: application.email,
+      });
+    } catch (error) {
+      console.trace(error);
+    }
   }
 }
